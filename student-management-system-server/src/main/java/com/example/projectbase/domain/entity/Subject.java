@@ -46,4 +46,5 @@ public class Subject extends FlagUserDateAuditing {
     //Link to table Subject
 
     //Link to table Classroom
+    //
 }
