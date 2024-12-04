@@ -103,6 +103,8 @@ export function DataTable<TData, TValue>({ columns, data, toolbar, loading, chil
                       style={{
                         minWidth: cell.column.columnDef.size,
                         maxWidth: cell.column.columnDef.size,
+                        minHeight: '44px',
+                        height: '44px',
                       }}
                       className="border"
                     >
