@@ -9,8 +9,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import { buttonVariants } from '@/components/ui/button';
-import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
+import { Button, buttonVariants } from '@/components/ui/button';
 
 interface DeleteDialogProps {
   title: string;
@@ -21,7 +20,7 @@ export function DeleteDialog({ title, onConfirm }: DeleteDialogProps) {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <DropdownMenuItem onSelect={(e) => e.preventDefault()}>{title}</DropdownMenuItem>
+        <Button onSelect={(e) => e.preventDefault()}>{title}</Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>

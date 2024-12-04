@@ -21,3 +21,14 @@ export interface User {
   department?: Department;
   class?: Class;
 }
+
+export enum Role {
+  STUDENT = 'student',
+  TEACHER = 'teacher',
+  ADMIN = 'admin',
+}
+
+export enum Gender {
+  MALE = 'Nam',
+  FEMALE = 'Nữ',
+}
