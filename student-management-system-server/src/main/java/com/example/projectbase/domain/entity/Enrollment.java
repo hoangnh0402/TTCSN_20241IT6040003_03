@@ -1,3 +1,4 @@
+
 package com.example.projectbase.domain.entity;
 
 import com.example.projectbase.domain.entity.common.FlagUserDateAuditing;
@@ -33,6 +34,12 @@ public class Enrollment extends FlagUserDateAuditing {
     private double finalPoint;
 
     //Link to table User
+    @ManyToOne
+    @JoinColumn(name = "userId", foreignKey = @ForeignKey(name = "FK_ENROLLMENT_USER"))
+    private User user;
 
     //Link to table Classroom
+    @ManyToOne
+    @JoinColumn(name = "classroomId", foreignKey = @ForeignKey(name = "FK_ENROLLMENT_CLASSROOM"))
+    private Classroom classroom;
 }

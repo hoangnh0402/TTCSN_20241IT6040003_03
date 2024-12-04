@@ -1,11 +1,15 @@
+
 package com.example.projectbase.domain.entity;
 
 import com.example.projectbase.domain.entity.common.FlagUserDateAuditing;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -37,6 +41,12 @@ public class Classroom extends FlagUserDateAuditing {
     private LocalDate startDate;
 
     //Link to table Enrollment
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "classroom")
+    @JsonIgnore
+    private Set<Enrollment> enrollments = new HashSet<>();
 
     //Link to table Subject
+    @ManyToOne
+    @JoinColumn(name = "subjectId", foreignKey = @ForeignKey(name = "FK_CLASSROOM_SUBJECT"))
+    private Subject subject;
 }

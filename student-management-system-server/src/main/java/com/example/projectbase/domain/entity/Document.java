@@ -35,4 +35,7 @@ public class Document extends FlagUserDateAuditing {
     private String description;
 
     //Link to table Subject
+    @ManyToOne
+    @JoinColumn(name = "subjectId", foreignKey = @ForeignKey(name = "FK_DOCUMENT_SUBJECT"))
+    private Subject subject;
 }
