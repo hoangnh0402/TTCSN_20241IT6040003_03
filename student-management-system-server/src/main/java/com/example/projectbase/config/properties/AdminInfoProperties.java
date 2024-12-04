@@ -11,7 +11,14 @@ public class AdminInfoProperties {
 
   private String username;
   private String password;
-  private String lastName;
-  private String firstName;
+  private String userCode;
+  private String email;
+  private String phoneNumber;
+  private String fullName;
+  private String gender;
+  private String birthday;
+  private String address;
+  private String avatar;
+  private Boolean isLocked;
 
 }

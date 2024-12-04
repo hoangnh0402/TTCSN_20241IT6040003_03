@@ -44,7 +44,7 @@ public class ProjectBaseApplication {
   }
 
   @Bean
-  CommandLineRunner init(AdminInfoProperties userInfo) {
+  CommandLineRunner init(AdminInfoProperties adminInfo) {
     return args -> {
       //init role
       if (roleRepository.count() == 0) {
@@ -53,10 +53,20 @@ public class ProjectBaseApplication {
       }
       //init admin
       if (userRepository.count() == 0) {
-        User admin = User.builder().username(userInfo.getUsername())
-            .password(passwordEncoder.encode(userInfo.getPassword()))
-            .firstName(userInfo.getFirstName()).lastName(userInfo.getLastName())
-            .role(roleRepository.findByRoleName(RoleConstant.ADMIN)).build();
+        User admin = User.builder()
+                .username(adminInfo.getUsername())
+                .password(passwordEncoder.encode(adminInfo.getPassword()))
+                .userCode(adminInfo.getUserCode())
+                .email(adminInfo.getEmail())
+                .phoneNumber(adminInfo.getPhoneNumber())
+                .fullName(adminInfo.getFullName())
+                .gender(adminInfo.getGender())
+                .birthday(adminInfo.getBirthday()) // Chuyển đổi birthday
+                .address(adminInfo.getAddress())
+                .avatar(adminInfo.getAvatar())
+                .isLocked(adminInfo.getIsLocked())
+                .role(roleRepository.findByRoleName(RoleConstant.ADMIN))
+                .build();
         userRepository.save(admin);
       }
     };
