@@ -55,9 +55,9 @@ export function DataTable<TData, TValue>({ columns, data, toolbar, loading, chil
 
   return (
     <div>
-      {toolbar && toolbar(table)}
       {children}
 
+      {toolbar && toolbar(table)}
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -103,6 +103,8 @@ export function DataTable<TData, TValue>({ columns, data, toolbar, loading, chil
                       style={{
                         minWidth: cell.column.columnDef.size,
                         maxWidth: cell.column.columnDef.size,
+                        minHeight: '44px',
+                        height: '44px',
                       }}
                       className="border"
                     >

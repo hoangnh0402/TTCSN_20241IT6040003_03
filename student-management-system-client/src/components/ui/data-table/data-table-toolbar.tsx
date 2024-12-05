@@ -19,7 +19,7 @@ export function DataTableToolbar<TData>({ table, Modal, modalProps }: DataTableT
         <DialogTrigger asChild>
           <Button variant="default" size="sm">
             <Plus />
-            Tạo
+            Thêm
           </Button>
         </DialogTrigger>
         {Modal && <Modal modalProps={modalProps} />}

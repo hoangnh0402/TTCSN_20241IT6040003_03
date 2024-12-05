@@ -15,9 +15,20 @@ export interface User {
   dateOfBirth?: string;
   address?: string;
   role: string;
-  craetedAt?: string;
+  createdAt?: string;
 
   enrollments?: Enrollment[];
   department?: Department;
   class?: Class;
+}
+
+export enum Role {
+  STUDENT = 'student',
+  TEACHER = 'teacher',
+  ADMIN = 'admin',
+}
+
+export enum Gender {
+  MALE = 'Nam',
+  FEMALE = 'Nữ',
 }

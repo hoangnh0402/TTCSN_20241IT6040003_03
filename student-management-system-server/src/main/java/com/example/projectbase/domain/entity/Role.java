@@ -1,3 +1,4 @@
+
 package com.example.projectbase.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
