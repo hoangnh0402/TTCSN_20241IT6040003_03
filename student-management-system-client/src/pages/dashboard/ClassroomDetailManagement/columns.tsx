@@ -1,14 +1,10 @@
 /* eslint-disable react-refresh/only-export-components */
 // eslint-disable-next-line react-refresh/only-export-components
 
-import { Button } from '@/components/ui/button';
 import { DataTableColumnHeader } from '@/components/ui/data-table/data-table-column-header';
 import { DeleteDialog } from '@/components/ui/delete-dialog';
-import { DialogTrigger } from '@/components/ui/dialog';
 import { User } from '@/types/user.type';
-import { Dialog } from '@radix-ui/react-dialog';
 import { ColumnDef } from '@tanstack/react-table';
-import StudentModal from './student-modal';
 
 export const columns: ColumnDef<User>[] = [
   {
@@ -25,6 +21,8 @@ export const columns: ColumnDef<User>[] = [
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
     },
+
+    enableSorting: false,
   },
   {
     accessorKey: 'fullname',
@@ -32,52 +30,33 @@ export const columns: ColumnDef<User>[] = [
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
     },
+    enableSorting: false,
   },
   {
-    accessorKey: 'gender',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Giới tính" />,
+    accessorKey: 'class.name',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Lớp hành chính" />,
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
-    },
-  },
-  {
-    accessorKey: 'dateOfBirth',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Ngày sinh" />,
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
-    },
-  },
-  {
-    accessorKey: 'classId',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Lớp" />,
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
-    },
-  },
-  {
-    accessorKey: 'phoneNumber',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Số điện thoại" />,
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
-    },
-  },
-  {
-    accessorKey: 'edit-action',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="" />,
-    cell: ({ row }) => {
-      const user = row.original;
-      return (
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button onSelect={() => {}}>Sửa</Button>
-          </DialogTrigger>
-          <StudentModal modalProps={{ mode: 'edit', onSubmit: () => {} }} user={user} />
-        </Dialog>
-      );
     },
     enableSorting: false,
-    enableHiding: false,
-    size: 50,
+  },
+  {
+    accessorKey: 'absence',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Số tiết nghỉ" />,
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
+    cell: () => <div>0</div>,
+    enableSorting: false,
+  },
+  {
+    accessorKey: 'examCondition',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Điều kiện dự thi" />,
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
+    cell: () => <div>Đủ điều kiện</div>,
+    enableSorting: false,
   },
   {
     accessorKey: 'delete-action',
@@ -88,6 +67,6 @@ export const columns: ColumnDef<User>[] = [
     },
     enableSorting: false,
     enableHiding: false,
-    size: 50,
+    size: 44,
   },
 ];

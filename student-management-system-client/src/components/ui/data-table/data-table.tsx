@@ -55,9 +55,9 @@ export function DataTable<TData, TValue>({ columns, data, toolbar, loading, chil
 
   return (
     <div>
-      {toolbar && toolbar(table)}
       {children}
 
+      {toolbar && toolbar(table)}
       <div className="rounded-md border">
         <Table>
           <TableHeader>

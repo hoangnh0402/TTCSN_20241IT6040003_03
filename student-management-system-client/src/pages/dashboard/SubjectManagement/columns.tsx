@@ -5,9 +5,9 @@ import { Button } from '@/components/ui/button';
 import { DataTableColumnHeader } from '@/components/ui/data-table/data-table-column-header';
 import { DeleteDialog } from '@/components/ui/delete-dialog';
 import { DialogTrigger } from '@/components/ui/dialog';
+import { Subject } from '@/types/subject.type';
 import { Dialog } from '@radix-ui/react-dialog';
 import { ColumnDef } from '@tanstack/react-table';
-import { Subject } from '@/types/subject.type';
 import SubjectModal from './subject-modal';
 
 export const columns: ColumnDef<Subject>[] = [
@@ -104,6 +104,7 @@ export const columns: ColumnDef<Subject>[] = [
       );
     },
     enableSorting: false,
+    enableHiding: false,
     size: 44,
   },
   {
@@ -114,6 +115,7 @@ export const columns: ColumnDef<Subject>[] = [
       return <DeleteDialog title="Xóa" onConfirm={() => {}} />;
     },
     enableSorting: false,
+    enableHiding: false,
     size: 44,
   },
 ];

@@ -8,7 +8,7 @@ import TeacherModal from './teacher-modal';
 const TeacherManagement = () => {
   const [teachers, setTeachers] = useState<User[]>([]);
 
-  return <TablePage<User> title="Quản lý giảng  viên" data={teachers} columns={columns} Modal={TeacherModal} />;
+  return <TablePage<User> title="Quản lý giảng viên" data={teachers} columns={columns} Modal={TeacherModal} />;
 };
 
 export default TeacherManagement;
