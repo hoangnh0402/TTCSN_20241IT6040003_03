@@ -1,10 +1,10 @@
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom';
 
 import Login from '@/pages/auth/login';
-import ClassroomManagement from '@/pages/dashboard/ClassroomManagement';
-import StudentManagement from '@/pages/dashboard/StudentManagement';
-import SubjectManagement from '@/pages/dashboard/SubjectManagement';
-import TeacherManagement from '@/pages/dashboard/TeacherManagerment';
+// import ClassroomManagement from '@/pages/dashboard/ClassroomManagement';
+// import StudentManagement from '@/pages/dashboard/StudentManagement';
+// import SubjectManagement from '@/pages/dashboard/SubjectManagement';
+// import TeacherManagement from '@/pages/dashboard/TeacherManagerment';
 import MainLayout from '@/layouts/MainLayout';
 
 const router = createBrowserRouter([
@@ -12,32 +12,36 @@ const router = createBrowserRouter([
     path: '/',
     element: <MainLayout />,
     children: [
-      {
-        path: '/login',
-        element: <Login />,
-      },
-      {
-        path: 'admin',
-        children: [
-          {
-            path: 'subjects',
-            element: <SubjectManagement />,
-          },
-          {
-            path: 'students',
-            element: <StudentManagement />,
-          },
-          {
-            path: 'teachers',
-            element: <TeacherManagement />,
-          },
-          {
-            path: 'classrooms',
-            element: <ClassroomManagement />,
-          },
-        ],
-      },
+      // {
+      //   path: '/login',
+      //   element: <Login />,
+      // },
+      // {
+      //   path: 'admin',
+      //   children: [
+      //     {
+      //       path: 'subjects',
+      //       element: <SubjectManagement />,
+      //     },
+      //     {
+      //       path: 'students',
+      //       element: <StudentManagement />,
+      //     },
+      //     {
+      //       path: 'teachers',
+      //       element: <TeacherManagement />,
+      //     },
+      //     {
+      //       path: 'classrooms',
+      //       element: <ClassroomManagement />,
+      //     },
+      //   ],
+      // },
     ],
+  },
+  {
+    path: '/login',
+    element: <Login />,
   },
   {
     path: '*',
