@@ -27,4 +27,7 @@ public class CommonConstant {
 
   public static final String CONTENT_TYPE_IMAGE = "png jpg jpeg webp gif";
 
+  public static final String SUCCESS = "SUCCESS";
+  public static final String FAIL = "FAIL";
+
 }

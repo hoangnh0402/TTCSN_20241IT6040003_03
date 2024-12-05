@@ -36,5 +36,12 @@ public class ErrorMessage {
     public static final String ERR_NOT_FOUND_NAME = "Không tìm thấy môn học với tên: %s";
   }
 
+  public static class Department{
+    public static final String ERR_NOT_FOUND_ID = "exception.department.not.found.id";
+  }
+
+  public static class Class{
+    public static final String ERR_NOT_FOUND_ID = "exception.class.not.found.id";
+  }
 
 }

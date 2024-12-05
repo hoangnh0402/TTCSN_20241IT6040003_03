@@ -3,7 +3,8 @@ package com.example.projectbase.controller;
 import com.example.projectbase.base.RestApiV1;
 import com.example.projectbase.base.VsResponseUtil;
 import com.example.projectbase.constant.UrlConstant;
-import com.example.projectbase.domain.dto.pagination.PaginationFullRequestDto;
+import com.example.projectbase.domain.dto.request.UserCreateDto;
+import com.example.projectbase.domain.dto.request.UserUpdateDto;
 import com.example.projectbase.security.CurrentUser;
 import com.example.projectbase.security.UserPrincipal;
 import com.example.projectbase.service.UserService;
@@ -12,12 +13,8 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.tags.Tags;
 import lombok.RequiredArgsConstructor;
-import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-
-import javax.validation.Valid;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestApiV1
@@ -40,11 +37,52 @@ public class UserController {
     return VsResponseUtil.success(userService.getCurrentUser(principal));
   }
 
-  @Tag(name = "user-controller-admin")
-  @Operation(summary = "API get all customer")
-  @GetMapping(UrlConstant.User.GET_USERS)
-  public ResponseEntity<?> getCustomers(@Valid @ParameterObject PaginationFullRequestDto requestDTO) {
-    return VsResponseUtil.success(userService.getCustomers(requestDTO));
+  @Tags({@Tag(name = "user-controller-admin"), @Tag(name = "user-controller")})
+  @Operation(summary = "API create new student")
+  @PostMapping(UrlConstant.User.CREATE_STUDENT)
+  public ResponseEntity<?> createStudent(@RequestBody UserCreateDto userCreateDto) {
+    return VsResponseUtil.success(userService.createStudent(userCreateDto));
   }
 
+  @Tags({@Tag(name = "user-controller-admin"), @Tag(name = "user-controller")})
+  @Operation(summary = "API create new teacher")
+  @PostMapping(UrlConstant.User.CREATE_TEACHER)
+  public ResponseEntity<?> createTeacher(@RequestBody UserCreateDto userCreateDto) {
+    return VsResponseUtil.success(userService.createTeacher(userCreateDto));
+  }
+
+  @Tags({@Tag(name = "user-controller-admin"), @Tag(name = "user-controller")})
+  @Operation(summary = "API get all student")
+  @GetMapping(UrlConstant.User.GET_STUDENT)
+  public ResponseEntity<?> getStudents() {
+    return VsResponseUtil.success(userService.getAllStudents());
+  }
+
+  @Tags({@Tag(name = "user-controller-admin"), @Tag(name = "user-controller")})
+  @Operation(summary = "API get all teacher")
+  @GetMapping(UrlConstant.User.GET_TEACHER)
+  public ResponseEntity<?> getTeachers() {
+    return VsResponseUtil.success(userService.getAllTeachers());
+  }
+
+  @Tags({@Tag(name = "user-controller-admin"), @Tag(name = "user-controller")})
+  @Operation(summary = "API update user")
+  @PutMapping(UrlConstant.User.UPDATE_USER)
+  public ResponseEntity<?> udpateUser(@RequestParam String userId, @RequestBody UserUpdateDto userUpdateDto) {
+    return VsResponseUtil.success(userService.updateUser(userId, userUpdateDto));
+  }
+
+  @Tags({@Tag(name = "user-controller-admin"), @Tag(name = "user-controller")})
+  @Operation(summary = "API lock user")
+  @PatchMapping(UrlConstant.User.LOCK_USER)
+  public ResponseEntity<?> lockUser(@RequestParam String userId) {
+    return VsResponseUtil.success(userService.lockUser(userId));
+  }
+
+  @Tags({@Tag(name = "user-controller-admin"), @Tag(name = "user-controller")})
+  @Operation(summary = "API unlock user")
+  @PatchMapping(UrlConstant.User.UNLOCK_USER)
+  public ResponseEntity<?> unlockUser(@RequestParam String userId) {
+    return VsResponseUtil.success(userService.unlockUser(userId));
+  }
 }
