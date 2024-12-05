@@ -28,7 +28,7 @@ export const FormSchema = z.object({
   fullname: z.string({ required_error: 'Họ tên không được để trống' }),
   gender: z.nativeEnum(Gender, { required_error: 'Giới tính không được để trống' }),
   dateOfBirth: z.string({ required_error: 'Ngày sinh không được để trống' }),
-  avatar: z.string().optional(),
+  avatar: z.instanceof(File).optional(),
 });
 
 const TeacherModal = ({ modalProps, user }: TeacherModalProps) => {
@@ -36,7 +36,9 @@ const TeacherModal = ({ modalProps, user }: TeacherModalProps) => {
 
   const { mode, onSubmit } = modalProps || {
     mode: 'create',
-    onSubmit: () => {},
+    onSubmit: (data) => {
+      console.log(data);
+    },
   };
 
   const title = {
@@ -137,14 +139,10 @@ const TeacherModal = ({ modalProps, user }: TeacherModalProps) => {
               control={form.control}
               name="gender"
               render={({ field }) => (
-                <FormItem className="space-y-3">
+                <FormItem className="flex items-center gap-2">
                   <FormLabel>Giới tính</FormLabel>
                   <FormControl>
-                    <RadioGroup
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                      className="flex flex-col space-y-1"
-                    >
+                    <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="!mt-0 flex">
                       <FormItem className="flex items-center space-x-3 space-y-0">
                         <FormControl>
                           <RadioGroupItem value={Gender.MALE} />
@@ -167,9 +165,8 @@ const TeacherModal = ({ modalProps, user }: TeacherModalProps) => {
               control={form.control}
               name="dateOfBirth"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="flex items-center gap-2">
                   <FormLabel>Ngày sinh</FormLabel>
-                  <br />
                   <FormControl>
                     <DatePicker value={field.value} onChange={field.onChange} />
                   </FormControl>
@@ -181,8 +178,8 @@ const TeacherModal = ({ modalProps, user }: TeacherModalProps) => {
               control={form.control}
               name="avatar"
               render={({ field: { onChange, value, ...field } }) => (
-                <FormItem>
-                  <FormLabel>Ảnh dự án</FormLabel>
+                <FormItem className="flex items-center gap-2">
+                  <FormLabel>Ảnh</FormLabel>
                   {mode !== 'read' && (
                     <FormControl>
                       <Input {...field} type="file" onChange={(e) => handleImageChange(e, onChange)} accept="image/*" />

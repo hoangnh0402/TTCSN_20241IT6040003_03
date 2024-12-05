@@ -15,7 +15,7 @@ export interface User {
   dateOfBirth?: string;
   address?: string;
   role: string;
-  craetedAt?: string;
+  createdAt?: string;
 
   enrollments?: Enrollment[];
   department?: Department;
