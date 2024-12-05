@@ -6,14 +6,12 @@ import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import DatePicker from '@/components/ui/date-picker';
 import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { DropdownSelectField } from '@/components/ui/dropdown-select-field';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Class } from '@/types/class.type';
 import { Gender, User } from '@/types/user.type';
 
-interface StudentModalProps {
+interface TeacherModalProps {
   modalProps?: {
     mode: 'read' | 'create' | 'edit';
     onSubmit: (data: z.infer<typeof FormSchema>) => void;
@@ -22,25 +20,31 @@ interface StudentModalProps {
 }
 
 export const FormSchema = z.object({
-  classId: z.string().optional(),
-  username: z.string({ required_error: 'Mã sinh viên không được để trống' }),
+  username: z.string({ required_error: 'Mã giảng viên không được để trống' }),
+  email: z.string({ required_error: 'Email không được để trống' }).email({ message: 'Email không hợp lệ' }),
+  phoneNumber: z.string({ required_error: 'Số điện thoại không được để trống' }).refine((v) => v.length === 10, {
+    message: 'Số điện thoại phải có 10 chữ số',
+  }),
   fullname: z.string({ required_error: 'Họ tên không được để trống' }),
   gender: z.nativeEnum(Gender, { required_error: 'Giới tính không được để trống' }),
   dateOfBirth: z.string({ required_error: 'Ngày sinh không được để trống' }),
+  avatar: z.instanceof(File).optional(),
 });
 
-const StudentModal = ({ modalProps, user }: StudentModalProps) => {
-  const [classes, setClasses] = useState<Class[]>([]);
+const TeacherModal = ({ modalProps, user }: TeacherModalProps) => {
+  const [imageUrl, setImageUrl] = useState<string>(user?.avatar || 'https://placehold.co/250x150?text=404');
 
   const { mode, onSubmit } = modalProps || {
     mode: 'create',
-    onSubmit: () => {},
+    onSubmit: (data) => {
+      console.log(data);
+    },
   };
 
   const title = {
-    read: 'Thông tin sinh viên',
-    create: 'Thêm sinh viên mới',
-    edit: 'Sửa thông tin sinh viên',
+    read: 'Thông tin giảng viên',
+    create: 'Thêm giảng viên mới',
+    edit: 'Sửa thông tin giảng viên',
   }[mode];
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -55,12 +59,24 @@ const StudentModal = ({ modalProps, user }: StudentModalProps) => {
           },
   });
 
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>, onChange: (value: File) => void) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      onChange(file);
+      reader.onload = () => {
+        setImageUrl(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
     <DialogContent>
       <DialogHeader>
         <DialogTitle>{title}</DialogTitle>
         {mode !== 'read' && (
-          <DialogDescription>Thay đổi thông tin sinh viên tại đây. Nhấn Lưu để cập nhật.</DialogDescription>
+          <DialogDescription>Thay đổi thông tin giảng viên tại đây. Nhấn Lưu để cập nhật.</DialogDescription>
         )}
       </DialogHeader>
 
@@ -72,7 +88,7 @@ const StudentModal = ({ modalProps, user }: StudentModalProps) => {
               name="username"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Mã sinh viên</FormLabel>
+                  <FormLabel>Mã</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -86,6 +102,32 @@ const StudentModal = ({ modalProps, user }: StudentModalProps) => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Họ tên</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="phoneNumber"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Số điện thoại</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -132,13 +174,22 @@ const StudentModal = ({ modalProps, user }: StudentModalProps) => {
                 </FormItem>
               )}
             />
-            <DropdownSelectField
-              form={form}
-              name="classId"
-              options={classes.map((c) => ({ label: c.name, value: c.id }))}
-              label="Lớp"
-              placeholder="Chọn lớp"
-            />
+            <FormField
+              control={form.control}
+              name="avatar"
+              render={({ field: { onChange, value, ...field } }) => (
+                <FormItem className="flex items-center gap-2">
+                  <FormLabel>Ảnh</FormLabel>
+                  {mode !== 'read' && (
+                    <FormControl>
+                      <Input {...field} type="file" onChange={(e) => handleImageChange(e, onChange)} accept="image/*" />
+                    </FormControl>
+                  )}
+                  <FormMessage />
+                </FormItem>
+              )}
+            />{' '}
+            {imageUrl && <img src={imageUrl} alt="Ảnh" className="h-[113px] w-[75px] object-cover" />}
           </div>
           {mode !== 'read' && (
             <DialogFooter>
@@ -153,4 +204,4 @@ const StudentModal = ({ modalProps, user }: StudentModalProps) => {
   );
 };
 
-export default StudentModal;
+export default TeacherModal;

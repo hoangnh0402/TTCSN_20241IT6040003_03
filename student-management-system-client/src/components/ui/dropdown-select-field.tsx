@@ -32,41 +32,43 @@ export const DropdownSelectField: React.FC<DropdownSelectFieldProps> = ({
       name={name}
       render={({ field }) => (
         <FormItem>
-          <FormLabel>{label}</FormLabel>
-          <FormControl>
-            <Popover open={open} onOpenChange={setOpen}>
-              <PopoverTrigger asChild>
-                <FormControl>
-                  <Button variant="outline" role="combobox" aria-expanded={open} className="w-full">
-                    {value ? options.find((item) => item.value === value)?.label : placeholder}
-                  </Button>
-                </FormControl>
-              </PopoverTrigger>
-              <PopoverContent>
-                <Command>
-                  <CommandInput placeholder="Tìm kiếm..." />
-                  <CommandList>
-                    <CommandEmpty>Không tìm thấy</CommandEmpty>
-                    <CommandGroup>
-                      {options.map((option) => (
-                        <CommandItem
-                          key={option.value}
-                          value={`${option.value} | ${option.label}`}
-                          onSelect={(currentValue) => {
-                            field.onChange(currentValue.split(' | ')[0]);
-                            setOpen(false);
-                          }}
-                        >
-                          {option.label}
-                          <Check className={cn('ml-auto', value === option.value ? 'opacity-100' : 'opacity-0')} />
-                        </CommandItem>
-                      ))}
-                    </CommandGroup>
-                  </CommandList>
-                </Command>
-              </PopoverContent>
-            </Popover>
-          </FormControl>
+          <div className="flex items-center gap-2">
+            <FormLabel className="w-fit min-w-fit">{label}</FormLabel>
+            <FormControl>
+              <Popover open={open} onOpenChange={setOpen}>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button variant="outline" role="combobox" aria-expanded={open} className="w-full">
+                      {value ? options.find((item) => item.value === value)?.label : placeholder}
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent>
+                  <Command>
+                    <CommandInput placeholder="Tìm kiếm..." />
+                    <CommandList>
+                      <CommandEmpty>Không tìm thấy</CommandEmpty>
+                      <CommandGroup>
+                        {options.map((option) => (
+                          <CommandItem
+                            key={option.value}
+                            value={`${option.value} | ${option.label}`}
+                            onSelect={(currentValue) => {
+                              field.onChange(currentValue.split(' | ')[0]);
+                              setOpen(false);
+                            }}
+                          >
+                            {option.label}
+                            <Check className={cn('ml-auto', value === option.value ? 'opacity-100' : 'opacity-0')} />
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
+            </FormControl>
+          </div>
           <FormMessage />
         </FormItem>
       )}

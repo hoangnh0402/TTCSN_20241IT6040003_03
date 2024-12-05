@@ -1,16 +1,17 @@
 /* eslint-disable react-refresh/only-export-components */
 // eslint-disable-next-line react-refresh/only-export-components
+import { Link } from 'react-router-dom';
 
 import { Button } from '@/components/ui/button';
 import { DataTableColumnHeader } from '@/components/ui/data-table/data-table-column-header';
 import { DeleteDialog } from '@/components/ui/delete-dialog';
 import { DialogTrigger } from '@/components/ui/dialog';
-import { User } from '@/types/user.type';
+import { Classroom } from '@/types/classroom.type';
 import { Dialog } from '@radix-ui/react-dialog';
 import { ColumnDef } from '@tanstack/react-table';
-import StudentModal from './student-modal';
+import ClassroomModal from './classroom-modal';
 
-export const columns: ColumnDef<User>[] = [
+export const columns: ColumnDef<Classroom>[] = [
   {
     accessorKey: 'No',
     header: ({ column }) => <DataTableColumnHeader column={column} title="STT" />,
@@ -20,74 +21,73 @@ export const columns: ColumnDef<User>[] = [
     enableGlobalFilter: false,
   },
   {
-    accessorKey: 'username',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Mã sinh viên" />,
+    accessorKey: 'code',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Mã lớp" />,
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
     },
+    cell: ({ row }) => {
+      const classroom = row.original;
+      return (
+        <Link className="text-blue-500 underline" to={`/admin/classrooms/${classroom.id}`}>
+          {classroom.code}
+        </Link>
+      );
+    },
+    enableSorting: false,
   },
   {
-    accessorKey: 'fullname',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Họ tên" />,
+    accessorKey: 'room',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Phòng học" />,
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
     },
+    enableSorting: false,
   },
   {
-    accessorKey: 'gender',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Giới tính" />,
+    accessorKey: 'schedule',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Lịch học" />,
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
     },
+    enableSorting: false,
   },
   {
-    accessorKey: 'dateOfBirth',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Ngày sinh" />,
+    accessorKey: 'startDate',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Ngày bắt đầu" />,
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
     },
+    enableSorting: false,
   },
-  {
-    accessorKey: 'classId',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Lớp" />,
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
-    },
-  },
-  {
-    accessorKey: 'phoneNumber',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Số điện thoại" />,
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
-    },
-  },
+
   {
     accessorKey: 'edit-action',
     header: ({ column }) => <DataTableColumnHeader column={column} title="" />,
     cell: ({ row }) => {
-      const user = row.original;
+      const classroom = row.original;
       return (
         <Dialog>
           <DialogTrigger asChild>
             <Button onSelect={() => {}}>Sửa</Button>
           </DialogTrigger>
-          <StudentModal modalProps={{ mode: 'edit', onSubmit: () => {} }} user={user} />
+          <ClassroomModal modalProps={{ mode: 'edit', onSubmit: () => {} }} classroom={classroom} />
         </Dialog>
       );
     },
     enableSorting: false,
     enableHiding: false,
-    size: 50,
+    size: 44,
   },
   {
     accessorKey: 'delete-action',
     header: ({ column }) => <DataTableColumnHeader column={column} title="" />,
     cell: ({ row }) => {
-      const user = row.original;
+      const classroom = row.original;
       return <DeleteDialog title="Xóa" onConfirm={() => {}} />;
     },
     enableSorting: false,
     enableHiding: false,
-    size: 50,
+    size: 44,
   },
 ];

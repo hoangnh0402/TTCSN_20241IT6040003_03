@@ -5,12 +5,12 @@ import { Button } from '@/components/ui/button';
 import { DataTableColumnHeader } from '@/components/ui/data-table/data-table-column-header';
 import { DeleteDialog } from '@/components/ui/delete-dialog';
 import { DialogTrigger } from '@/components/ui/dialog';
-import { User } from '@/types/user.type';
+import { Subject } from '@/types/subject.type';
 import { Dialog } from '@radix-ui/react-dialog';
 import { ColumnDef } from '@tanstack/react-table';
-import StudentModal from './student-modal';
+import SubjectModal from './subject-modal';
 
-export const columns: ColumnDef<User>[] = [
+export const columns: ColumnDef<Subject>[] = [
   {
     accessorKey: 'No',
     header: ({ column }) => <DataTableColumnHeader column={column} title="STT" />,
@@ -20,74 +20,102 @@ export const columns: ColumnDef<User>[] = [
     enableGlobalFilter: false,
   },
   {
-    accessorKey: 'username',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Mã sinh viên" />,
+    accessorKey: 'name',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Tên môn" />,
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
     },
+    size: 120,
   },
   {
-    accessorKey: 'fullname',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Họ tên" />,
+    accessorKey: 'code',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Mã môn" />,
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
     },
+    size: 70,
+    enableSorting: false,
   },
   {
-    accessorKey: 'gender',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Giới tính" />,
+    accessorKey: 'numberOfCredits',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Số tín chỉ" />,
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
     },
+    size: 70,
+    enableSorting: false,
   },
   {
-    accessorKey: 'dateOfBirth',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Ngày sinh" />,
+    accessorKey: 'regularCoefficient',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Hệ số thường xuyên" />,
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
     },
+    size: 80,
+    enableSorting: false,
   },
   {
-    accessorKey: 'classId',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Lớp" />,
+    accessorKey: 'midTermCoefficient',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Hệ số giữa kì" />,
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
     },
+    size: 80,
+    enableSorting: false,
   },
   {
-    accessorKey: 'phoneNumber',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Số điện thoại" />,
+    accessorKey: 'finalCoefficient',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Hệ số cuối kì" />,
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
     },
+    size: 80,
+    enableSorting: false,
+  },
+  {
+    accessorKey: 'description',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Mô tả" />,
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
+    enableSorting: false,
+  },
+  {
+    accessorKey: 'prerequisiteSubjects',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Môn tiên quyết" />,
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
+    size: 70,
+    enableSorting: false,
   },
   {
     accessorKey: 'edit-action',
     header: ({ column }) => <DataTableColumnHeader column={column} title="" />,
     cell: ({ row }) => {
-      const user = row.original;
+      const subject = row.original;
       return (
         <Dialog>
           <DialogTrigger asChild>
             <Button onSelect={() => {}}>Sửa</Button>
           </DialogTrigger>
-          <StudentModal modalProps={{ mode: 'edit', onSubmit: () => {} }} user={user} />
+          <SubjectModal modalProps={{ mode: 'edit', onSubmit: () => {} }} subject={subject} />
         </Dialog>
       );
     },
     enableSorting: false,
     enableHiding: false,
-    size: 50,
+    size: 44,
   },
   {
     accessorKey: 'delete-action',
     header: ({ column }) => <DataTableColumnHeader column={column} title="" />,
     cell: ({ row }) => {
-      const user = row.original;
+      const subject = row.original;
       return <DeleteDialog title="Xóa" onConfirm={() => {}} />;
     },
     enableSorting: false,
     enableHiding: false,
-    size: 50,
+    size: 44,
   },
 ];

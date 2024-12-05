@@ -8,20 +8,29 @@ import { DialogTrigger } from '@/components/ui/dialog';
 import { User } from '@/types/user.type';
 import { Dialog } from '@radix-ui/react-dialog';
 import { ColumnDef } from '@tanstack/react-table';
-import StudentModal from './student-modal';
+import TeacherModal from './teacher-modal';
 
 export const columns: ColumnDef<User>[] = [
   {
-    accessorKey: 'No',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="STT" />,
-    cell: ({ row }) => <div>{row.index + 1}</div>,
-    size: 30,
+    accessorKey: 'avatar',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Ảnh" />,
+    cell: ({ row }) => {
+      const user = row.original;
+      return (
+        <img
+          src={user.avatar ? user.avatar : 'https://placehold.co/75x113'}
+          alt="Ảnh dự án"
+          className="h-[113px] w-[75px] border border-black object-cover"
+        />
+      );
+    },
     enableSorting: false,
     enableGlobalFilter: false,
+    size: 80,
   },
   {
     accessorKey: 'username',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Mã sinh viên" />,
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Mã giảng viên" />,
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
     },
@@ -41,22 +50,15 @@ export const columns: ColumnDef<User>[] = [
     },
   },
   {
-    accessorKey: 'dateOfBirth',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Ngày sinh" />,
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
-    },
-  },
-  {
-    accessorKey: 'classId',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Lớp" />,
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
-    },
-  },
-  {
     accessorKey: 'phoneNumber',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Số điện thoại" />,
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
+  },
+  {
+    accessorKey: 'email',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Email" />,
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
     },
@@ -71,13 +73,13 @@ export const columns: ColumnDef<User>[] = [
           <DialogTrigger asChild>
             <Button onSelect={() => {}}>Sửa</Button>
           </DialogTrigger>
-          <StudentModal modalProps={{ mode: 'edit', onSubmit: () => {} }} user={user} />
+          <TeacherModal modalProps={{ mode: 'edit', onSubmit: () => {} }} user={user} />
         </Dialog>
       );
     },
     enableSorting: false,
     enableHiding: false,
-    size: 50,
+    size: 44,
   },
   {
     accessorKey: 'delete-action',
@@ -88,6 +90,6 @@ export const columns: ColumnDef<User>[] = [
     },
     enableSorting: false,
     enableHiding: false,
-    size: 50,
+    size: 44,
   },
 ];
