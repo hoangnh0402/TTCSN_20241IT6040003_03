@@ -78,6 +78,7 @@ export const columns: ColumnDef<User>[] = [
       );
     },
     enableSorting: false,
+    enableHiding: false,
     size: 44,
   },
   {
@@ -88,6 +89,7 @@ export const columns: ColumnDef<User>[] = [
       return <DeleteDialog title="Xóa" onConfirm={() => {}} />;
     },
     enableSorting: false,
+    enableHiding: false,
     size: 44,
   },
 ];

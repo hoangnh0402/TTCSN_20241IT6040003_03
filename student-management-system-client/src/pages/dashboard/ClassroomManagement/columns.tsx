@@ -1,13 +1,14 @@
 /* eslint-disable react-refresh/only-export-components */
 // eslint-disable-next-line react-refresh/only-export-components
+import { Link } from 'react-router-dom';
 
 import { Button } from '@/components/ui/button';
 import { DataTableColumnHeader } from '@/components/ui/data-table/data-table-column-header';
 import { DeleteDialog } from '@/components/ui/delete-dialog';
 import { DialogTrigger } from '@/components/ui/dialog';
+import { Classroom } from '@/types/classroom.type';
 import { Dialog } from '@radix-ui/react-dialog';
 import { ColumnDef } from '@tanstack/react-table';
-import { Classroom } from '@/types/classroom.type';
 import ClassroomModal from './classroom-modal';
 
 export const columns: ColumnDef<Classroom>[] = [
@@ -24,6 +25,14 @@ export const columns: ColumnDef<Classroom>[] = [
     header: ({ column }) => <DataTableColumnHeader column={column} title="Mã lớp" />,
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
+    },
+    cell: ({ row }) => {
+      const classroom = row.original;
+      return (
+        <Link className="text-blue-500 underline" to={`/admin/classrooms/${classroom.id}`}>
+          {classroom.code}
+        </Link>
+      );
     },
     enableSorting: false,
   },
@@ -67,6 +76,7 @@ export const columns: ColumnDef<Classroom>[] = [
       );
     },
     enableSorting: false,
+    enableHiding: false,
     size: 44,
   },
   {
@@ -77,6 +87,7 @@ export const columns: ColumnDef<Classroom>[] = [
       return <DeleteDialog title="Xóa" onConfirm={() => {}} />;
     },
     enableSorting: false,
+    enableHiding: false,
     size: 44,
   },
 ];
