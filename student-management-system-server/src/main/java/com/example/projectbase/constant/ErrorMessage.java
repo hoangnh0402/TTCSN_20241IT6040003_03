@@ -43,5 +43,12 @@ public class ErrorMessage {
     public static final String ERR_CANNOT_DELETE = "Không thể xóa lớp học với ID {0} vì lớp học đang được sử dụng.";
   }
 
+  public static class Department{
+    public static final String ERR_NOT_FOUND_ID = "exception.department.not.found.id";
+  }
+
+  public static class Class{
+    public static final String ERR_NOT_FOUND_ID = "exception.class.not.found.id";
+  }
 
 }
