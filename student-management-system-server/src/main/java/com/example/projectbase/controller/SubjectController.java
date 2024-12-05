@@ -61,4 +61,12 @@ public class SubjectController {
     public ResponseEntity<?> deleteSubject(@RequestParam String subjectId) {
         return VsResponseUtil.success(subjectService.deleteSubject(subjectId));
     }
+
+    @Tag(name = "subject-controller-admin")
+    @Operation(summary = "API get subject by id")
+    @GetMapping("/admin/subject/id")
+    public ResponseEntity<?> readById(@RequestParam String subjectId) throws Exception {
+        return VsResponseUtil.success(subjectService.getSubjectById(subjectId));
+    }
+
 }
