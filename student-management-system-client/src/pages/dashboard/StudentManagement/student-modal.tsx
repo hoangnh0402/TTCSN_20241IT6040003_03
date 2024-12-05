@@ -44,7 +44,7 @@ const StudentModal = ({ modalProps, user }: StudentModalProps) => {
 
   const title = {
     read: 'Thông tin sinh viên',
-    create: 'Tạo sinh viên mới',
+    create: 'Thêm sinh viên mới',
     edit: 'Sửa thông tin sinh viên',
   }[mode];
 

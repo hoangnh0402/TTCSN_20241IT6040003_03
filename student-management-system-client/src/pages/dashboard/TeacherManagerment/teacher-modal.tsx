@@ -41,7 +41,7 @@ const TeacherModal = ({ modalProps, user }: TeacherModalProps) => {
 
   const title = {
     read: 'Thông tin giảng viên',
-    create: 'Tạo giảng viên mới',
+    create: 'Thêm giảng viên mới',
     edit: 'Sửa thông tin giảng viên',
   }[mode];
 
