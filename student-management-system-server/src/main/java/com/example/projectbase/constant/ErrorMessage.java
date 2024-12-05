@@ -34,6 +34,13 @@ public class ErrorMessage {
   public static class Subject {
     public static final String ERR_NOT_FOUND_ID = "Không tìm thấy môn học với id: %s";
     public static final String ERR_NOT_FOUND_NAME = "Không tìm thấy môn học với tên: %s";
+    public static final String ERR_INVALID_SUBJECT = "Thông tin môn học không hợp lệ.";
+  }
+
+  public static class Classroom {
+    public static final String ERR_NOT_FOUND_ID = "Không tìm thấy lớp học với ID {0}.";
+    public static final String ERR_INVALID_DATA = "Dữ liệu lớp học không hợp lệ.";
+    public static final String ERR_CANNOT_DELETE = "Không thể xóa lớp học với ID {0} vì lớp học đang được sử dụng.";
   }
 
 

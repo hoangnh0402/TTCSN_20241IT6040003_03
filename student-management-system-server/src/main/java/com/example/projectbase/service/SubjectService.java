@@ -7,9 +7,9 @@ import com.example.projectbase.domain.dto.request.UpdateRequestSubjectDTO;
 import com.example.projectbase.domain.dto.response.CommonResponseDto;
 import com.example.projectbase.domain.dto.response.SubjectResponseDTO;
 import com.example.projectbase.domain.entity.Subject;
-import com.example.projectbase.security.UserPrincipal;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface SubjectService {
 
@@ -33,4 +33,6 @@ public interface SubjectService {
 
     // Lấy danh sách tất cả các Subject
     List<Subject> getAllSubjects();
+
+    Optional<Subject> getSubjectById(String id);
 }

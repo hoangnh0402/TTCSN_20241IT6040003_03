@@ -21,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -103,4 +104,10 @@ public class SubjectServiceImpl implements SubjectService {
     public List<Subject> getAllSubjects() {
         return subjectRepository.findAll();
     }
+
+    @Override
+    public Optional<Subject> getSubjectById(String id) {
+        return subjectRepository.findById(id);
+    }
+
 }
