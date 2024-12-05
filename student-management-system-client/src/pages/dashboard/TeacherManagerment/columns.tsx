@@ -78,7 +78,7 @@ export const columns: ColumnDef<User>[] = [
       );
     },
     enableSorting: false,
-    size: 50,
+    size: 44,
   },
   {
     accessorKey: 'delete-action',
@@ -88,6 +88,6 @@ export const columns: ColumnDef<User>[] = [
       return <DeleteDialog title="Xóa" onConfirm={() => {}} />;
     },
     enableSorting: false,
-    size: 50,
+    size: 44,
   },
 ];
