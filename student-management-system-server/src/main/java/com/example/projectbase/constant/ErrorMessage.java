@@ -31,4 +31,10 @@ public class ErrorMessage {
     public static final String ERR_NOT_FOUND_ID = "exception.user.not.found.id";
   }
 
+  public static class Subject {
+    public static final String ERR_NOT_FOUND_ID = "Không tìm thấy môn học với id: %s";
+    public static final String ERR_NOT_FOUND_NAME = "Không tìm thấy môn học với tên: %s";
+  }
+
+
 }
