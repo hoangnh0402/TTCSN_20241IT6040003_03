@@ -2,6 +2,7 @@ package com.example.projectbase.service.impl;
 
 import com.example.projectbase.constant.ErrorMessage;
 import com.example.projectbase.constant.RoleConstant;
+import com.example.projectbase.domain.dto.request.TeacherCreateDto;
 import com.example.projectbase.domain.dto.request.UserCreateDto;
 import com.example.projectbase.domain.dto.request.UserUpdateDto;
 import com.example.projectbase.domain.dto.response.UserDto;
@@ -52,19 +53,15 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public UserDto createTeacher(UserCreateDto userCreateDto) {
-    boolean userExists = userRepository.findByUsername(userCreateDto.getUsername()).isPresent();
+  public UserDto createTeacher(TeacherCreateDto teacherCreateDto) {
+    boolean userExists = userRepository.findByUsername(teacherCreateDto.getUsername()).isPresent();
     if (userExists) {
-      throw new RuntimeException("Username '" + userCreateDto.getUsername() + "' already exists.");
+      throw new RuntimeException("Username '" + teacherCreateDto.getUsername() + "' already exists.");
     }
-    User user = userMapper.toUser(userCreateDto);
+    User user = userMapper.toUser(teacherCreateDto);
     user.setPassword(passwordEncoder.encode(user.getPassword()));
     user.setIsLocked(false);
     user.setRole(roleRepository.findByRoleName(RoleConstant.TEACHER));
-    user.setUserClass(
-            classRepository.findById(userCreateDto.getClassId())
-                    .orElseThrow(() -> new NotFoundException(ErrorMessage.Class.ERR_NOT_FOUND_ID, new String[]{userCreateDto.getClassId()}))
-    );
     userRepository.save(user);
     return userMapper.toUserDto(user);
   }
@@ -83,6 +80,13 @@ public class UserServiceImpl implements UserService {
   public UserDto getUserById(String userId) {
     User user = userRepository.findById(userId)
         .orElseThrow(() -> new NotFoundException(ErrorMessage.User.ERR_NOT_FOUND_ID, new String[]{userId}));
+    return userMapper.toUserDto(user);
+  }
+
+  @Override
+  public UserDto getUserByUserCode(String userCode) {
+    User user = userRepository.findByUsername(userCode)
+            .orElseThrow(() -> new NotFoundException(ErrorMessage.User.ERR_NOT_FOUND_USERNAME, new String[]{userCode}));
     return userMapper.toUserDto(user);
   }
 

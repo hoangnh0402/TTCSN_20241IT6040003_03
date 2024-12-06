@@ -23,6 +23,7 @@ public class UrlConstant {
     public static final String LOCK_USER = PRE_FIX+"/lock";
     public static final String UNLOCK_USER = PRE_FIX+"/unlock";
     public static final String GET_USER = PRE_FIX + "/{userId}";
+    public static final String GET_USER_BY_USERCODE = PRE_FIX + "/{userCode}";
     public static final String GET_CURRENT_USER = PRE_FIX + "/current";
 
     private User() {
@@ -51,6 +52,23 @@ public class UrlConstant {
     public static final String UPDATE_CLASS = PRE_FIX;
     public static final String DELETE_CLASS = PRE_FIX;
     private Class() {
+
+    }
+  }
+
+  public static class Record{
+    public static final String PRE_FIX = "/record";
+    public static final String CREATE_RECORD = PRE_FIX;
+    public static final String UPDATE_RECORD = PRE_FIX;
+    public static final String GET_ALL_RECORD = PRE_FIX;
+    public static final String GET_RECORD_BY_USERCODE = PRE_FIX+"/user";
+    public static final String DELETE_RECORD = PRE_FIX;
+    public static final String COUNT_BY_RATING = PRE_FIX +"/count";
+    public static final String COUNT_BY_RATING_AND_CLASS = PRE_FIX +"/count/class";
+    public static final String COUNT_BY_RATING_AND_DEPARTMENT = PRE_FIX +"/count/department";
+    public static final String GET_BY_RATING_AND_CLASS = PRE_FIX +"/rate/class";
+    public static final String GET_BY_RATING_AND_DEPARTMENT = PRE_FIX +"/rate/department";
+    private Record() {
 
     }
   }
