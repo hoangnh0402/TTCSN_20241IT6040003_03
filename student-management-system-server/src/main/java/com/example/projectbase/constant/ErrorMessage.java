@@ -51,4 +51,11 @@ public class ErrorMessage {
     public static final String ERR_NOT_FOUND_ID = "exception.class.not.found.id";
   }
 
+  public static class Document {
+    public static final String ERR_NOT_FOUND_ID = "Không tìm thấy tài liệu với id: %s";
+    public static final String ERR_SAVE_FILE = "Lỗi khi lưu tài liệu.";
+    public static final String ERR_READ_FILE = "Lỗi khi đọc tài liệu.";
+    public static final String ERR_INVALID_PATH = "Đường dẫn tài liệu không hợp lệ.";
+  }
+
 }
