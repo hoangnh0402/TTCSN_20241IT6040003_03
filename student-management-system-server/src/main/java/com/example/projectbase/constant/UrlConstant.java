@@ -104,5 +104,10 @@ public class UrlConstant {
     public static final String GET_SUBJECT_BY_ID = BASE + "/id"; // GET /admin/subject/id
   }
 
+  public static class Enrollment {
+    private static final String PRE_FIX = "/enroll";
+    public static final String REGISTER_SUBJECT = PRE_FIX + "/register";
+  }
+
 
 }
