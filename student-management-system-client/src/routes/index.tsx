@@ -1,43 +1,55 @@
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom';
 
 import Login from '@/pages/auth/login';
-// import ClassroomManagement from '@/pages/dashboard/ClassroomManagement';
-// import StudentManagement from '@/pages/dashboard/StudentManagement';
-// import SubjectManagement from '@/pages/dashboard/SubjectManagement';
-// import TeacherManagement from '@/pages/dashboard/TeacherManagerment';
+import ClassroomManagement from '@/pages/dashboard/ClassroomManagement';
+import StudentManagement from '@/pages/dashboard/StudentManagement';
+import SubjectManagement from '@/pages/dashboard/SubjectManagement';
+import TeacherManagement from '@/pages/dashboard/TeacherManagerment';
 import MainLayout from '@/layouts/MainLayout';
 import ClassroomDetailManagement from '@/pages/dashboard/ClassroomDetailManagement';
+import RegisterSubject from '@/pages/registerSubject';
+import Summary from '@/pages/summary';
+
+
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <MainLayout />,
     children: [
-      // {
-      //   path: '/login',
-      //   element: <Login />,
-      // },
-      // {
-      //   path: 'admin',
-      //   children: [
-      //     {
-      //       path: 'subjects',
-      //       element: <SubjectManagement />,
-      //     },
-      //     {
-      //       path: 'students',
-      //       element: <StudentManagement />,
-      //     },
-      //     {
-      //       path: 'teachers',
-      //       element: <TeacherManagement />,
-      //     },
-      //     {
-      //       path: 'classrooms',
-      //       element: <ClassroomManagement />,
-      //     },
-      //   ],
-      // },
+      {
+        path: 'admin',
+        children: [
+          {
+            path: 'subjects',
+            element: <SubjectManagement />,
+          },
+          {
+            path: 'students',
+            element: <StudentManagement />,
+          },
+          {
+            path: 'teachers',
+            element: <TeacherManagement />,
+          },
+          {
+            path: 'classrooms',
+            element: <ClassroomManagement />,
+          },
+        ],
+      },
+      {
+        children: [
+          {
+            path: 'register',
+            element: <RegisterSubject />,
+          },
+          {
+            path: 'summary',
+            element: <Summary />,
+          },
+        ],
+      },
     ],
   },
   {
