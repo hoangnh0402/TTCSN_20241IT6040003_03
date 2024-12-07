@@ -56,6 +56,11 @@ public class UrlConstant {
     }
   }
 
+  public static class Enrollment {
+    private static final String PRE_FIX = "/enroll";
+    public static final String REGISTER_SUBJECT = PRE_FIX + "/register";
+  }
+
   public static class Record{
     public static final String PRE_FIX = "/record";
     public static final String CREATE_RECORD = PRE_FIX;

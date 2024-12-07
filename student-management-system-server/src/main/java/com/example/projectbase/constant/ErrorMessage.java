@@ -58,4 +58,9 @@ public class ErrorMessage {
     public static final String ERR_INVALID_PATH = "Đường dẫn tài liệu không hợp lệ.";
   }
 
+  public static class Enrollment {
+    public static final String USER_ALREADY_IN_CLASSROOM = "Người dùng đã tồn tại trong lớp học";
+
+  }
+
 }
