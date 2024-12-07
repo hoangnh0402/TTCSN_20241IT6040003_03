@@ -34,5 +34,4 @@ public class AuthController {
   public String login(@ValidFileImage MultipartFile multipartFile) {
     return multipartFile.getContentType();
   }
-
 }
