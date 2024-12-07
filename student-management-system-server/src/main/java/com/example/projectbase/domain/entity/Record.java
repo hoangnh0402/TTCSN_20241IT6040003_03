@@ -1,9 +1,7 @@
 package com.example.projectbase.domain.entity;
 
-import com.example.projectbase.domain.entity.common.FlagUserDateAuditing;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Nationalized;
 
 import javax.persistence.*;
 
@@ -13,29 +11,28 @@ import javax.persistence.*;
 @Setter
 @Builder
 @Entity
-@Table(name = "documents")
-public class Document extends FlagUserDateAuditing {
+@Table(name = "records")
+public class Record {
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(insertable = false, updatable = false, nullable = false, columnDefinition = "CHAR(36)")
     private String id;
 
-    @Nationalized
     @Column(nullable = false)
-    private String name;
+    private int totalCredits;
 
     @Column(nullable = false)
-    private String path;
+    private int totalScore;
 
     @Column(nullable = false)
-    private String type;
+    private double GPA;
 
     @Column(nullable = false)
-    private String description;
+    private String rating;
 
-    //Link to table Subject
+    //Link to table User
     @ManyToOne
-    @JoinColumn(name = "subjectId", foreignKey = @ForeignKey(name = "FK_DOCUMENT_SUBJECT"))
-    private Subject subject;
- }
+    @JoinColumn(name = "userId", foreignKey = @ForeignKey(name = "FK_RECORD_USER"))
+    private User user;
+}
