@@ -8,7 +8,34 @@ import { DialogTrigger } from '@/components/ui/dialog';
 import { Subject } from '@/types/subject.type';
 import { Dialog } from '@radix-ui/react-dialog';
 import { ColumnDef } from '@tanstack/react-table';
-import SubjectModal from './subject-modal';
+import SubjectModal, { FormSchema } from './subject-modal';
+import { useSubjectStore } from '@/store/useSubjectStore';
+import { z } from 'zod';
+
+const EditAction: React.FC<{ subject: Subject }> = ({ subject }) => {
+  const { updateSubject } = useSubjectStore();
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button onSelect={() => {}}>Sửa</Button>
+      </DialogTrigger>
+      <SubjectModal
+        modalProps={{
+          mode: 'edit',
+          onSubmit: async (data: z.infer<typeof FormSchema>) => {
+            await updateSubject(subject.id, data);
+          },
+        }}
+        subject={subject}
+      />
+    </Dialog>
+  );
+};
+
+const DeleteAction: React.FC<{ subject: Subject }> = ({ subject }) => {
+  const { deleteSubject } = useSubjectStore();
+  return <DeleteDialog title="Xóa" onConfirm={() => deleteSubject(subject.id)} />;
+};
 
 export const columns: ColumnDef<Subject>[] = [
   {
@@ -92,17 +119,7 @@ export const columns: ColumnDef<Subject>[] = [
   {
     accessorKey: 'edit-action',
     header: ({ column }) => <DataTableColumnHeader column={column} title="" />,
-    cell: ({ row }) => {
-      const subject = row.original;
-      return (
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button onSelect={() => {}}>Sửa</Button>
-          </DialogTrigger>
-          <SubjectModal modalProps={{ mode: 'edit', onSubmit: () => {} }} subject={subject} />
-        </Dialog>
-      );
-    },
+    cell: ({ row }) => <EditAction subject={row.original} />,
     enableSorting: false,
     enableHiding: false,
     size: 44,
@@ -110,10 +127,7 @@ export const columns: ColumnDef<Subject>[] = [
   {
     accessorKey: 'delete-action',
     header: ({ column }) => <DataTableColumnHeader column={column} title="" />,
-    cell: ({ row }) => {
-      const subject = row.original;
-      return <DeleteDialog title="Xóa" onConfirm={() => {}} />;
-    },
+    cell: ({ row }) => <DeleteAction subject={row.original} />,
     enableSorting: false,
     enableHiding: false,
     size: 44,

@@ -7,6 +7,7 @@ import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTit
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Subject } from '@/types/subject.type';
+import { useSubjectStore } from '@/store/useSubjectStore';
 
 interface SubjectModalProps {
   modalProps?: {
@@ -23,14 +24,18 @@ export const FormSchema = z.object({
   regularCoefficient: z.coerce.number({ required_error: 'Hệ số thường xuyên không được để trống' }),
   midTermCoefficient: z.coerce.number({ required_error: 'Hệ số giữa kì không được để trống' }),
   finalCoefficient: z.coerce.number({ required_error: 'Hệ số cuối kì không được để trống' }),
-  description: z.string().optional(),
-  prerequisiteSubjects: z.string().optional(),
+  description: z.string().default('').optional(),
+  prerequisiteSubjects: z.string().default('').optional(),
 });
 
 const SubjectModal = ({ modalProps, subject }: SubjectModalProps) => {
+  const { createSubject } = useSubjectStore();
+
   const { mode, onSubmit } = modalProps || {
     mode: 'create',
-    onSubmit: () => {},
+    onSubmit: async (data: z.infer<typeof FormSchema>) => {
+      await createSubject(data);
+    },
   };
 
   const title = {

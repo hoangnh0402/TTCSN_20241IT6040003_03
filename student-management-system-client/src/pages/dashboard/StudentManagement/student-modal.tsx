@@ -12,29 +12,35 @@ import { Input } from '@/components/ui/input';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Class } from '@/types/class.type';
 import { Gender, User } from '@/types/user.type';
+import { useStudentStore } from '@/store/useStudentStore';
 
 interface StudentModalProps {
   modalProps?: {
     mode: 'read' | 'create' | 'edit';
     onSubmit: (data: z.infer<typeof FormSchema>) => void;
   };
-  user?: User;
+  student?: User;
 }
 
 export const FormSchema = z.object({
-  classId: z.string().optional(),
+  classId: z.string().nullable().optional(),
   username: z.string({ required_error: 'Mã sinh viên không được để trống' }),
-  fullname: z.string({ required_error: 'Họ tên không được để trống' }),
+  fullName: z.string({ required_error: 'Họ tên không được để trống' }),
   gender: z.nativeEnum(Gender, { required_error: 'Giới tính không được để trống' }),
-  dateOfBirth: z.string({ required_error: 'Ngày sinh không được để trống' }),
+  birthday: z.string().nullable().optional(),
 });
 
-const StudentModal = ({ modalProps, user }: StudentModalProps) => {
+const StudentModal = ({ modalProps, student }: StudentModalProps) => {
+  const { createStudent } = useStudentStore();
   const [classes, setClasses] = useState<Class[]>([]);
 
   const { mode, onSubmit } = modalProps || {
     mode: 'create',
-    onSubmit: () => {},
+    onSubmit: async (data: z.infer<typeof FormSchema>) => {
+      const { username, ...rest } = data;
+      const student = { ...rest, username, password: username };
+      await createStudent(student);
+    },
   };
 
   const title = {
@@ -50,8 +56,8 @@ const StudentModal = ({ modalProps, user }: StudentModalProps) => {
       mode === 'create'
         ? undefined
         : {
-            ...user,
-            gender: user?.gender as Gender,
+            ...student,
+            gender: student?.gender as Gender,
           },
   });
 
@@ -82,7 +88,7 @@ const StudentModal = ({ modalProps, user }: StudentModalProps) => {
             />
             <FormField
               control={form.control}
-              name="fullname"
+              name="fullName"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Họ tên</FormLabel>
@@ -121,7 +127,7 @@ const StudentModal = ({ modalProps, user }: StudentModalProps) => {
             />
             <FormField
               control={form.control}
-              name="dateOfBirth"
+              name="birthday"
               render={({ field }) => (
                 <FormItem className="flex items-center gap-2">
                   <FormLabel>Ngày sinh</FormLabel>
