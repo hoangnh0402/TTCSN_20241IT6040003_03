@@ -1,14 +1,27 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
 
 import TablePage from '@/components/ui/data-table';
-import { columns } from './columns';
+import { useSubjectStore } from '@/store/useSubjectStore';
 import { Subject } from '@/types/subject.type';
+import { columns } from './columns';
 import SubjectModal from './subject-modal';
 
 const SubjectMangement = () => {
-  const [subjects, setSubjects] = useState<Subject[]>([]);
+  const { subjects, loading, fetchSubjects } = useSubjectStore();
 
-  return <TablePage<Subject> title="Quản lý môn học" data={subjects} columns={columns} Modal={SubjectModal} />;
+  useEffect(() => {
+    fetchSubjects();
+  }, [fetchSubjects]);
+
+  return (
+    <TablePage<Subject>
+      title="Quản lý môn học"
+      data={subjects}
+      columns={columns}
+      Modal={SubjectModal}
+      loading={loading}
+    />
+  );
 };
 
 export default SubjectMangement;

@@ -1,14 +1,27 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
 
 import TablePage from '@/components/ui/data-table';
 import { Classroom } from '@/types/classroom.type';
 import ClassroomModal from './classroom-modal';
 import { columns } from './columns';
+import { useClassroomStore } from '@/store/useClassroomStore';
 
 const ClassroomManagement = () => {
-  const [classrooms, setClassrooms] = useState<Classroom[]>([]);
+  const { classrooms, loading, fetchClassrooms } = useClassroomStore();
 
-  return <TablePage<Classroom> title="Quản lý lớp học" data={classrooms} columns={columns} Modal={ClassroomModal} />;
+  useEffect(() => {
+    fetchClassrooms();
+  }, [fetchClassrooms]);
+
+  return (
+    <TablePage<Classroom>
+      title="Quản lý lớp học"
+      data={classrooms}
+      columns={columns}
+      Modal={ClassroomModal}
+      loading={loading}
+    />
+  );
 };
 
 export default ClassroomManagement;

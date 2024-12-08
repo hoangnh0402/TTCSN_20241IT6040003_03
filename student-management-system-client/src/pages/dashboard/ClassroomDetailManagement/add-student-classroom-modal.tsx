@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { useClassroomDetailStore } from '@/store/useClassroomDetailStore';
 
 interface AddStudentClassroomModalProps {
   modalProps?: {
@@ -18,8 +19,13 @@ export const FormSchema = z.object({
 });
 
 const AddStudentClassroomModal = ({ modalProps }: AddStudentClassroomModalProps) => {
+  const { addStudent, classroom } = useClassroomDetailStore();
+
   const { onSubmit } = modalProps || {
-    onSubmit: () => {},
+    onSubmit: async (data: z.infer<typeof FormSchema>) => {
+      if (!classroom) return;
+      await addStudent(classroom.id, data.username);
+    },
   };
 
   const form = useForm<z.infer<typeof FormSchema>>({

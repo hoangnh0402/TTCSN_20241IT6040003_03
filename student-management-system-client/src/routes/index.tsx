@@ -10,8 +10,6 @@ import ClassroomDetailManagement from '@/pages/dashboard/ClassroomDetailManageme
 import RegisterSubject from '@/pages/registerSubject';
 import Summary from '@/pages/summary';
 
-
-
 const router = createBrowserRouter([
   {
     path: '/',
@@ -35,6 +33,10 @@ const router = createBrowserRouter([
           {
             path: 'classrooms',
             element: <ClassroomManagement />,
+          },
+          {
+            path: 'classrooms/:id',
+            element: <ClassroomDetailManagement />,
           },
         ],
       },

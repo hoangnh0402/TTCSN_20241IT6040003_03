@@ -9,7 +9,34 @@ import { DialogTrigger } from '@/components/ui/dialog';
 import { Classroom } from '@/types/classroom.type';
 import { Dialog } from '@radix-ui/react-dialog';
 import { ColumnDef } from '@tanstack/react-table';
-import ClassroomModal from './classroom-modal';
+import ClassroomModal, { FormSchema } from './classroom-modal';
+import { useClassroomStore } from '@/store/useClassroomStore';
+import { z } from 'zod';
+
+const EditAction: React.FC<{ classroom: Classroom }> = ({ classroom }) => {
+  const { updateClassroom } = useClassroomStore();
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button onSelect={() => {}}>Sửa</Button>
+      </DialogTrigger>
+      <ClassroomModal
+        modalProps={{
+          mode: 'edit',
+          onSubmit: async (data: z.infer<typeof FormSchema>) => {
+            await updateClassroom(classroom.id, data);
+          },
+        }}
+        classroom={classroom}
+      />
+    </Dialog>
+  );
+};
+
+const DeleteAction: React.FC<{ classroom: Classroom }> = ({ classroom }) => {
+  const { deleteClassroom } = useClassroomStore();
+  return <DeleteDialog title="Xóa" onConfirm={() => deleteClassroom(classroom.id)} />;
+};
 
 export const columns: ColumnDef<Classroom>[] = [
   {
@@ -64,17 +91,7 @@ export const columns: ColumnDef<Classroom>[] = [
   {
     accessorKey: 'edit-action',
     header: ({ column }) => <DataTableColumnHeader column={column} title="" />,
-    cell: ({ row }) => {
-      const classroom = row.original;
-      return (
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button onSelect={() => {}}>Sửa</Button>
-          </DialogTrigger>
-          <ClassroomModal modalProps={{ mode: 'edit', onSubmit: () => {} }} classroom={classroom} />
-        </Dialog>
-      );
-    },
+    cell: ({ row }) => <EditAction classroom={row.original} />,
     enableSorting: false,
     enableHiding: false,
     size: 44,
@@ -82,10 +99,7 @@ export const columns: ColumnDef<Classroom>[] = [
   {
     accessorKey: 'delete-action',
     header: ({ column }) => <DataTableColumnHeader column={column} title="" />,
-    cell: ({ row }) => {
-      const classroom = row.original;
-      return <DeleteDialog title="Xóa" onConfirm={() => {}} />;
-    },
+    cell: ({ row }) => <DeleteAction classroom={row.original} />,
     enableSorting: false,
     enableHiding: false,
     size: 44,
