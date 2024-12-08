@@ -45,5 +45,4 @@ public class EnrollmentController {
         List<UserDto> students = enrollmentService.getAllStudentsInClassroom(classroomId);
         return ResponseEntity.ok(students);
     }
-
 }
