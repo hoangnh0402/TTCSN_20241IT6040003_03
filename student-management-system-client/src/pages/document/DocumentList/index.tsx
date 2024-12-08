@@ -28,7 +28,7 @@ const DocumentList = () => {
         data={documents}
         columns={documentColumns}
         loading={loading}
-        Modal={AddDocumentModal}
+        // Modal={AddDocumentModal}
       />
     </div>
   );
