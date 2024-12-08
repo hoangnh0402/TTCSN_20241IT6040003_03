@@ -29,7 +29,7 @@ const DocumentList = () => {
         columns={documentColumns}
         loading={loading}
         Modal={AddDocumentModal}
-      ></TablePage>
+      />
     </div>
   );
 };

@@ -6,7 +6,8 @@ import { Button } from '@/components/ui/button';
 import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-// Validation Schema
+import { Document } from '@/types/document.type';
+
 const FormSchema = z.object({
   name: z.string({ required_error: 'Tên tài liệu không được để trống' }),
   description: z.string().optional(),
@@ -15,32 +16,29 @@ const FormSchema = z.object({
   }),
 });
 
-interface AddDocumentModalProps {
+interface DocumentModalProps {
   modalProps?: {
-    isOpen: boolean;
-    onClose: () => void;
+    mode: 'create';
     onSubmit: (data: z.infer<typeof FormSchema>) => void;
   };
+  document?: Document;
 }
 
-export const AddDocumentModal = ({ modalProps }: AddDocumentModalProps) => {
-  const { isOpen, onClose, onSubmit } = modalProps || {
-    isOpen: false,
-    onClose: () => {},
+const DocumentModal = ({ modalProps, document }: DocumentModalProps) => {
+  const { mode, onSubmit } = modalProps || {
+    mode: 'create',
     onSubmit: () => {},
   };
-
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     mode: 'onTouched',
+    defaultValues: mode === 'create' ? undefined : document,
   });
 
   const handleFormSubmit = (data: z.infer<typeof FormSchema>) => {
     onSubmit(data);
     form.reset();
   };
-
-  if (!isOpen) return null;
 
   return (
     <DialogContent>
@@ -51,7 +49,6 @@ export const AddDocumentModal = ({ modalProps }: AddDocumentModalProps) => {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleFormSubmit)}>
           <div className="grid gap-4 py-4">
-            {/* Input - Tên tài liệu */}
             <FormField
               control={form.control}
               name="name"
@@ -65,8 +62,6 @@ export const AddDocumentModal = ({ modalProps }: AddDocumentModalProps) => {
                 </FormItem>
               )}
             />
-
-            {/* Input - Mô tả */}
             <FormField
               control={form.control}
               name="description"
@@ -80,8 +75,6 @@ export const AddDocumentModal = ({ modalProps }: AddDocumentModalProps) => {
                 </FormItem>
               )}
             />
-
-            {/* Input - Chọn file */}
             <FormField
               control={form.control}
               name="file"
@@ -89,19 +82,14 @@ export const AddDocumentModal = ({ modalProps }: AddDocumentModalProps) => {
                 <FormItem>
                   <FormLabel>File tải lên</FormLabel>
                   <FormControl>
-                    <Input type="file" {...field} />
+                    <Input type="file" onChange={(e) => field.onChange(e.target.files)} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
           </div>
-
-          {/* Footer với nút lưu */}
           <DialogFooter>
-            <Button onClick={onClose} className="rounded bg-gray-500 px-3 py-1 text-white hover:bg-gray-600">
-              Hủy
-            </Button>
             <Button type="submit" className="rounded bg-blue-500 px-3 py-1 text-white hover:bg-blue-600">
               Thêm
             </Button>
@@ -111,3 +99,4 @@ export const AddDocumentModal = ({ modalProps }: AddDocumentModalProps) => {
     </DialogContent>
   );
 };
+export default DocumentModal;
