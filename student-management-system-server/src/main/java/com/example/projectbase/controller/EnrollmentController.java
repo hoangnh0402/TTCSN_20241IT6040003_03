@@ -21,7 +21,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @RestApiV1
@@ -42,8 +44,11 @@ public class EnrollmentController {
     @Operation(summary = "API get all students in a classroom")
     @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
     @GetMapping("/{classroomId}/students")
-    public ResponseEntity<List<UserDto>> getAllStudentsInClassroom(@PathVariable String classroomId) {
+    public ResponseEntity<Map<String, Object>> getAllStudentsInClassroom(@PathVariable String classroomId) {
         List<UserDto> students = enrollmentService.getAllStudentsInClassroom(classroomId);
-        return ResponseEntity.ok(students);
+        Map<String, Object> response = new HashMap<>();
+        response.put("data", students);
+        return ResponseEntity.ok(response);
     }
+
 }
