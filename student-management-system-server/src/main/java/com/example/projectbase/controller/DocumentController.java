@@ -3,17 +3,20 @@ package com.example.projectbase.controller;
 import com.example.projectbase.base.RestApiV1;
 import com.example.projectbase.base.VsResponseUtil;
 import com.example.projectbase.constant.UrlConstant;
+import com.example.projectbase.domain.dto.request.UploadDocumentDTO;
 import com.example.projectbase.domain.entity.Document;
 import com.example.projectbase.service.DocumentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.tags.Tags;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -33,15 +36,14 @@ public class DocumentController {
     @Tags({@Tag(name = "document-controller-admin")})
     @Operation(summary = "API upload document")
     @PreAuthorize("hasAnyRole('ADMIN')")
-    @PostMapping(UrlConstant.Document.UPLOAD_DOCUMENT)
-    public ResponseEntity<?> uploadDocument(
-            @RequestParam("file") MultipartFile file,
-            @RequestParam("name") String name,
-            @RequestParam("type") String type,
-            @RequestParam("description") String description,
-            @RequestParam("subjectId") String subjectId) {
-        Document document = documentService.uploadDocument(file, name, type, description, subjectId);
-        return VsResponseUtil.success(document);
+    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> uploadDocument(@Valid @ModelAttribute UploadDocumentDTO uploadDocumentDTO) {
+        try {
+            List<Document> documents = documentService.uploadDocument(uploadDocumentDTO);
+            return ResponseEntity.ok(documents);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error uploading document: " + e.getMessage());
+        }
     }
 
     @Tags({@Tag(name = "document-controller-admin")})
