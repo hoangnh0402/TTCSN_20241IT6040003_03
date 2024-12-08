@@ -6,7 +6,8 @@ import { columns } from './columns';
 import StudentModal from './student-modal';
 
 const Students = () => {
-  const [students, setStudents] = useState<User[]>([]);
+  const [students, setStudents] = useState<User[]>([]
+  );
 
   return <TablePage<User> title="Quản lý sinh viên" data={students} columns={columns} Modal={StudentModal} />;
 };

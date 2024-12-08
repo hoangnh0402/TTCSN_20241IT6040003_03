@@ -7,16 +7,16 @@ import SubjectManagement from '@/pages/dashboard/SubjectManagement';
 import TeacherManagement from '@/pages/dashboard/TeacherManagerment';
 import MainLayout from '@/layouts/MainLayout';
 import ClassroomDetailManagement from '@/pages/dashboard/ClassroomDetailManagement';
+import RegisterSubject from '@/pages/registerSubject';
+import Summary from '@/pages/summary';
+
+
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <MainLayout />,
     children: [
-      {
-        path: '/login',
-        element: <Login />,
-      },
       {
         path: 'admin',
         children: [
@@ -36,13 +36,25 @@ const router = createBrowserRouter([
             path: 'classrooms',
             element: <ClassroomManagement />,
           },
+        ],
+      },
+      {
+        children: [
           {
-            path: 'classrooms/:id',
-            element: <ClassroomDetailManagement />,
+            path: 'register',
+            element: <RegisterSubject />,
+          },
+          {
+            path: 'summary',
+            element: <Summary />,
           },
         ],
       },
     ],
+  },
+  {
+    path: '/login',
+    element: <Login />,
   },
   {
     path: '*',
