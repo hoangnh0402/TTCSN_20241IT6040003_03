@@ -82,4 +82,5 @@ public class User extends DateAuditing {
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
   @JsonIgnore
   private Set<Record> records = new HashSet<>();
+
 }
