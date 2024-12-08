@@ -7,6 +7,8 @@ import SubjectManagement from '@/pages/dashboard/SubjectManagement';
 import TeacherManagement from '@/pages/dashboard/TeacherManagerment';
 import MainLayout from '@/layouts/MainLayout';
 import ClassroomDetailManagement from '@/pages/dashboard/ClassroomDetailManagement';
+import SeeDocument from '@/pages/document/SeeDocument';
+import DocumentList from '@/pages/document/DocumentList';
 
 const router = createBrowserRouter([
   {
@@ -39,6 +41,14 @@ const router = createBrowserRouter([
           {
             path: 'classrooms/:id',
             element: <ClassroomDetailManagement />,
+          },
+          {
+            path: 'lectures',
+            element: <SeeDocument />,
+          },
+          {
+            path: 'documents/:id',
+            element: <DocumentList />,
           },
         ],
       },

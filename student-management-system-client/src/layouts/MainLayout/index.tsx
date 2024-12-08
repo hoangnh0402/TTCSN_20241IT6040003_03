@@ -10,7 +10,7 @@ import {
   SidebarMenuItem,
   SidebarProvider,
 } from '@/components/ui/sidebar';
-import { FaUser } from 'react-icons/fa';
+import { FaBook, FaUser } from 'react-icons/fa';
 import { FaUserGroup } from 'react-icons/fa6';
 import { IoMdHome } from 'react-icons/io';
 import { MdClass } from 'react-icons/md';
@@ -23,6 +23,7 @@ const items = [
   { title: 'Quản lý giảng viên', icon: FaUserGroup, href: '/admin/teachers', tooltip: 'Quản lý giảng viên' },
   { title: 'Quản lý môn học', icon: MdClass, href: '/admin/subjects', tooltip: 'Quản lý môn học' },
   { title: 'Quản lý lớp học', icon: SiGoogleclassroom, href: '/admin/classrooms', tooltip: 'Quản lý lớp học' },
+  { title: 'Học phần', icon: FaBook, href: '/admin/lectures', tooltip: 'Học phần' },
 ];
 
 const MainLayout = () => {
