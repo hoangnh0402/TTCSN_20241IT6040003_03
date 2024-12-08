@@ -40,10 +40,10 @@ public class Subject extends FlagUserDateAuditing {
     @Column(nullable = false)
     private int finalCoefficient;
 
-    @Column(nullable = false)
+    @Column
     private String description;
 
-    @Column(nullable = false)
+    @Column
     private String prerequisiteSubject;
 
     //Link to table Classroom
