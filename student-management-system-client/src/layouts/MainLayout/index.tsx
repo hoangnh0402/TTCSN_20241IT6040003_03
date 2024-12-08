@@ -12,9 +12,10 @@ import {
 } from '@/components/ui/sidebar';
 import { FaBook, FaUser } from 'react-icons/fa';
 import { FaUserGroup } from 'react-icons/fa6';
-import { IoMdHome } from 'react-icons/io';
+import { IoMdHome, IoMdKey  } from 'react-icons/io';
 import { MdClass } from 'react-icons/md';
 import { SiGoogleclassroom } from 'react-icons/si';
+import { RiTableView } from "react-icons/ri";
 import { Link, Outlet } from 'react-router-dom';
 
 const items = [
@@ -24,6 +25,8 @@ const items = [
   { title: 'Quản lý môn học', icon: MdClass, href: '/admin/subjects', tooltip: 'Quản lý môn học' },
   { title: 'Quản lý lớp học', icon: SiGoogleclassroom, href: '/admin/classrooms', tooltip: 'Quản lý lớp học' },
   { title: 'Học phần', icon: FaBook, href: '/admin/lectures', tooltip: 'Học phần' },
+  { title: 'Đăng kí học phần', icon: IoMdKey , href: '/register', tooltip: 'Đăng kí học phần' },
+  { title: 'Xem thống kê điểm tích lũy', icon: RiTableView, href: '/summary', tooltip: 'Xem thống kê điểm tích lũy' },
 ];
 
 const MainLayout = () => {

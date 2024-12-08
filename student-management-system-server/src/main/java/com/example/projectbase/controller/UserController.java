@@ -3,6 +3,7 @@ package com.example.projectbase.controller;
 import com.example.projectbase.base.RestApiV1;
 import com.example.projectbase.base.VsResponseUtil;
 import com.example.projectbase.constant.UrlConstant;
+import com.example.projectbase.domain.dto.request.TeacherCreateDto;
 import com.example.projectbase.domain.dto.request.UserCreateDto;
 import com.example.projectbase.domain.dto.request.UserUpdateDto;
 import com.example.projectbase.security.CurrentUser;
@@ -29,6 +30,13 @@ public class UserController {
     return VsResponseUtil.success(userService.getUserById(userId));
   }
 
+  @Tag(name = "user-controller-admin")
+  @Operation(summary = "API get user by user code")
+  @GetMapping(UrlConstant.User.GET_USER_BY_USERCODE)
+  public ResponseEntity<?> getUserByUserCode(@PathVariable String userCode) {
+    return VsResponseUtil.success(userService.getUserByUserCode(userCode));
+  }
+
   @Tags({@Tag(name = "user-controller-admin"), @Tag(name = "user-controller")})
   @Operation(summary = "API get current user login")
   @GetMapping(UrlConstant.User.GET_CURRENT_USER)
@@ -47,8 +55,8 @@ public class UserController {
   @Tags({@Tag(name = "user-controller-admin"), @Tag(name = "user-controller")})
   @Operation(summary = "API create new teacher")
   @PostMapping(UrlConstant.User.CREATE_TEACHER)
-  public ResponseEntity<?> createTeacher(@RequestBody UserCreateDto userCreateDto) {
-    return VsResponseUtil.success(userService.createTeacher(userCreateDto));
+  public ResponseEntity<?> createTeacher(@RequestBody TeacherCreateDto teacherCreateDto) {
+    return VsResponseUtil.success(userService.createTeacher(teacherCreateDto));
   }
 
   @Tags({@Tag(name = "user-controller-admin"), @Tag(name = "user-controller")})

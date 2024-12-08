@@ -64,6 +64,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     corsConfiguration.addAllowedMethod(HttpMethod.PATCH);
     corsConfiguration.addAllowedMethod(HttpMethod.PUT);
     corsConfiguration.addAllowedMethod(HttpMethod.DELETE);
+    corsConfiguration.addAllowedMethod(HttpMethod.GET);
+    corsConfiguration.addAllowedMethod(HttpMethod.POST);
     return corsConfiguration;
   }
 

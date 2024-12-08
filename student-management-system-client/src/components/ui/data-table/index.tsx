@@ -11,6 +11,7 @@ interface TablePageProps<T> {
   children?: React.ReactNode;
   Modal?: React.ComponentType<any>;
   modalProps?: { mode: 'create' | 'edit' | 'read'; onSubmit: (data: any) => void };
+  hasToolbar?: boolean;
 }
 
 export default function TablePage<T>({
@@ -21,6 +22,7 @@ export default function TablePage<T>({
   children,
   Modal,
   modalProps,
+  hasToolbar = true,
 }: TablePageProps<T>) {
   return (
     <div className="rounded-sm bg-white p-4">
@@ -29,7 +31,9 @@ export default function TablePage<T>({
       <DataTable
         data={data}
         columns={columns}
-        toolbar={(table) => <DataTableToolbar table={table} Modal={Modal} modalProps={modalProps} />}
+        toolbar={
+          hasToolbar ? (table) => <DataTableToolbar table={table} Modal={Modal} modalProps={modalProps} /> : undefined
+        }
         loading={loading}
         children={children}
       />

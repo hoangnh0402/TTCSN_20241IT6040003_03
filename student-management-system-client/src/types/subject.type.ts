@@ -12,7 +12,6 @@ export interface Subject {
   description?: string; // Mô tả
   prerequisiteSubjects?: string; // Điều kiện tiên quyết
   createdAt?: string;
-
   classrooms?: Classroom[];
   documents?: Document[];
 }

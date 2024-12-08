@@ -12,9 +12,9 @@ import lombok.Setter;
 @Setter
 public class UserDto extends DateAuditingDto {
 
-  private String username;
+  private String id;
 
-  private String userCode;
+  private String username;
 
   private String email;
 

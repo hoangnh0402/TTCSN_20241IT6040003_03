@@ -14,16 +14,18 @@ interface DataTableToolbarProps<TData> {
 
 export function DataTableToolbar<TData>({ table, Modal, modalProps }: DataTableToolbarProps<TData>) {
   return (
-    <div className="my-4 flex items-center justify-between">
-      <Dialog>
-        <DialogTrigger asChild>
-          <Button variant="default" size="sm">
-            <Plus />
-            Thêm
-          </Button>
-        </DialogTrigger>
-        {Modal && <Modal modalProps={modalProps} />}
-      </Dialog>
+    <div className={`my-4 flex items-center ${Modal ? 'justify-between' : 'justify-end'}`}>
+      {Modal && (
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button variant="default" size="sm">
+              <Plus />
+              Thêm
+            </Button>
+          </DialogTrigger>
+          <Modal modalProps={modalProps} />
+        </Dialog>
+      )}
       <div className="flex gap-2">
         <div className="flex items-center space-x-2">
           <div className="relative w-full">

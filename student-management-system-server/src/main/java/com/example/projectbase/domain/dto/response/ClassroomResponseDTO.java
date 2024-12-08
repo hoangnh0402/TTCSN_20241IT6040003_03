@@ -1,4 +1,4 @@
-package com.example.projectbase.dto;
+package com.example.projectbase.domain.dto.response;
 
 import lombok.*;
 
@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Builder
 public class ClassroomResponseDTO {
 
-    //private String id;
+    private String id;
 
     private String code;
 

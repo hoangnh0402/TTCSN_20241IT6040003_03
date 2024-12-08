@@ -9,16 +9,15 @@ import MainLayout from '@/layouts/MainLayout';
 import ClassroomDetailManagement from '@/pages/dashboard/ClassroomDetailManagement';
 import SeeDocument from '@/pages/document/SeeDocument';
 import DocumentList from '@/pages/document/DocumentList';
+import RegisterSubject from '@/pages/registerSubject';
+import Summary from '@/pages/summary';
+
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <MainLayout />,
     children: [
-      {
-        path: '/login',
-        element: <Login />,
-      },
       {
         path: 'admin',
         children: [
@@ -38,9 +37,17 @@ const router = createBrowserRouter([
             path: 'classrooms',
             element: <ClassroomManagement />,
           },
+        ],
+      },
+      {
+        children: [
           {
-            path: 'classrooms/:id',
-            element: <ClassroomDetailManagement />,
+            path: 'register',
+            element: <RegisterSubject />,
+          },
+          {
+            path: 'summary',
+            element: <Summary />,
           },
           {
             path: 'lectures',
@@ -53,6 +60,10 @@ const router = createBrowserRouter([
         ],
       },
     ],
+  },
+  {
+    path: '/login',
+    element: <Login />,
   },
   {
     path: '*',
