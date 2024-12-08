@@ -1,5 +1,6 @@
 package com.example.projectbase.domain.mapper;
 
+import com.example.projectbase.domain.dto.response.ClassroomResponseDTO;
 import com.example.projectbase.domain.entity.Classroom;
 import com.example.projectbase.domain.entity.Subject;
 import org.mapstruct.Mapper;
@@ -19,7 +20,7 @@ public interface ClassroomMapper {
     Classroom toEntity(com.example.projectbase.dto.CreateClassroomRequestDTO createClassroomRequestDTO, Subject subject);
 
     // Chuyển đổi từ Classroom sang ClassroomResponseDTO
-    com.example.projectbase.dto.ClassroomResponseDTO toDto(Classroom classroom);
+    ClassroomResponseDTO toDto(Classroom classroom);
 
     // Cập nhật entity Classroom với thông tin từ UpdateClassroomRequestDTO
     @Mapping(source = "updateClassroomRequestDTO.code", target = "code")
