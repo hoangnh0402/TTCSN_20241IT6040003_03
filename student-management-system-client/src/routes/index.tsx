@@ -12,7 +12,6 @@ import DocumentList from '@/pages/document/DocumentList';
 import RegisterSubject from '@/pages/registerSubject';
 import Summary from '@/pages/summary';
 
-
 const router = createBrowserRouter([
   {
     path: '/',
@@ -37,6 +36,14 @@ const router = createBrowserRouter([
             path: 'classrooms',
             element: <ClassroomManagement />,
           },
+          {
+            path: 'lectures',
+            element: <SeeDocument />,
+          },
+          {
+            path: 'documents/:id',
+            element: <DocumentList />,
+          },
         ],
       },
       {
@@ -48,14 +55,6 @@ const router = createBrowserRouter([
           {
             path: 'summary',
             element: <Summary />,
-          },
-          {
-            path: 'lectures',
-            element: <SeeDocument />,
-          },
-          {
-            path: 'documents/:id',
-            element: <DocumentList />,
           },
         ],
       },
