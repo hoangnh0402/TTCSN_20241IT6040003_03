@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.tags.Tags;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +26,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestApiV1
 public class EnrollmentController {
-    EnrollmentService enrollmentService;
+    private final EnrollmentService enrollmentService;
 
     @Tags({@Tag(name = "enrollment-controller-user")})
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")

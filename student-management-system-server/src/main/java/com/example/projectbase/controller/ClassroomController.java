@@ -8,6 +8,7 @@ import com.example.projectbase.domain.entity.Classroom;
 import com.example.projectbase.dto.CreateClassroomRequestDTO;
 import com.example.projectbase.dto.UpdateClassroomRequestDTO;
 import com.example.projectbase.service.ClassroomService;
+import com.example.projectbase.service.EnrollmentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.tags.Tags;
@@ -25,6 +26,7 @@ import java.util.List;
 public class ClassroomController {
 
     private final ClassroomService classroomService;
+    private final EnrollmentService enrollmentService;
 
     @Tags({@Tag(name = "classroom-controller-admin")})
     @Operation(summary = "API create classroom")
@@ -93,4 +95,21 @@ public class ClassroomController {
         List<Classroom> classrooms = classroomService.findAllClassroomBySubjectCode(subjectCode);
         return VsResponseUtil.success(classrooms);
     }
+
+    @Tags({@Tag(name = "classroom-controller-admin")})
+    @Operation(summary = "API add student to classroom")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PostMapping(UrlConstant.Classroom.ADD_STUDENT_TO_CLASSROOM)
+    public ResponseEntity<?> addStudentToClassroom(@PathVariable String classroomId, @RequestBody String username) {
+        return VsResponseUtil.success(enrollmentService.addStudentToClassroom(classroomId, username));
+    }
+
+    @Tags({@Tag(name = "classroom-controller-admin")})
+    @Operation(summary = "API remove student from classroom")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @DeleteMapping(UrlConstant.Classroom.REMOVE_STUDENT_FROM_CLASSROOM)
+    public ResponseEntity<?> removeStudentFromClassroom(@PathVariable String classroomId, @PathVariable String userId) {
+        return VsResponseUtil.success(enrollmentService.removeStudentFromClassroom(classroomId, userId));
+    }
+
 }

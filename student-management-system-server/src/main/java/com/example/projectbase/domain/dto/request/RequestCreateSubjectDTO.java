@@ -27,9 +27,7 @@ public class RequestCreateSubjectDTO {
     @NotNull(message = "Final coefficient is required")
     private Integer finalCoefficient;
 
-    @NotBlank(message = "Description is required")
     private String description;
 
-    @NotBlank(message = "Prerequisite subject is required")
     private String prerequisiteSubject;
 }

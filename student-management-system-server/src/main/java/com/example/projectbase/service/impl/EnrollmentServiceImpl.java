@@ -1,6 +1,9 @@
 package com.example.projectbase.service.impl;
 
+import com.example.projectbase.constant.CommonConstant;
 import com.example.projectbase.constant.ErrorMessage;
+import com.example.projectbase.constant.RoleConstant;
+import com.example.projectbase.domain.dto.response.CommonResponseDto;
 import com.example.projectbase.domain.dto.response.UserDto;
 import com.example.projectbase.domain.entity.Classroom;
 import com.example.projectbase.domain.entity.Enrollment;
@@ -70,5 +73,52 @@ public class EnrollmentServiceImpl implements EnrollmentService {
                         .roleName(enrollment.getUser().getRole().getName())
                         .build())
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Enrollment addStudentToClassroom(String classroomId, String username) {
+        User student = userRepository.findByUsername(username)
+                .orElseThrow(() -> new NotFoundException(ErrorMessage.User.ERR_NOT_FOUND_USERNAME));
+
+        if (!student.getRole().getName().equals(RoleConstant.STUDENT)) {
+            throw new IllegalStateException(ErrorMessage.Enrollment.USER_NOT_STUDENT);
+        }
+
+        Classroom classroom = classroomRepository.findById(classroomId)
+                .orElseThrow(() -> new NotFoundException(ErrorMessage.Classroom.ERR_NOT_FOUND_ID));
+
+        boolean alreadyEnrolled = enrollmentRepository.existsByUserAndClassroom(student, classroom);
+        if (alreadyEnrolled) {
+            throw new IllegalStateException(ErrorMessage.Enrollment.USER_ALREADY_IN_CLASSROOM);
+        }
+
+        Enrollment enrollment = Enrollment.builder()
+                .user(student)
+                .classroom(classroom)
+                .firstRegularPoint(0)
+                .secondRegularPoint(0)
+                .midTermPoint(0)
+                .finalPoint(0)
+                .build();
+
+        enrollmentRepository.save(enrollment);
+
+        return enrollment;
+    }
+
+    @Override
+    public CommonResponseDto removeStudentFromClassroom(String classroomId, String userId) {
+        User student = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException(ErrorMessage.User.ERR_NOT_FOUND_ID));
+
+        Classroom classroom = classroomRepository.findById(classroomId)
+                .orElseThrow(() -> new NotFoundException(ErrorMessage.Classroom.ERR_NOT_FOUND_ID));
+
+        Enrollment enrollment = enrollmentRepository.findByUserAndClassroom(student, classroom)
+                .orElseThrow(() -> new NotFoundException(ErrorMessage.Enrollment.ERR_NOT_FOUND_ENROLLMENT));
+
+        enrollmentRepository.delete(enrollment);
+
+        return new CommonResponseDto(true, CommonConstant.SUCCESS);
     }
 }
