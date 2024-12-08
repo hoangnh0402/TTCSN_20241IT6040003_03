@@ -12,7 +12,6 @@ export interface Subject {
   description?: string;
   prerequisiteSubjects?: string;
   createdAt?: string;
-
   classrooms?: Classroom[];
   documents?: Document[];
 }
