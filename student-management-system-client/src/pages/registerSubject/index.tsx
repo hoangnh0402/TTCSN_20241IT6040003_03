@@ -184,8 +184,8 @@ const RegisterSubject = () => {
 
   return (
     <>
-      <TablePage<Subject> title="Môn đã đăng kí" data={registeredSubjects} columns={registeredSubjectTableColumn} />;
-      <TablePage<Subject> title="Đăng kí học phần" data={registerSubjects} columns={registerSubjectTableColumn} />;
+      <TablePage<Subject> title="Môn đã đăng kí" data={registeredSubjects} columns={registeredSubjectTableColumn} hasToolbar={false}/>;
+      <TablePage<Subject> title="Đăng kí học phần" data={registerSubjects} columns={registerSubjectTableColumn} hasToolbar={false}/>;
     </>
   );
 };

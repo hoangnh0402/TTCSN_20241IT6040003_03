@@ -8,21 +8,20 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-
 //Check lại auth validate
 const formSchema = z.object({
-  studentId: z.string().min(8, {
-    message: 'studentId must be at least 8 characters.',
+  studentId: z.string().min(1, {
+    message: 'Mã sinh viên không được để trống',
   }),
-  password: z.string().min(8, {
-    message: 'Password must be at least 8 characters.',
+  password: z.string().min(1, {
+    message: 'Mật khẩu không được để trống',
   }),
 });
-
 
 //Check lại phía be nhận studentId hay id
 const Login = () => {
   const form = useForm<z.infer<typeof formSchema>>({
+    mode: 'onTouched',
     resolver: zodResolver(formSchema),
     defaultValues: {
       studentId: '',
@@ -34,17 +33,16 @@ const Login = () => {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     // console.log(form.formState)
-    
+
     try {
       //API call
-      
-      await new Promise(resolve => setTimeout(resolve, 500));
+
+      await new Promise((resolve) => setTimeout(resolve, 500));
       alert(JSON.stringify(values, null, 2));
-    
+
       // Handle successful submission
-    
-    } catch (error : unknown) {
-      alert("Failed to login" + error);
+    } catch (error: unknown) {
+      alert('Failed to login' + error);
     }
   }
   return (
@@ -58,7 +56,7 @@ const Login = () => {
           <CardDescription>One HaUI</CardDescription>
         </CardHeader>
 
-        <CardContent className=''>
+        <CardContent className="">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
               <FormField
@@ -68,7 +66,7 @@ const Login = () => {
                   <FormItem>
                     <FormLabel>Mã sinh viên</FormLabel>
                     <FormControl>
-                      <Input placeholder="....." {...field} />
+                      <Input placeholder="" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -82,17 +80,14 @@ const Login = () => {
                   <FormItem>
                     <FormLabel>Mật khẩu</FormLabel>
                     <FormControl>
-                      <Input placeholder="....." {...field} />
+                      <Input placeholder="" {...field} />
                     </FormControl>
-                    
+
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              <Button 
-                type="submit" 
-                disabled={form.formState.isSubmitting}
-              >
+              <Button type="submit" disabled={form.formState.isSubmitting}>
                 {form.formState.isSubmitting ? 'Đang đăng nhập...' : 'Đăng nhập'}
               </Button>
             </form>
