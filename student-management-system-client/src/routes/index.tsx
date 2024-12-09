@@ -9,6 +9,7 @@ import MainLayout from '@/layouts/MainLayout';
 import ClassroomDetailManagement from '@/pages/dashboard/ClassroomDetailManagement';
 import RegisterSubject from '@/pages/registerSubject';
 import Summary from '@/pages/summary';
+import { Toaster } from '@/components/ui/toaster';
 
 const router = createBrowserRouter([
   {
@@ -65,7 +66,11 @@ const router = createBrowserRouter([
 ]);
 
 const AppRoutes = () => {
-  return <RouterProvider router={router} />;
+  return (
+    <>
+      <Toaster /> <RouterProvider router={router} />
+    </>
+  );
 };
 
 export default AppRoutes;

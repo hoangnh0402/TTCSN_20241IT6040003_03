@@ -7,8 +7,12 @@ import { Input } from '@/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { toast, useToast } from '@/hooks/use-toast';
+import { useUserStore } from '@/store/useUserStore';
+import api from '@/services/api.service';
+import { useEffect, useState } from 'react';
+import { Eye, EyeOff } from 'lucide-react'; // Import icons
 
-//Check lại auth validate
 const formSchema = z.object({
   studentId: z.string().min(1, {
     message: 'Mã sinh viên không được để trống',
@@ -18,8 +22,10 @@ const formSchema = z.object({
   }),
 });
 
-//Check lại phía be nhận studentId hay id
 const Login = () => {
+  const { toast } = useToast();
+  const [showPassword, setShowPassword] = useState(false);
+
   const form = useForm<z.infer<typeof formSchema>>({
     mode: 'onTouched',
     resolver: zodResolver(formSchema),
@@ -29,22 +35,52 @@ const Login = () => {
     },
   });
 
+  const { user, loading, error, login } = useUserStore();
+
+  useEffect(() => {
+    console.log('User:', user);
+    console.log('Loading:', loading);
+    console.log('Error:', error);
+  }, [user, loading, error]);
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    // console.log(form.formState)
-
     try {
-      //API call
+      const { studentId, password } = values;
+      const response = await login(studentId, password);
 
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      alert(JSON.stringify(values, null, 2));
+      console.log("Console log user:"+user)
 
-      // Handle successful submission
+      console.log(response);
+      if (response) {
+        toast({
+          title: "Đăng nhập thành công",
+          description: "Chào mừng bạn đến với One HaUI",
+          variant: "default",
+          duration: 1500,
+        });
+        console.log(user)
+        // localStorage.setItem('token', user.accessToken)
+      }
+
+      if(!response){
+        toast({
+          title: "Đăng nhập thất bại",
+          description: `Kiểm tra lại mã sinh viên/mật khẩu`,
+          variant: "destructive",
+          duration: 1500,
+        });
+      }
+
     } catch (error: unknown) {
-      alert('Failed to login' + error);
+      toast({
+        title: "Đăng nhập thất bại",
+        description: "Có lỗi",
+        variant: "destructive",
+        duration: 1500,
+      });
     }
   }
+
   return (
     <div className="flex justify-center">
       <img className="fixed h-screen w-full object-cover" src={bgLogin} alt="" />
@@ -80,22 +116,37 @@ const Login = () => {
                   <FormItem>
                     <FormLabel>Mật khẩu</FormLabel>
                     <FormControl>
-                      <Input placeholder="" {...field} />
+                      <div className="relative">
+                        <Input 
+                          type={showPassword ? "text" : "password"} 
+                          placeholder="" 
+                          {...field} 
+                        />
+                        <button
+                          type="button"
+                          className="absolute right-3 top-1/2 -translate-y-1/2"
+                          onClick={() => setShowPassword(!showPassword)}
+                        >
+                          {showPassword ? (
+                            <EyeOff className="h-4 w-4 text-gray-500" />
+                          ) : (
+                            <Eye className="h-4 w-4 text-gray-500" />
+                          )}
+                        </button>
+                      </div>
                     </FormControl>
-
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              <Button type="submit" disabled={form.formState.isSubmitting}>
+              <Button type="submit" disabled={form.formState.isSubmitting} className="w-full">
                 {form.formState.isSubmitting ? 'Đang đăng nhập...' : 'Đăng nhập'}
               </Button>
             </form>
           </Form>
         </CardContent>
 
-        <CardFooter>
-          {/* <p>Card Footer</p> */}
+        <CardFooter className="justify-center">
           <CardDescription>Copyright 2024 © HaUI</CardDescription>
         </CardFooter>
       </Card>
