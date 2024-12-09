@@ -12,6 +12,8 @@ import { useUserStore } from '@/store/useUserStore';
 import api from '@/services/api.service';
 import { useEffect, useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react'; // Import icons
+import { useNavigate } from 'react-router-dom';
+import { Toaster } from '@/components/ui/toaster';
 
 const formSchema = z.object({
   studentId: z.string().min(1, {
@@ -23,6 +25,7 @@ const formSchema = z.object({
 });
 
 const Login = () => {
+  const navigate = useNavigate();
   const { toast } = useToast();
   const [showPassword, setShowPassword] = useState(false);
 
@@ -48,7 +51,7 @@ const Login = () => {
       const { studentId, password } = values;
       const response = await login(studentId, password);
 
-      console.log("Console log user:"+user)
+      console.log("Console log error:" + error)
 
       console.log(response);
       if (response) {
@@ -58,7 +61,7 @@ const Login = () => {
           variant: "default",
           duration: 1500,
         });
-        console.log(user)
+        console.log("Console log error:" + error)
         // localStorage.setItem('token', user.accessToken)
       }
 
@@ -69,6 +72,8 @@ const Login = () => {
           variant: "destructive",
           duration: 1500,
         });
+        console.log("Console log error:" + error)
+
       }
 
     } catch (error: unknown) {
@@ -82,6 +87,8 @@ const Login = () => {
   }
 
   return (
+    <>
+    <Toaster />
     <div className="flex justify-center">
       <img className="fixed h-screen w-full object-cover" src={bgLogin} alt="" />
 
@@ -151,6 +158,7 @@ const Login = () => {
         </CardFooter>
       </Card>
     </div>
+    </>
   );
 };
 

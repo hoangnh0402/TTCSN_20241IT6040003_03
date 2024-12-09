@@ -11,14 +11,14 @@ interface useUserStore {
     checkingAuth: boolean,
 	error: string | null,
     login: (studentId: string, password: string) => Promise<boolean>;
-    logout: () => Promise<void>;
+    logout: () => Promise<boolean>;
     checkAuth: () => Promise<void>;
 }
 
 export const useUserStore = create<useUserStore>((set, get) => ({
 	user: {},
 	loading: false,
-	checkingAuth: true,
+	checkingAuth: false,
 	error: null,
 	
 	login: async (studentId : string, password: string) => {
@@ -38,11 +38,18 @@ export const useUserStore = create<useUserStore>((set, get) => ({
 	},
 
 	logout: async () => {
+		set({ loading: true, error: null });
 		try {
 			await api.post("/auth/logout");
+			localStorage.removeItem('token')
 			set({ user: {} });
+			return true;
+
 		} catch (error) {
-			set({ loading: false, error: error.message });
+			console.log(error.response.data.message);
+			set({ loading: false, error: error.response.data.message });
+			return false;
+
 		}finally{
 			set({ loading: false})
 		}

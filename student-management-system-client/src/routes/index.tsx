@@ -68,7 +68,7 @@ const router = createBrowserRouter([
 const AppRoutes = () => {
   return (
     <>
-      <Toaster /> <RouterProvider router={router} />
+      <RouterProvider router={router} />
     </>
   );
 };
