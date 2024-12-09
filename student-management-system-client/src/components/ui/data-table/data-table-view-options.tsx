@@ -41,7 +41,8 @@ export function DataTableViewOptions<TData>({ table }: DataTableViewOptionsProps
                 .filter((column) => typeof column.accessorFn !== 'undefined' && column.getCanHide())
                 .map((column) => {
                   const itemName =
-                    column.columnDef.header?.toString().match(/title: "([^"]+)"/)?.[1] || toSentenceCase(column.id);
+                    column.columnDef.header?.toString().match(/title:\s*["|\\"]([^"\\]+)["|\\"]/)?.[1] ||
+                    toSentenceCase(column.id);
 
                   return (
                     <CommandItem key={column.id} onSelect={() => column.toggleVisibility(!column.getIsVisible())}>
