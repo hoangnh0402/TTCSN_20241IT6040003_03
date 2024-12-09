@@ -91,6 +91,8 @@ public class UrlConstant {
     public static final String GET_CLASSROOMS_BY_START_DATE = "/user/classroom/start-date"; // GET /user/classroom/start-date
     public static final String GET_CLASSROOMS_BY_SCHEDULE = "/user/classroom/schedule"; // GET /user/classroom/schedule
     public static final String GET_CLASSROOMS_BY_SUBJECT_CODE = "/user/classroom/subject/code"; // GET /user/classroom/subject/code
+    public static final String ADD_STUDENT_TO_CLASSROOM = BASE + "/{classroomId}/add-student"; // POST /admin/classroom/{classroomId}/add-student
+    public static final String REMOVE_STUDENT_FROM_CLASSROOM = BASE + "/{classroomId}/{userId}"; // DELETE /admin/classroom/{classroomId}/{userId}
   }
 
   public static final class Subject {

@@ -4,7 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { fetchDocuments } from './mock-api';
 import { documentColumns } from './columns';
-import { AddDocumentModal } from './document-modal';
+import DocumentModal from './document-modal';
 const DocumentList = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -28,7 +28,7 @@ const DocumentList = () => {
         data={documents}
         columns={documentColumns}
         loading={loading}
-        // Modal={AddDocumentModal}
+        Modal={DocumentModal}
       />
     </div>
   );

@@ -1,10 +1,12 @@
 package com.example.projectbase.service.impl;
 
+import com.example.projectbase.domain.dto.request.UploadDocumentDTO;
 import com.example.projectbase.domain.entity.Document;
 import com.example.projectbase.domain.entity.Subject;
 import com.example.projectbase.repository.DocumentRepository;
 import com.example.projectbase.repository.SubjectRepository;
 import com.example.projectbase.service.DocumentService;
+import com.example.projectbase.util.UploadFileUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,6 +15,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.projectbase.constant.ErrorMessage.Document.ERR_READ_FILE;
@@ -24,6 +27,7 @@ import static com.example.projectbase.constant.ErrorMessage.User.ERR_NOT_FOUND_I
 public class DocumentServiceImpl implements DocumentService {
     private final DocumentRepository documentRepository;
     private final SubjectRepository subjectRepository;
+    private final UploadFileUtil uploadFileUtil;
 
     private final Path storagePath = Paths.get("documents");
 
@@ -33,38 +37,45 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
-    public Document uploadDocument(MultipartFile file, String name, String type, String description, String subjectId) {
+    public List<Document> uploadDocument(UploadDocumentDTO uploadDocumentDTO) {
         try {
-            // Tạo thư mục lưu trữ nếu chưa tồn tại
-            if (!Files.exists(storagePath)) {
-                Files.createDirectories(storagePath);
-            }
-
-            // Lưu file vào thư mục
-            Path filePath = storagePath.resolve(file.getOriginalFilename());
-            Files.write(filePath, file.getBytes());
+            List<Document> savedDocuments = new ArrayList<>();
 
             // Lấy thông tin môn học theo ID
-            Subject subject = subjectRepository.findSubjectById(subjectId);
+            Subject subject = subjectRepository.findSubjectById(uploadDocumentDTO.getSubjectId());
             if (subject == null) {
-                throw new RuntimeException(String.format(ERR_NOT_FOUND_ID, subjectId));
+                throw new RuntimeException(String.format(ERR_NOT_FOUND_ID, uploadDocumentDTO.getSubjectId()));
             }
 
-            // Tạo đối tượng Document
-            Document document = Document.builder()
-                    .name(name)
-                    .path(filePath.toString())
-                    .type(type)
-                    .description(description)
-                    .subject(subject)
-                    .build();
+            // Duyệt qua danh sách tệp tải lên
+            for (MultipartFile file : uploadDocumentDTO.getFiles()) {
+                // Kiểm tra tệp có hợp lệ hay không
+                if (file.isEmpty()) {
+                    throw new RuntimeException("File cannot be empty");
+                }
 
-            // Lưu vào cơ sở dữ liệu
-            return documentRepository.save(document);
-        } catch (IOException e) {
-            throw new RuntimeException(ERR_SAVE_FILE, e);
+                // Gọi util upload file lên Cloudinary và lấy URL
+                String fileUrl = uploadFileUtil.uploadFile(file);
+
+                // Tạo đối tượng Document
+                Document document = Document.builder()
+                        .name(uploadDocumentDTO.getName())
+                        .type(uploadDocumentDTO.getType())
+                        .description(uploadDocumentDTO.getDescription())
+                        .path(fileUrl) // Đường dẫn là URL sau khi upload lên Cloudinary
+                        .subject(subject)
+                        .build();
+
+                // Lưu vào cơ sở dữ liệu
+                savedDocuments.add(documentRepository.save(document));
+            }
+
+            return savedDocuments;
+        } catch (Exception e) {
+            throw new RuntimeException("Error uploading document: " + e.getMessage(), e);
         }
     }
+
 
     @Override
     public byte[] downloadDocument(String id) {

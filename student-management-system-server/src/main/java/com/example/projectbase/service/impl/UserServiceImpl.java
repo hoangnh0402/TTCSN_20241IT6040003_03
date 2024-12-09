@@ -44,10 +44,11 @@ public class UserServiceImpl implements UserService {
     user.setPassword(passwordEncoder.encode(user.getPassword()));
     user.setIsLocked(false);
     user.setRole(roleRepository.findByRoleName(RoleConstant.STUDENT));
-    user.setUserClass(
-            classRepository.findById(userCreateDto.getClassId())
-                    .orElseThrow(() -> new NotFoundException(ErrorMessage.Class.ERR_NOT_FOUND_ID, new String[]{userCreateDto.getClassId()}))
-    );
+    if (userCreateDto.getClassId() != null)
+      user.setUserClass(
+              classRepository.findById(userCreateDto.getClassId())
+                      .orElseThrow(() -> new NotFoundException(ErrorMessage.Class.ERR_NOT_FOUND_ID, new String[]{userCreateDto.getClassId()}))
+      );
     userRepository.save(user);
     return userMapper.toUserDto(user);
   }
@@ -62,6 +63,7 @@ public class UserServiceImpl implements UserService {
     user.setPassword(passwordEncoder.encode(user.getPassword()));
     user.setIsLocked(false);
     user.setRole(roleRepository.findByRoleName(RoleConstant.TEACHER));
+    System.out.println(user);
     userRepository.save(user);
     return userMapper.toUserDto(user);
   }

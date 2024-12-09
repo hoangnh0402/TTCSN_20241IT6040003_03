@@ -15,7 +15,7 @@ export const documentColumns: ColumnDef<Document>[] = [
     header: ({ column }) => <DataTableColumnHeader column={column} title="Tên tài liệu" />,
     cell: ({ row }) => (
       <a
-        href={row.original.path}
+        href={row.original.files[0].path}
         target="_blank"
         rel="noopener noreferrer"
         className="text-blue-500 underline hover:text-blue-700"
@@ -61,7 +61,7 @@ export const documentColumns: ColumnDef<Document>[] = [
     cell: ({ row }) => {
       const handleDownload = () => {
         const link = document.createElement('a');
-        link.href = row.original.path;
+        link.href = row.original.files[0].path;
         link.download = row.original.name;
         document.body.appendChild(link);
         link.click();

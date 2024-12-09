@@ -75,7 +75,7 @@ const DocumentModal = ({ modalProps, document }: DocumentModalProps) => {
                 </FormItem>
               )}
             />
-            {/* <FormField
+            <FormField
               control={form.control}
               name="file"
               render={({ field }) => (
@@ -87,7 +87,7 @@ const DocumentModal = ({ modalProps, document }: DocumentModalProps) => {
                   <FormMessage />
                 </FormItem>
               )}
-            /> */}
+            />
           </div>
           <DialogFooter>
             <Button type="submit" className="rounded bg-blue-500 px-3 py-1 text-white hover:bg-blue-600">

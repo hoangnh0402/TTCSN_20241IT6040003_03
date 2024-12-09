@@ -62,7 +62,8 @@ public class ErrorMessage {
 
   public static class Enrollment {
     public static final String USER_ALREADY_IN_CLASSROOM = "Người dùng đã tồn tại trong lớp học";
-
+    public static final String ERR_NOT_FOUND_ENROLLMENT = "Không tìm thấy thông tin đăng ký";
+    public static final String USER_NOT_STUDENT = "Người dùng không phải là sinh viên";
   }
 
 }

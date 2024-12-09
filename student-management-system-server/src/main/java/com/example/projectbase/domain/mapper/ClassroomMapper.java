@@ -1,10 +1,14 @@
 package com.example.projectbase.domain.mapper;
 
+import com.example.projectbase.domain.dto.response.ClassroomResponseDTO;
 import com.example.projectbase.domain.entity.Classroom;
+import com.example.projectbase.domain.entity.Enrollment;
 import com.example.projectbase.domain.entity.Subject;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+
+import java.util.Set;
 
 @Mapper(componentModel = "spring")
 public interface ClassroomMapper {
@@ -18,8 +22,17 @@ public interface ClassroomMapper {
     @Mapping(source = "subject", target = "subject")
     Classroom toEntity(com.example.projectbase.dto.CreateClassroomRequestDTO createClassroomRequestDTO, Subject subject);
 
-    // Chuyển đổi từ Classroom sang ClassroomResponseDTO
-    com.example.projectbase.dto.ClassroomResponseDTO toDto(Classroom classroom);
+    @Mapping(source = "subject.id", target = "subjectId")
+    @Mapping(target = "teacherId", expression = "java(getTeacherIdFromEnrollments(classroom.getEnrollments()))")
+    ClassroomResponseDTO toDto(Classroom classroom);
+
+    default String getTeacherIdFromEnrollments(Set<Enrollment> enrollments) {
+        return enrollments.stream()
+                .filter(enrollment -> enrollment.getUser() != null) // Kiểm tra null
+                .map(enrollment -> enrollment.getUser().getId())    // Lấy ID của User
+                .findFirst()                                       // Lấy bản ghi đầu tiên
+                .orElse(null);                                     // Trả về null nếu không có
+    }
 
     // Cập nhật entity Classroom với thông tin từ UpdateClassroomRequestDTO
     @Mapping(source = "updateClassroomRequestDTO.code", target = "code")
