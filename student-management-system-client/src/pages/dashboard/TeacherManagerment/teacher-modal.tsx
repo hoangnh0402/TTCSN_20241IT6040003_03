@@ -9,6 +9,7 @@ import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTit
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { useTeacherStore } from '@/store/useTeacherStore';
 import { Gender, User } from '@/types/user.type';
 
 interface TeacherModalProps {
@@ -16,7 +17,7 @@ interface TeacherModalProps {
     mode: 'read' | 'create' | 'edit';
     onSubmit: (data: z.infer<typeof FormSchema>) => void;
   };
-  user?: User;
+  teacher?: User;
 }
 
 export const FormSchema = z.object({
@@ -25,19 +26,23 @@ export const FormSchema = z.object({
   phoneNumber: z.string({ required_error: 'Số điện thoại không được để trống' }).refine((v) => v.length === 10, {
     message: 'Số điện thoại phải có 10 chữ số',
   }),
-  fullname: z.string({ required_error: 'Họ tên không được để trống' }),
+  fullName: z.string({ required_error: 'Họ tên không được để trống' }),
   gender: z.nativeEnum(Gender, { required_error: 'Giới tính không được để trống' }),
-  dateOfBirth: z.string({ required_error: 'Ngày sinh không được để trống' }),
-  avatar: z.instanceof(File).optional(),
+  birthday: z.string().nullable().optional(),
+  avatar: z.string().nullable().optional(),
 });
 
-const TeacherModal = ({ modalProps, user }: TeacherModalProps) => {
-  const [imageUrl, setImageUrl] = useState<string>(user?.avatar || 'https://placehold.co/250x150?text=404');
+const TeacherModal = ({ modalProps, teacher }: TeacherModalProps) => {
+  const { createTeacher } = useTeacherStore();
+
+  const [imageUrl, setImageUrl] = useState<string>(teacher?.avatar || 'https://placehold.co/250x150?text=404');
 
   const { mode, onSubmit } = modalProps || {
     mode: 'create',
-    onSubmit: (data) => {
-      console.log(data);
+    onSubmit: async (data: z.infer<typeof FormSchema>) => {
+      const { username, ...rest } = data;
+      const teacher = { ...rest, username, password: username };
+      await createTeacher(teacher);
     },
   };
 
@@ -54,8 +59,8 @@ const TeacherModal = ({ modalProps, user }: TeacherModalProps) => {
       mode === 'create'
         ? undefined
         : {
-            ...user,
-            gender: user?.gender as Gender,
+            ...teacher,
+            gender: teacher?.gender as Gender,
           },
   });
 
@@ -98,7 +103,7 @@ const TeacherModal = ({ modalProps, user }: TeacherModalProps) => {
             />
             <FormField
               control={form.control}
-              name="fullname"
+              name="fullName"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Họ tên</FormLabel>
@@ -163,7 +168,7 @@ const TeacherModal = ({ modalProps, user }: TeacherModalProps) => {
             />
             <FormField
               control={form.control}
-              name="dateOfBirth"
+              name="birthday"
               render={({ field }) => (
                 <FormItem className="flex items-center gap-2">
                   <FormLabel>Ngày sinh</FormLabel>

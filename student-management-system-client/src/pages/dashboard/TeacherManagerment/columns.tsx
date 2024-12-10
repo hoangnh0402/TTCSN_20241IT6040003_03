@@ -8,7 +8,34 @@ import { DialogTrigger } from '@/components/ui/dialog';
 import { User } from '@/types/user.type';
 import { Dialog } from '@radix-ui/react-dialog';
 import { ColumnDef } from '@tanstack/react-table';
-import TeacherModal from './teacher-modal';
+import TeacherModal, { FormSchema } from './teacher-modal';
+import { useTeacherStore } from '@/store/useTeacherStore';
+import { z } from 'zod';
+
+const EditAction: React.FC<{ teacher: User }> = ({ teacher }) => {
+  const { updateTeacher } = useTeacherStore();
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button onSelect={() => {}}>Sửa</Button>
+      </DialogTrigger>
+      <TeacherModal
+        modalProps={{
+          mode: 'edit',
+          onSubmit: async (data: z.infer<typeof FormSchema>) => {
+            await updateTeacher(teacher.id, data);
+          },
+        }}
+        teacher={teacher}
+      />
+    </Dialog>
+  );
+};
+
+const DeleteAction: React.FC<{ teacher: User }> = ({ teacher }) => {
+  const { deleteTeacher } = useTeacherStore();
+  return <DeleteDialog title="Xóa" onConfirm={() => deleteTeacher(teacher.id)} />;
+};
 
 export const columns: ColumnDef<User>[] = [
   {
@@ -36,7 +63,7 @@ export const columns: ColumnDef<User>[] = [
     },
   },
   {
-    accessorKey: 'fullname',
+    accessorKey: 'fullName',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Họ tên" />,
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
@@ -66,17 +93,7 @@ export const columns: ColumnDef<User>[] = [
   {
     accessorKey: 'edit-action',
     header: ({ column }) => <DataTableColumnHeader column={column} title="" />,
-    cell: ({ row }) => {
-      const user = row.original;
-      return (
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button onSelect={() => {}}>Sửa</Button>
-          </DialogTrigger>
-          <TeacherModal modalProps={{ mode: 'edit', onSubmit: () => {} }} user={user} />
-        </Dialog>
-      );
-    },
+    cell: ({ row }) => <EditAction teacher={row.original} />,
     enableSorting: false,
     enableHiding: false,
     size: 44,
@@ -84,10 +101,7 @@ export const columns: ColumnDef<User>[] = [
   {
     accessorKey: 'delete-action',
     header: ({ column }) => <DataTableColumnHeader column={column} title="" />,
-    cell: ({ row }) => {
-      const user = row.original;
-      return <DeleteDialog title="Xóa" onConfirm={() => {}} />;
-    },
+    cell: ({ row }) => <DeleteAction teacher={row.original} />,
     enableSorting: false,
     enableHiding: false,
     size: 44,

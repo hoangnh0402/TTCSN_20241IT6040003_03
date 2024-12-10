@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 import TablePage from '@/components/ui/data-table';
@@ -6,10 +6,18 @@ import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
 import { User } from '@/types/user.type';
 import AddStudentClassroomModal from './add-student-classroom-modal';
 import { columns } from './columns';
+import { useClassroomDetailStore } from '@/store/useClassroomDetailStore';
 
 const ClassroomDetailManagement = () => {
-  const { id } = useParams();
-  const [students, setStudents] = useState<User[]>([]);
+  const { id } = useParams<{ id: string }>();
+
+  const { classroom, students, subject, loading, fetchClassroomDetail } = useClassroomDetailStore();
+
+  useEffect(() => {
+    if (id) {
+      fetchClassroomDetail(id);
+    }
+  }, [id, fetchClassroomDetail]);
 
   return (
     <TablePage<User>
@@ -17,21 +25,22 @@ const ClassroomDetailManagement = () => {
       data={students}
       columns={columns}
       Modal={AddStudentClassroomModal}
+      loading={loading}
     >
       <div>
         <Table className="mt-4 border">
           <TableBody className="bg-white *:*:w-1/4 *:*:border *:*:p-3">
             <TableRow>
               <TableCell>Môn:</TableCell>
-              <TableCell></TableCell>
+              <TableCell>{subject?.name}</TableCell>
               <TableCell>Trình độ:</TableCell>
               <TableCell></TableCell>
             </TableRow>
             <TableRow>
               <TableCell>Mã lớp độc lập:</TableCell>
-              <TableCell></TableCell>
+              <TableCell>{classroom?.code}</TableCell>
               <TableCell>Số tín chỉ:</TableCell>
-              <TableCell></TableCell>
+              <TableCell>{subject?.numberOfCredits}</TableCell>
             </TableRow>
           </TableBody>
         </Table>
