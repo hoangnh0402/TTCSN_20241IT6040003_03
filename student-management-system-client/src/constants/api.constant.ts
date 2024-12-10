@@ -2,6 +2,7 @@ export const ApiConstant = {
   auth: {
     login: '/auth/login',
     logout: '/auth/logout',
+    profile: '/user/current',
   },
   students: {
     getAll: '/user/student',

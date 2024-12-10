@@ -1,23 +1,33 @@
-import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, Navigate, Outlet, RouterProvider } from 'react-router-dom';
 
+import MainLayout from '@/layouts/MainLayout';
 import Login from '@/pages/auth/login';
+import ClassroomDetailManagement from '@/pages/dashboard/ClassroomDetailManagement';
 import ClassroomManagement from '@/pages/dashboard/ClassroomManagement';
 import StudentManagement from '@/pages/dashboard/StudentManagement';
 import SubjectManagement from '@/pages/dashboard/SubjectManagement';
 import TeacherManagement from '@/pages/dashboard/TeacherManagerment';
-import MainLayout from '@/layouts/MainLayout';
-import ClassroomDetailManagement from '@/pages/dashboard/ClassroomDetailManagement';
 import RegisterSubject from '@/pages/registerSubject';
 import Summary from '@/pages/summary';
-import { Toaster } from '@/components/ui/toaster';
+import { Role } from '@/types/user.type';
+import ProtectedRoute from './ProtectedRoute';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <MainLayout />,
+    element: (
+      <ProtectedRoute>
+        <MainLayout />
+      </ProtectedRoute>
+    ),
     children: [
       {
         path: 'admin',
+        element: (
+          <ProtectedRoute allowedRoles={[Role.ADMIN]}>
+            <Outlet />
+          </ProtectedRoute>
+        ),
         children: [
           {
             path: 'subjects',
@@ -42,16 +52,20 @@ const router = createBrowserRouter([
         ],
       },
       {
-        children: [
-          {
-            path: 'register',
-            element: <RegisterSubject />,
-          },
-          {
-            path: 'summary',
-            element: <Summary />,
-          },
-        ],
+        path: 'register',
+        element: (
+          <ProtectedRoute allowedRoles={[Role.STUDENT]}>
+            <RegisterSubject />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'summary',
+        element: (
+          <ProtectedRoute allowedRoles={[Role.ADMIN, Role.TEACHER]}>
+            <Summary />
+          </ProtectedRoute>
+        ),
       },
     ],
   },
@@ -66,11 +80,7 @@ const router = createBrowserRouter([
 ]);
 
 const AppRoutes = () => {
-  return (
-    <>
-      <RouterProvider router={router} />
-    </>
-  );
+  return <RouterProvider router={router} />;
 };
 
 export default AppRoutes;
