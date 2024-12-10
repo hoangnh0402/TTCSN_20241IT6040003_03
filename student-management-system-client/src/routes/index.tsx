@@ -1,24 +1,23 @@
 import { createBrowserRouter, Navigate, Outlet, RouterProvider } from 'react-router-dom';
 
-import MainLayout from '@/layouts/MainLayout';
-import Login from '@/pages/auth/login';
-import ClassroomDetailManagement from '@/pages/dashboard/ClassroomDetailManagement';
-import ClassroomManagement from '@/pages/dashboard/ClassroomManagement';
-import StudentManagement from '@/pages/dashboard/StudentManagement';
-import SubjectManagement from '@/pages/dashboard/SubjectManagement';
-import TeacherManagement from '@/pages/dashboard/TeacherManagerment';
-import RegisterSubject from '@/pages/registerSubject';
-import Summary from '@/pages/summary';
-import { Role } from '@/types/user.type';
-import ProtectedRoute from './ProtectedRoute';
+const Login = React.lazy(() => import('@/pages/auth/login'));
+const ClassroomManagement = React.lazy(() => import('@/pages/dashboard/ClassroomManagement'));
+const StudentManagement = React.lazy(() => import('@/pages/dashboard/StudentManagement'));
+const SubjectManagement = React.lazy(() => import('@/pages/dashboard/SubjectManagement'));
+const TeacherManagement = React.lazy(() => import('@/pages/dashboard/TeacherManagerment'));
+const MainLayout = React.lazy(() => import('@/layouts/MainLayout'));
+const ClassroomDetailManagement = React.lazy(() => import('@/pages/dashboard/ClassroomDetailManagement'));
+const RegisterSubject = React.lazy(() => import('@/pages/registerSubject'));
+const Summary = React.lazy(() => import('@/pages/summary'));
+const Loading = React.lazy(() => import('@/components/ui/loading'));
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: (
-      <ProtectedRoute>
+      <Suspense fallback={<Loading />}>
         <MainLayout />
-      </ProtectedRoute>
+      </Suspense>
     ),
     children: [
       {
@@ -31,47 +30,75 @@ const router = createBrowserRouter([
         children: [
           {
             path: 'subjects',
-            element: <SubjectManagement />,
+            element: (
+              <Suspense fallback={<Loading />}>
+                <SubjectManagement />
+              </Suspense>
+            ),
           },
           {
             path: 'students',
-            element: <StudentManagement />,
+            element: (
+              <Suspense fallback={<Loading />}>
+                <StudentManagement />
+              </Suspense>
+            ),
           },
           {
             path: 'teachers',
-            element: <TeacherManagement />,
+            element: (
+              <Suspense fallback={<Loading />}>
+                <TeacherManagement />
+              </Suspense>
+            ),
           },
           {
             path: 'classrooms',
-            element: <ClassroomManagement />,
+            element: (
+              <Suspense fallback={<Loading />}>
+                <ClassroomManagement />
+              </Suspense>
+            ),
           },
           {
             path: 'classrooms/:id',
-            element: <ClassroomDetailManagement />,
+            element: (
+              <Suspense fallback={<Loading />}>
+                <ClassroomDetailManagement />
+              </Suspense>
+            ),
           },
         ],
       },
       {
-        path: 'register',
-        element: (
-          <ProtectedRoute allowedRoles={[Role.STUDENT]}>
-            <RegisterSubject />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: 'summary',
-        element: (
-          <ProtectedRoute allowedRoles={[Role.ADMIN, Role.TEACHER]}>
-            <Summary />
-          </ProtectedRoute>
-        ),
+        children: [
+          {
+            path: 'register',
+            element: (
+              <Suspense fallback={<Loading />}>
+                <RegisterSubject />
+              </Suspense>
+            ),
+          },
+          {
+            path: 'summary',
+            element: (
+              <Suspense fallback={<Loading />}>
+                <Summary />
+              </Suspense>
+            ),
+          },
+        ],
       },
     ],
   },
   {
     path: '/login',
-    element: <Login />,
+    element: (
+      <Suspense fallback={<Loading />}>
+        <Login />
+      </Suspense>
+    ),
   },
   {
     path: '*',
