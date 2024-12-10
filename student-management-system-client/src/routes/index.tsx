@@ -37,13 +37,19 @@ const router = createBrowserRouter([
             element: <ClassroomManagement />,
           },
           {
+
             path: 'lectures',
             element: <SeeDocument />,
           },
           {
             path: 'documents/:id',
             element: <DocumentList />,
+
           },
+          {
+            path: 'classrooms/:id',
+            element: <ClassroomDetailManagement />,
+          }
         ],
       },
       {

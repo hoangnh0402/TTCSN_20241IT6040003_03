@@ -4,18 +4,21 @@ import { Enrollment } from '@/types/enrollment.type';
 
 export interface User {
   id: string;
-  classId?: string;
+  classId?: string | null;
   username: string;
   password?: string;
   email?: string;
   phoneNumber?: string;
-  fullname: string;
+  fullName: string;
   gender: string;
-  avatar?: string;
-  dateOfBirth?: string;
+  avatar?: string | null;
+  birthday?: string | null;
   address?: string;
-  role: string;
-  createdAt?: string;
+  role?: string;
+  userCode?: string;
+  roleName?: Role;
+  createdDate?: string;
+  lastModifiedDate?: string;
 
   enrollments?: Enrollment[];
   department?: Department;
@@ -23,9 +26,9 @@ export interface User {
 }
 
 export enum Role {
-  STUDENT = 'student',
-  TEACHER = 'teacher',
-  ADMIN = 'admin',
+  STUDENT = 'ROLE_STUDENT',
+  TEACHER = 'ROLE_TEACHER',
+  ADMIN = 'ROLE_ADMIN',
 }
 
 export enum Gender {

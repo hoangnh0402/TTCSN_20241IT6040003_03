@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -9,9 +9,10 @@ import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTit
 import { DropdownSelectField } from '@/components/ui/dropdown-select-field';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { useClassroomStore } from '@/store/useClassroomStore';
+import { useSubjectStore } from '@/store/useSubjectStore';
+import { useTeacherStore } from '@/store/useTeacherStore';
 import { Classroom } from '@/types/classroom.type';
-import { Subject } from '@/types/subject.type';
-import { User } from '@/types/user.type';
 
 interface ClassroomModalProps {
   modalProps?: {
@@ -32,12 +33,22 @@ export const FormSchema = z.object({
 });
 
 const ClassroomModal = ({ modalProps, classroom }: ClassroomModalProps) => {
-  const [subjects, setSubjects] = useState<Subject[]>([]);
-  const [teachers, setTeachers] = useState<User[]>([]);
+  const { subjects, fetchSubjects } = useSubjectStore();
+  const { teachers, fetchTeachers } = useTeacherStore();
+  const { createClassroom } = useClassroomStore();
+
+  useEffect(() => {
+    if (subjects.length === 0 || teachers.length === 0) {
+      fetchSubjects();
+      fetchTeachers();
+    }
+  }, [fetchSubjects, fetchTeachers, subjects, teachers]);
 
   const { mode, onSubmit } = modalProps || {
     mode: 'create',
-    onSubmit: () => {},
+    onSubmit: async (data: z.infer<typeof FormSchema>) => {
+      await createClassroom(data);
+    },
   };
 
   const title = {
@@ -80,7 +91,7 @@ const ClassroomModal = ({ modalProps, classroom }: ClassroomModalProps) => {
             <DropdownSelectField
               form={form}
               name="subjectId"
-              options={subjects.map((s) => ({ label: s.code, value: s.id }))}
+              options={subjects.map((s) => ({ label: `${s.name} - ${s.code}`, value: s.id }))}
               label="Mã môn học"
               placeholder="Chọn môn học"
             />
@@ -100,7 +111,7 @@ const ClassroomModal = ({ modalProps, classroom }: ClassroomModalProps) => {
             <DropdownSelectField
               form={form}
               name="teacherId"
-              options={teachers.map((t) => ({ label: t.username, value: t.id }))}
+              options={teachers.map((t) => ({ label: `${t.fullName} - ${t.username}`, value: t.id }))}
               label="Mã giáo viên"
               placeholder="Chọn mã giáo viên"
             />

@@ -1,15 +1,26 @@
-import { useEffect, useState } from 'react';
-
 import { User } from '@/types/user.type';
 import TablePage from '@/components/ui/data-table';
 import { columns } from './columns';
 import StudentModal from './student-modal';
+import { useEffect } from 'react';
+import { useStudentStore } from '@/store/useStudentStore';
 
-const Students = () => {
-  const [students, setStudents] = useState<User[]>([]
+const StudentManagement = () => {
+  const { students, loading, fetchStudents } = useStudentStore();
+
+  useEffect(() => {
+    fetchStudents();
+  }, [fetchStudents]);
+
+  return (
+    <TablePage<User>
+      title="Quản lý sinh viên"
+      data={students}
+      columns={columns}
+      Modal={StudentModal}
+      loading={loading}
+    />
   );
-
-  return <TablePage<User> title="Quản lý sinh viên" data={students} columns={columns} Modal={StudentModal} />;
 };
 
-export default Students;
+export default StudentManagement;

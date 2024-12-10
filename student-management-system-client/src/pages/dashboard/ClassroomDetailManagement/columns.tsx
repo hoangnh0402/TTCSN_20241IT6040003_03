@@ -3,8 +3,17 @@
 
 import { DataTableColumnHeader } from '@/components/ui/data-table/data-table-column-header';
 import { DeleteDialog } from '@/components/ui/delete-dialog';
+import { useClassroomDetailStore } from '@/store/useClassroomDetailStore';
 import { User } from '@/types/user.type';
 import { ColumnDef } from '@tanstack/react-table';
+import { useParams } from 'react-router-dom';
+
+const DeleteAction: React.FC<{ user: User }> = ({ user }) => {
+  const { removeStudent } = useClassroomDetailStore();
+  const { id } = useParams<{ id: string }>();
+  if (!id) return null;
+  return <DeleteDialog title="Xóa" onConfirm={() => removeStudent(id, user.id)} />;
+};
 
 export const columns: ColumnDef<User>[] = [
   {
@@ -25,7 +34,7 @@ export const columns: ColumnDef<User>[] = [
     enableSorting: false,
   },
   {
-    accessorKey: 'fullname',
+    accessorKey: 'fullName',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Họ tên" />,
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
@@ -61,10 +70,7 @@ export const columns: ColumnDef<User>[] = [
   {
     accessorKey: 'delete-action',
     header: ({ column }) => <DataTableColumnHeader column={column} title="" />,
-    cell: ({ row }) => {
-      const user = row.original;
-      return <DeleteDialog title="Xóa" onConfirm={() => {}} />;
-    },
+    cell: ({ row }) => <DeleteAction user={row.original} />,
     enableSorting: false,
     enableHiding: false,
     size: 44,
