@@ -36,4 +36,11 @@ export const ApiConstant = {
     addStudent: '/admin/classroom/:id/add-student',
     removeStudent: '/admin/classroom/:classroomId/:studentId',
   },
+  documents: {
+    getAll: '/documents',
+    getAllBySubject: '/documents/subject',
+    getById: '/documents/',
+    dowload: '/documents/download',
+    upload: '/upload',
+  },
 };

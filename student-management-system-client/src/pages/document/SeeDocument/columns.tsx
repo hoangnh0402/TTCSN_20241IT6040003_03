@@ -19,6 +19,7 @@ export const columns: ColumnDef<Subject>[] = [
   {
     accessorKey: 'id',
     header: ({ column }) => <DataTableColumnHeader column={column} title="STT" />,
+    cell: ({ row }) => <div>{row.index + 1}</div>,
     size: 30,
     enableSorting: false,
     enableGlobalFilter: false,

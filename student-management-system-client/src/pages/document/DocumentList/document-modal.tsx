@@ -7,10 +7,13 @@ import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTit
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Document } from '@/types/document.type';
+import { useParams } from 'react-router-dom';
 
 const FormSchema = z.object({
   name: z.string({ required_error: 'Tên tài liệu không được để trống' }),
-  description: z.string().optional(),
+  type: z.string({ required_error: 'Loại tài liệu không được để trống' }),
+  description: z.string({ required_error: 'Mô tả không được để trống' }),
+  subjectId: z.string({ required_error: 'Subject ID không được để trống' }),
   file: z.instanceof(FileList).refine((files) => files.length > 0, {
     message: 'Bạn cần chọn file',
   }),
@@ -29,10 +32,13 @@ const DocumentModal = ({ modalProps, document }: DocumentModalProps) => {
     mode: 'create',
     onSubmit: () => {},
   };
+  const { id } = useParams<{ id: string }>();
+  console.log('first, id', id);
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     mode: 'onTouched',
-    defaultValues: mode === 'create' ? undefined : document,
+    defaultValues:
+      mode === 'create' ? { name: '', type: '', description: '', subjectId: id || '', file: undefined } : document,
   });
 
   const handleFormSubmit = (data: z.infer<typeof FormSchema>) => {
@@ -64,12 +70,38 @@ const DocumentModal = ({ modalProps, document }: DocumentModalProps) => {
             />
             <FormField
               control={form.control}
+              name="type"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Loại tài liệu</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
               name="description"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Mô tả</FormLabel>
                   <FormControl>
                     <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="subjectId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Subject ID</FormLabel>
+                  <FormControl>
+                    <Input {...field} disabled />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
