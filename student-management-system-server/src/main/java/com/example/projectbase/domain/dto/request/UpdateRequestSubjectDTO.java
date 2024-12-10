@@ -2,21 +2,32 @@ package com.example.projectbase.domain.dto.request;
 
 import lombok.*;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Builder
 public class UpdateRequestSubjectDTO {
+    @NotBlank(message = "Name is required")
     private String name;
 
+    @NotBlank(message = "Code is required")
     private String code;
 
-    private Integer numberOfCredits;
+    @NotNull(message = "Number of credits is required")
+    private Double numberOfCredits;
 
-    private Integer regularCoefficient;
+    @NotNull(message = "Regular coefficient is required")
+    private Double regularCoefficient;
 
-    private Integer finalCoefficient;
+    @NotNull
+    private double midTermCoefficient;
+
+    @NotNull(message = "Final coefficient is required")
+    private Double finalCoefficient;
 
     private String description;
 

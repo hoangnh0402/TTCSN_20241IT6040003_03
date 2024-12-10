@@ -1,4 +1,4 @@
-package com.example.projectbase.dto;
+package com.example.projectbase.domain.dto.request;
 
 import lombok.*;
 
