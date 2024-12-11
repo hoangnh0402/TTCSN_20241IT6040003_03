@@ -1,28 +1,29 @@
+import { Toaster } from '@/components/ui/toaster';
+import { Role } from '@/types/user.type';
 import React, { Suspense } from 'react';
 import { createBrowserRouter, Navigate, Outlet, RouterProvider } from 'react-router-dom';
-import ProtectedRoute from './ProtectedRoute';
-import { Role } from '@/types/user.type';
 
-const Login = React.lazy(() => import('@/pages/auth/login'));
+const ClassroomDetailManagement = React.lazy(() => import('@/pages/dashboard/ClassroomDetailManagement'));
 const ClassroomManagement = React.lazy(() => import('@/pages/dashboard/ClassroomManagement'));
+const Loading = React.lazy(() => import('@/components/ui/loading'));
+const Login = React.lazy(() => import('@/pages/auth/login'));
+const MainLayout = React.lazy(() => import('@/layouts/MainLayout'));
+const ProtectedRoute = React.lazy(() => import('./ProtectedRoute'));
+const RegisterSubject = React.lazy(() => import('@/pages/registerSubject'));
 const StudentManagement = React.lazy(() => import('@/pages/dashboard/StudentManagement'));
 const SubjectManagement = React.lazy(() => import('@/pages/dashboard/SubjectManagement'));
-const TeacherManagement = React.lazy(() => import('@/pages/dashboard/TeacherManagerment'));
-const MainLayout = React.lazy(() => import('@/layouts/MainLayout'));
-const ClassroomDetailManagement = React.lazy(() => import('@/pages/dashboard/ClassroomDetailManagement'));
-const RegisterSubject = React.lazy(() => import('@/pages/registerSubject'));
 const Summary = React.lazy(() => import('@/pages/summary'));
-const Loading = React.lazy(() => import('@/components/ui/loading'));
+const TeacherManagement = React.lazy(() => import('@/pages/dashboard/TeacherManagerment'));
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: (
-
+      <ProtectedRoute>
         <Suspense fallback={<Loading />}>
           <MainLayout />
         </Suspense>
-
+      </ProtectedRoute>
     ),
     children: [
       {
@@ -76,6 +77,22 @@ const router = createBrowserRouter([
         ],
       },
       {
+        path: 'register',
+        element: (
+          <ProtectedRoute allowedRoles={[Role.STUDENT]}>
+            <Suspense fallback={<Loading />}>
+              <RegisterSubject />
+            </Suspense>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'summary',
+        element: (
+          <ProtectedRoute allowedRoles={[Role.ADMIN, Role.TEACHER]}>
+            <Summary />
+          </ProtectedRoute>
+        ),
         children: [
           {
             path: 'register',
