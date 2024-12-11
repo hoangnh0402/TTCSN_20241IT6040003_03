@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
 import { ApiConstant } from '@/constants/api.constant';
-import api from '@/services/api.service';
+import { api } from '@/services/api.service';
 import { Classroom } from '@/types/classroom.type';
 
 interface ClassroomStore {

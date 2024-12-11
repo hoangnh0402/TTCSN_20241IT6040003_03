@@ -8,6 +8,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { Document } from '@/types/document.type';
 import { useParams } from 'react-router-dom';
+import { useDocumentStore } from '@/store/useDocumentStore';
 
 const FormSchema = z.object({
   name: z.string({ required_error: 'Tên tài liệu không được để trống' }),
@@ -28,23 +29,28 @@ interface DocumentModalProps {
 }
 
 const DocumentModal = ({ modalProps, document }: DocumentModalProps) => {
+  const { uploadDocument } = useDocumentStore();
   const { mode, onSubmit } = modalProps || {
     mode: 'create',
-    onSubmit: () => {},
+    onSubmit: async (data: z.infer<typeof FormSchema>) => {
+      const formData = new FormData();
+      formData.append('name', data.name);
+      formData.append('type', data.type);
+      formData.append('description', data.description);
+      formData.append('subjectId', data.subjectId);
+      if (data.file && data.file.length > 0) {
+        formData.append('file', data.file[0]); // Chỉ lấy tệp đầu tiên
+      }
+      await uploadDocument(formData);
+    },
   };
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { id } = useParams<{ id: string }>();
-  console.log('first, id', id);
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     mode: 'onTouched',
-    defaultValues:
-      mode === 'create' ? { name: '', type: '', description: '', subjectId: id || '', file: undefined } : document,
+    defaultValues: mode === 'create' ? undefined : document,
   });
-
-  const handleFormSubmit = (data: z.infer<typeof FormSchema>) => {
-    onSubmit(data);
-    form.reset();
-  };
 
   return (
     <DialogContent>
@@ -53,7 +59,7 @@ const DocumentModal = ({ modalProps, document }: DocumentModalProps) => {
         <DialogDescription>Nhập thông tin và chọn file để tải lên tài liệu mới</DialogDescription>
       </DialogHeader>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(handleFormSubmit)}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="grid gap-4 py-4">
             <FormField
               control={form.control}
@@ -101,7 +107,7 @@ const DocumentModal = ({ modalProps, document }: DocumentModalProps) => {
                 <FormItem>
                   <FormLabel>Subject ID</FormLabel>
                   <FormControl>
-                    <Input {...field} disabled />
+                    <Input {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -114,7 +120,13 @@ const DocumentModal = ({ modalProps, document }: DocumentModalProps) => {
                 <FormItem>
                   <FormLabel>File tải lên</FormLabel>
                   <FormControl>
-                    <Input type="file" onChange={(e) => field.onChange(e.target.files)} />
+                    <Input
+                      type="file"
+                      onChange={(e) => {
+                        // Chỉ lấy tệp đầu tiên
+                        field.onChange(e.target.files);
+                      }}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -131,4 +143,5 @@ const DocumentModal = ({ modalProps, document }: DocumentModalProps) => {
     </DialogContent>
   );
 };
+
 export default DocumentModal;

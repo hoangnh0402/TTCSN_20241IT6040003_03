@@ -14,4 +14,5 @@ export interface Document {
   size?: number;
   createdBy?: string;
   createdAt?: string;
+  path: string;
 }

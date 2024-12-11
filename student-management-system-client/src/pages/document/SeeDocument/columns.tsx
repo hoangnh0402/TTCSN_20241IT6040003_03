@@ -8,7 +8,6 @@ const DocumentsButton = ({ subject }: { subject: Subject }) => {
   const navigate = useNavigate();
 
   const handleViewDocuments = () => {
-    console.log(`Navigating to /documents/${subject.id}`);
     navigate(`/admin/documents/${subject.id}`);
   };
 
