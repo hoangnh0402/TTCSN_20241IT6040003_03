@@ -1,64 +1,79 @@
-import { create } from "zustand";
-import api from "@/services/api.service";
-import { User } from "@/types/user.type";
-import { useToast } from "@/hooks/use-toast";
-import zustymiddlewarets from 'zustymiddlewarets';
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
+import { ApiConstant } from '@/constants/api.constant';
+import api from '@/services/api.service';
+import { User } from '@/types/user.type';
 
 interface useUserStore {
-	user: object;
-    loading: boolean,
-    checkingAuth: boolean,
-	error: string | null,
-    login: (studentId: string, password: string) => Promise<boolean>;
-    logout: () => Promise<void>;
-    checkAuth: () => Promise<void>;
+  user: User | null;
+  loading: boolean;
+  isAuthenticated: boolean;
+  checkingAuth: boolean;
+  error: string | null;
+  login: (studentId: string, password: string) => Promise<void>;
+  logout: () => Promise<boolean>;
+  checkAuth: () => Promise<void>;
 }
 
-export const useUserStore = create<useUserStore>((set, get) => ({
-	user: {},
-	loading: false,
-	checkingAuth: true,
-	error: null,
-	
-	login: async (studentId : string, password: string) => {
-		set({ loading: true, error: null });
-		try {
-			const res = await api.post("/auth/login", { emailOrPhone: studentId, password });
-			localStorage.setItem('token', res.data.accessToken)
-			set({ user: res.data, loading: false });
-			return true;
-		} catch (error) {
-			console.log(error.response.data.message);
-			set({ loading: false, error: error.response.data.message });
-			return false;
-		} finally{
-			set({ loading: false })
-		}
-	},
+export const useUserStore = create<useUserStore>()(
+  persist(
+    (set) => ({
+      user: null,
+      loading: false,
+      isAuthenticated: false,
+      checkingAuth: false,
+      error: null,
 
-	logout: async () => {
-		try {
-			await api.post("/auth/logout");
-			set({ user: {} });
-		} catch (error) {
-			set({ loading: false, error: error.message });
-		}finally{
-			set({ loading: false})
-		}
-	},
+      login: async (username: string, password: string) => {
+        set({ loading: true, error: null });
+        try {
+          const { data } = await api.post(ApiConstant.auth.login, { emailOrPhone: username, password });
+          localStorage.setItem('token', data.accessToken);
+          const { data: user } = await api.get(ApiConstant.auth.profile);
+          set({ user, isAuthenticated: true });
+        } catch (error) {
+          set({ error: error.response.data.message });
+          throw new Error(error.response.data.message);
+        } finally {
+          set({ loading: false });
+        }
+      },
 
-	checkAuth: async () => {
-		set({ checkingAuth: true });
-		try {
-			const response = await api.get("/auth/profile");
-			set({ user: response.data, checkingAuth: false });
-		} catch (error) {
-			console.log(error.message);
-			set({ loading: false, error: error.message });
-		}finally{
-			set({ loading: false})
-		}
-	},
-}));
+      logout: async () => {
+        set({ loading: true, error: null });
+        try {
+          await api.post(ApiConstant.auth.logout);
+          localStorage.removeItem('token');
+          set({ user: null, isAuthenticated: false });
+          return true;
+        } catch (error) {
+          console.log(error.response.data.message);
+          set({ loading: false, error: error.response.data.message });
+          return false;
+        } finally {
+          set({ loading: false });
+        }
+      },
 
+      checkAuth: async () => {
+        set({ checkingAuth: true });
+        try {
+          const response = await api.get(ApiConstant.auth.profile);
+          set({ user: response.data, checkingAuth: false });
+        } catch (error) {
+          set({ loading: false, error: error.message });
+        } finally {
+          set({ loading: false });
+        }
+      },
+    }),
+    {
+      name: 'auth-storage',
+      partialize: (state) => ({
+        isAuthenticated: state.isAuthenticated,
+        user: state.user,
+      }),
+    },
+  ),
+);
