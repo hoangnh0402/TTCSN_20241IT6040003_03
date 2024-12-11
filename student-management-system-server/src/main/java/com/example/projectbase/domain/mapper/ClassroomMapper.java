@@ -1,5 +1,6 @@
 package com.example.projectbase.domain.mapper;
 
+import com.example.projectbase.domain.dto.request.UpdateClassroomRequestDTO;
 import com.example.projectbase.domain.dto.response.ClassroomResponseDTO;
 import com.example.projectbase.domain.entity.Classroom;
 import com.example.projectbase.domain.entity.Enrollment;
@@ -41,5 +42,5 @@ public interface ClassroomMapper {
     @Mapping(source = "updateClassroomRequestDTO.room", target = "room")
     @Mapping(source = "updateClassroomRequestDTO.startDate", target = "startDate")
     @Mapping(source = "subject", target = "subject")
-    void updateEntity(com.example.projectbase.dto.UpdateClassroomRequestDTO updateClassroomRequestDTO, @MappingTarget Classroom classroom, Subject subject);
+    void updateEntity(UpdateClassroomRequestDTO updateClassroomRequestDTO, @MappingTarget Classroom classroom, Subject subject);
 }

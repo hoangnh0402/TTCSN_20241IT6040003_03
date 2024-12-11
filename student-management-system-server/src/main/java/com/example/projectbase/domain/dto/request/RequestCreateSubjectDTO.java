@@ -19,13 +19,16 @@ public class RequestCreateSubjectDTO {
     private String code;
 
     @NotNull(message = "Number of credits is required")
-    private Integer numberOfCredits;
+    private Double numberOfCredits;
 
     @NotNull(message = "Regular coefficient is required")
-    private Integer regularCoefficient;
+    private Double regularCoefficient;
+
+    @NotNull
+    private double midTermCoefficient;
 
     @NotNull(message = "Final coefficient is required")
-    private Integer finalCoefficient;
+    private Double finalCoefficient;
 
     private String description;
 
