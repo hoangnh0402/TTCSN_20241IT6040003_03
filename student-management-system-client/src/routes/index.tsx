@@ -1,3 +1,4 @@
+import { Toaster } from '@/components/ui/toaster';
 import { Role } from '@/types/user.type';
 import React, { Suspense } from 'react';
 import { createBrowserRouter, Navigate, Outlet, RouterProvider } from 'react-router-dom';

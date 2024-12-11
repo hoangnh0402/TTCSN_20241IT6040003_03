@@ -1,13 +1,11 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
+
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
-import { toast, useToast } from '@/hooks/use-toast';
-import { useUserStore } from '@/store/useUserStore';
+
 import api from '@/services/api.service';
 import { useEffect, useState } from 'react';
-import { Eye, EyeOff } from 'lucide-react'; // Import icons
 
 import bgLogin from '@/assets/images/bg-login.jpg';
 import logo from '@/assets/images/logo.png';
@@ -33,7 +31,6 @@ const Login = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-  const { loading, login } = useUserStore();
 
   const form = useForm<z.infer<typeof formSchema>>({
     mode: 'onTouched',
