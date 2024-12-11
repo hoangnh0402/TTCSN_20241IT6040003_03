@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -54,6 +56,19 @@ public class DocumentServiceImpl implements DocumentService {
                     throw new RuntimeException("File cannot be empty");
                 }
 
+                // Xác định loại tệp
+                String contentType = file.getContentType();
+                if (contentType == null) {
+                    throw new RuntimeException("Invalid file: Content type is null");
+                }
+
+                // Chỉ cho phép các loại tệp được hỗ trợ
+                if (!contentType.startsWith("image/") &&
+                        !contentType.startsWith("video/") &&
+                        !contentType.equals("application/pdf")) {
+                    throw new RuntimeException("Unsupported file type: " + contentType);
+                }
+
                 // Gọi util upload file lên Cloudinary và lấy URL
                 String fileUrl = uploadFileUtil.uploadFile(file);
 
@@ -84,13 +99,23 @@ public class DocumentServiceImpl implements DocumentService {
                 .orElseThrow(() -> new RuntimeException(String.format(ERR_NOT_FOUND_ID, id)));
 
         try {
-            // Đọc nội dung file từ hệ thống
-            Path filePath = Paths.get(document.getPath());
-            return Files.readAllBytes(filePath);
+            String documentPath = document.getPath();
+            if (documentPath.startsWith("http://") || documentPath.startsWith("https://")) {
+                // Xử lý URL (ví dụ: tải file từ Cloudinary)
+                URL url = new URL(documentPath);
+                try (InputStream inputStream = url.openStream()) {
+                    return inputStream.readAllBytes();
+                }
+            } else {
+                // Xử lý đường dẫn cục bộ
+                Path filePath = Paths.get(documentPath);
+                return Files.readAllBytes(filePath);
+            }
         } catch (IOException e) {
             throw new RuntimeException(ERR_READ_FILE, e);
         }
     }
+
 
     @Override
     public Document getDocumentById(String id) {
