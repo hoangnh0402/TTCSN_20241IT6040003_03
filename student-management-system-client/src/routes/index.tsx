@@ -1,4 +1,7 @@
+import React, { Suspense } from 'react';
 import { createBrowserRouter, Navigate, Outlet, RouterProvider } from 'react-router-dom';
+import ProtectedRoute from './ProtectedRoute';
+import { Role } from '@/types/user.type';
 
 const Login = React.lazy(() => import('@/pages/auth/login'));
 const ClassroomManagement = React.lazy(() => import('@/pages/dashboard/ClassroomManagement'));
@@ -15,9 +18,11 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: (
-      <Suspense fallback={<Loading />}>
-        <MainLayout />
-      </Suspense>
+
+        <Suspense fallback={<Loading />}>
+          <MainLayout />
+        </Suspense>
+
     ),
     children: [
       {
