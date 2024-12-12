@@ -49,7 +49,7 @@ export const registeredSubjectTableColumn: ColumnDef<Subject>[] = [
     enableSorting: false,
   },
   {
-    accessorKey: 'classrooms',
+    accessorKey: 'schedule',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Lớp học" />,
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));

@@ -62,7 +62,7 @@ const items = [
     tooltip: 'Quản lý lớp học',
     roles: [Role.ADMIN],
   },
-  { title: 'Đăng kí học phần', icon: IoMdKey, href: '/register', tooltip: 'Đăng kí học phần', roles: [Role.STUDENT] },
+  { title: 'Đăng kí học phần', icon: IoMdKey, href: '/register', tooltip: 'Đăng kí học phần', roles: [Role.STUDENT, Role.ADMIN] },
   {
     title: 'Xem thống kê điểm tích lũy',
     icon: RiTableView,
