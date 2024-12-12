@@ -2,6 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+
 import { z } from 'zod';
 
 import bgLogin from '@/assets/images/bg-login.jpg';
@@ -26,6 +27,7 @@ const formSchema = z.object({
 
 const Login = () => {
   const { toast } = useToast();
+
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const { loading, login } = useUserStore();
@@ -73,7 +75,6 @@ const Login = () => {
             <CardTitle className="text-3xl">Đại học Công nghiệp Hà Nội</CardTitle>
             <CardDescription>One HaUI</CardDescription>
           </CardHeader>
-
           <CardContent className="">
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">

@@ -1,3 +1,4 @@
+import { Toaster } from '@/components/ui/toaster';
 import { Role } from '@/types/user.type';
 import React, { Suspense } from 'react';
 import { createBrowserRouter, Navigate, Outlet, RouterProvider } from 'react-router-dom';
@@ -78,7 +79,7 @@ const router = createBrowserRouter([
       {
         path: 'register',
         element: (
-          <ProtectedRoute allowedRoles={[Role.STUDENT]}>
+          <ProtectedRoute allowedRoles={[Role.STUDENT,Role.ADMIN]}>
             <Suspense fallback={<Loading />}>
               <RegisterSubject />
             </Suspense>
@@ -92,24 +93,6 @@ const router = createBrowserRouter([
             <Summary />
           </ProtectedRoute>
         ),
-        children: [
-          {
-            path: 'register',
-            element: (
-              <Suspense fallback={<Loading />}>
-                <RegisterSubject />
-              </Suspense>
-            ),
-          },
-          {
-            path: 'summary',
-            element: (
-              <Suspense fallback={<Loading />}>
-                <Summary />
-              </Suspense>
-            ),
-          },
-        ],
       },
     ],
   },

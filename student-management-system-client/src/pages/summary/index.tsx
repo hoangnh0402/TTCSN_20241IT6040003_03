@@ -1,80 +1,66 @@
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import * as React from 'react';
-import { Check, ChevronsUpDown } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { LabelList, Pie, PieChart } from 'recharts';
+import {
+  ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
+  ChartTooltip,
+  ChartTooltipContent,
+} from '@/components/ui/chart';
+import ComboBox from './combo-box';
+import TablePage from '@/components/ui/data-table';
 
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-const frameworks = [
-  {
-    value: 'next.js',
-    label: 'Next.js',
-  },
-  {
-    value: 'sveltekit',
-    label: 'SvelteKit',
-  },
-  {
-    value: 'nuxt.js',
-    label: 'Nuxt.js',
-  },
-  {
-    value: 'remix',
-    label: 'Remix',
-  },
-  {
-    value: 'astro',
-    label: 'Astro',
-  },
-];
+import { frameworks, chartConfig, summaryData, chartData } from './mock-data';
+import { SummaryInterface } from './summary-table/summary';
+import { columns } from './summary-table/columns';
+
 const Summary = () => {
-  const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState('');
+  const [cbovalue, setCboValue] = React.useState<string>('');
+
+  React.useEffect(() => {
+    console.log(cbovalue);
+  }, [cbovalue]);
+
   return (
     <Card>
       <CardHeader>
         <CardTitle className="text-2xl">Thống kê điểm tích lũy</CardTitle>
       </CardHeader>
       <CardContent>
-        <Popover open={open} onOpenChange={setOpen}>
-          <PopoverTrigger asChild>
-            <Button variant="outline" role="combobox" aria-expanded={open} className="w-[200px] justify-between">
-              {value ? frameworks.find((framework) => framework.value === value)?.label : 'Chọn lớp...'}
-              <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-[200px] p-0">
-            <Command>
-              <CommandInput placeholder="Search framework..." />
-              <CommandList>
-                <CommandEmpty>No framework found.</CommandEmpty>
-                <CommandGroup>
-                  {frameworks.map((framework) => (
-                    <CommandItem
-                      key={framework.value}
-                      value={framework.value}
-                      onSelect={(currentValue) => {
-                        setValue(currentValue === value ? '' : currentValue);
-                        setOpen(false);
-                      }}
-                    >
-                      <Check className={cn('mr-2 h-4 w-4', value === framework.value ? 'opacity-100' : 'opacity-0')} />
-                      {framework.label}
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-              </CommandList>
-            </Command>
-          </PopoverContent>
-        </Popover>
-        <div>
-        
+        <ComboBox data={frameworks} value={cbovalue} setValue={setCboValue} />
+
+        <div className="grid grid-cols-2 gap-4 mt-4">
+          <div className="flex flex-col items-center justify-center">
+            <ChartContainer
+              config={chartConfig}
+              className="w-full aspect-square max-h-[400px]"
+            >
+              <PieChart>
+                <ChartTooltip 
+                  content={<ChartTooltipContent nameKey="total" hideLabel />} 
+                />
+                <Pie 
+                  data={chartData} 
+                  dataKey="total" 
+                  className="fill-primary"
+                />
+                 <ChartLegend
+                  content={<ChartLegendContent nameKey="point" />}
+                  className=""
+                />
+              </PieChart>
+            </ChartContainer>
+          </div>
+          <div>
+            <TablePage<SummaryInterface> 
+              title="" 
+              data={summaryData} 
+              columns={columns} 
+            />
+          </div>
         </div>
       </CardContent>
-      {/* <CardFooter>
-        <p>Card Footer</p>
-      </CardFooter> */}
     </Card>
   );
 };
