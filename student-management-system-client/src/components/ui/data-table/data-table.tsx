@@ -23,10 +23,18 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
   toolbar?: (table: TanStackTable<TData>) => React.ReactNode;
   loading?: boolean;
+  hasPagination?: boolean;
   children?: React.ReactNode;
 }
 
-export function DataTable<TData, TValue>({ columns, data, toolbar, loading, children }: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({
+  columns,
+  data,
+  toolbar,
+  loading,
+  hasPagination,
+  children,
+}: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -123,7 +131,7 @@ export function DataTable<TData, TValue>({ columns, data, toolbar, loading, chil
           </TableBody>
         </Table>
       </div>
-      <DataTablePagination table={table} />
+      {hasPagination && <DataTablePagination table={table} />}
     </div>
   );
 }

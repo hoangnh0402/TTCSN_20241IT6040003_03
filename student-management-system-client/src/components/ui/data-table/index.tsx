@@ -12,6 +12,7 @@ interface TablePageProps<T> {
   Modal?: React.ComponentType<any>;
   modalProps?: { mode: 'create' | 'edit' | 'read'; onSubmit: (data: any) => void };
   hasToolbar?: boolean;
+  hasPagination?: boolean;
 }
 
 export default function TablePage<T>({
@@ -23,11 +24,16 @@ export default function TablePage<T>({
   Modal,
   modalProps,
   hasToolbar = true,
+  hasPagination = true,
 }: TablePageProps<T>) {
   return (
     <div className="rounded-sm bg-white p-4">
-      <h2 className="mb-4 text-2xl font-bold tracking-tight">{title}</h2>
-      <hr />
+      {title && (
+        <>
+          <h2 className="mb-4 text-2xl font-bold tracking-tight">{title}</h2>
+          <hr />
+        </>
+      )}
       <DataTable
         data={data}
         columns={columns}
@@ -35,6 +41,7 @@ export default function TablePage<T>({
           hasToolbar ? (table) => <DataTableToolbar table={table} Modal={Modal} modalProps={modalProps} /> : undefined
         }
         loading={loading}
+        hasPagination={hasPagination}
         children={children}
       />
     </div>
