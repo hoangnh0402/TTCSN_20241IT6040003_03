@@ -9,6 +9,6 @@ import lombok.*;
 public class ClassCreateDto {
     private String name;
     private String classCode;
-    private int academicYear;
+    private String academicYear;
     private String departmentId;
 }
