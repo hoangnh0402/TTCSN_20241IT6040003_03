@@ -11,7 +11,7 @@ const StudentManagement = () => {
   useEffect(() => {
     fetchStudents();
   }, [fetchStudents]);
-
+  console.log('first', students);
   return (
     <TablePage<User>
       title="Quản lý sinh viên"

@@ -1,21 +1,24 @@
 import { create } from 'zustand';
 
 import { ApiConstant } from '@/constants/api.constant';
-import api from '@/services/api.service';
+import { api } from '@/services/api.service';
 import { Subject } from '@/types/subject.type';
 
 interface SubjectStore {
   subjects: Subject[];
+  subject: Subject | null;
   loading: boolean;
   error: string | null;
   fetchSubjects: () => Promise<void>;
   createSubject: (Subject: Omit<Subject, 'id'>) => Promise<void>;
   updateSubject: (id: string, Subject: Omit<Subject, 'id'>) => Promise<void>;
   deleteSubject: (id: string) => Promise<void>;
+  getSubjectById: (id: string) => Promise<void>;
 }
 
 export const useSubjectStore = create<SubjectStore>((set) => ({
   subjects: [],
+  subject: null,
   loading: false,
   error: null,
 
@@ -65,6 +68,17 @@ export const useSubjectStore = create<SubjectStore>((set) => ({
       set((state) => ({
         subjects: state.subjects.filter((s) => s.id !== id),
       }));
+    } catch (error) {
+      set({ error: error.message });
+    } finally {
+      set({ loading: false });
+    }
+  },
+  getSubjectById: async (id) => {
+    set({ loading: true, error: null });
+    try {
+      const { data } = await api.get<Subject>(ApiConstant.subjects.getById.replace(':id', id));
+      set({ subject: data });
     } catch (error) {
       set({ error: error.message });
     } finally {
