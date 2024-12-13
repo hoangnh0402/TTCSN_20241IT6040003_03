@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 import { ApiConstant } from '@/constants/api.constant';
-import {api} from '@/services/api.service';
+import { api } from '@/services/api.service';
 import { User } from '@/types/user.type';
 
 interface useUserStore {

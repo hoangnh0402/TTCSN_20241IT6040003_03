@@ -47,7 +47,6 @@ public class ClassServiceImpl implements ClassService {
             aClass.setName(classUpdateDto.getName());
         if (classUpdateDto.getClassCode() != null)
             aClass.setClassCode(classUpdateDto.getClassCode());
-        if (classUpdateDto.getAcademicYear()>0 && classUpdateDto.getAcademicYear()<7)
             aClass.setAcademicYear(classUpdateDto.getAcademicYear());
         if (classUpdateDto.getDepartmentId() != null){
             aClass.setDepartment(departmentRepository.findById(classUpdateDto.getDepartmentId()).orElseThrow(() -> new NotFoundException(ErrorMessage.Department.ERR_NOT_FOUND_ID, new String[]{classUpdateDto.getDepartmentId()})));

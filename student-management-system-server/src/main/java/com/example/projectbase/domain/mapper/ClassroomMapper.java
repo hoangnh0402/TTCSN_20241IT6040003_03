@@ -8,8 +8,12 @@ import com.example.projectbase.domain.entity.Subject;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface ClassroomMapper {
@@ -34,6 +38,13 @@ public interface ClassroomMapper {
                 .findFirst()                                       // Lấy bản ghi đầu tiên
                 .orElse(null);                                     // Trả về null nếu không có
     }
+
+    default List<ClassroomResponseDTO> toDto1(List<Classroom> classrooms) {
+        return classrooms.stream()
+                .map(this::toDto)  // Chuyển đổi từng Classroom thành ClassroomResponseDTO
+                .collect(Collectors.toList());
+    }
+
 
     // Cập nhật entity Classroom với thông tin từ UpdateClassroomRequestDTO
     @Mapping(source = "updateClassroomRequestDTO.code", target = "code")

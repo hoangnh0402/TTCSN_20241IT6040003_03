@@ -4,10 +4,12 @@ import com.example.projectbase.constant.CommonConstant;
 import com.example.projectbase.constant.ErrorMessage;
 import com.example.projectbase.constant.RoleConstant;
 import com.example.projectbase.domain.dto.response.CommonResponseDto;
+import com.example.projectbase.domain.dto.response.EnrollmentResponse;
 import com.example.projectbase.domain.dto.response.UserDto;
 import com.example.projectbase.domain.entity.Classroom;
 import com.example.projectbase.domain.entity.Enrollment;
 import com.example.projectbase.domain.entity.User;
+import com.example.projectbase.domain.mapper.EnrollmentMapper;
 import com.example.projectbase.exception.NotFoundException;
 import com.example.projectbase.repository.*;
 import com.example.projectbase.security.UserPrincipal;
@@ -26,6 +28,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
     private final SubjectRepository subjectRepository;
     private final RecordRepository repository;
     private final UserRepository userRepository;
+    private final EnrollmentMapper enrollmentMapper;
 
 
     @Override
@@ -54,25 +57,10 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         return enrollment;
     }
 
-    public List<UserDto> getAllStudentsInClassroom(String classroomId) {
+    public List<EnrollmentResponse> getAllStudentsInClassroom(String classroomId) {
         List<Enrollment> enrollments = enrollmentRepository.findAllByClassroomId(classroomId);
 
-        // Mapping từ Enrollment sang StudentResponseDTO
-        return enrollments.stream()
-                .map(enrollment -> UserDto.builder()
-                        .id(enrollment.getUser().getId())
-                        .username(enrollment.getUser().getUsername())
-                        .email(enrollment.getUser().getEmail())
-                        .phoneNumber(enrollment.getUser().getPhoneNumber())
-                        .fullName(enrollment.getUser().getFullName())
-                        .gender(enrollment.getUser().getGender())
-                        .birthday(enrollment.getUser().getBirthday())
-                        .address(enrollment.getUser().getAddress())
-                        .avatar(enrollment.getUser().getAvatar())
-                        .classId(classroomId) // Gán lớp học hiện tại cho UserDto
-                        .roleName(enrollment.getUser().getRole().getName())
-                        .build())
-                .collect(Collectors.toList());
+        return enrollmentMapper.toEnrollmentResponses(enrollments);
     }
 
     @Override
@@ -120,5 +108,26 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         enrollmentRepository.delete(enrollment);
 
         return new CommonResponseDto(true, CommonConstant.SUCCESS);
+    }
+    @Override
+    public List<UserDto> getAllStudentsInClassroom1(String classroomId) {
+        List<Enrollment> enrollments = enrollmentRepository.findAllByClassroomId(classroomId);
+
+        // Mapping từ Enrollment sang StudentResponseDTO
+        return enrollments.stream()
+                .map(enrollment -> UserDto.builder()
+                        .id(enrollment.getUser().getId())
+                        .username(enrollment.getUser().getUsername())
+                        .email(enrollment.getUser().getEmail())
+                        .phoneNumber(enrollment.getUser().getPhoneNumber())
+                        .fullName(enrollment.getUser().getFullName())
+                        .gender(enrollment.getUser().getGender())
+                        .birthday(enrollment.getUser().getBirthday())
+                        .address(enrollment.getUser().getAddress())
+                        .avatar(enrollment.getUser().getAvatar())
+                        .classId(classroomId) // Gán lớp học hiện tại cho UserDto
+                        .roleName(enrollment.getUser().getRole().getName())
+                        .build())
+                .collect(Collectors.toList());
     }
 }

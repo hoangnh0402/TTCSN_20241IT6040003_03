@@ -95,6 +95,12 @@ public class ClassroomServiceImpl implements ClassroomService {
     }
 
     @Override
+    public List<ClassroomResponseDTO> getAllClassroomsStudentCode(String studentCode) {
+        List<Classroom> classrooms = classroomRepository.findAllClassroomsByStudentCode(studentCode);
+        return classroomMapper.toDto1(classrooms);  // Chuyển đổi Classroom thành ClassroomResponseDTO
+    }
+
+    @Override
     public List<Classroom> findAllClassroomBySubjectCode(String code) {
         return classroomRepository.findAllClassroomBySubjectCode(code);
     }
