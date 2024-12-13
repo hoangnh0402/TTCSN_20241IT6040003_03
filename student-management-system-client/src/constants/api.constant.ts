@@ -27,6 +27,13 @@ export const ApiConstant = {
     update: '/admin/subject?subjectId=:id',
     delete: '/admin/subject?subjectId=:id',
   },
+  classes: {
+    getAll: '/class',
+    create:'class',
+    update: '/class',
+    delete:'/class',
+    getById: '/class/:id'
+  },
   classrooms: {
     getAll: '/user/classroom',
     getById: '/admin/classroom/id',

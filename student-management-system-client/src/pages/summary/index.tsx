@@ -30,33 +30,32 @@ const Summary = () => {
       <CardContent>
         <ComboBox data={frameworks} value={cbovalue} setValue={setCboValue} />
 
-        <div className="grid grid-cols-2 gap-4 mt-4">
+        <div className="mt-4 grid grid-cols-2 gap-4">
           <div className="flex flex-col items-center justify-center">
-            <ChartContainer
-              config={chartConfig}
-              className="w-full aspect-square max-h-[400px]"
-            >
+            <ChartContainer config={chartConfig} className="aspect-square max-h-[400px] w-full">
               <PieChart>
-                <ChartTooltip 
-                  content={<ChartTooltipContent nameKey="total" hideLabel />} 
-                />
-                <Pie 
-                  data={chartData} 
-                  dataKey="total" 
-                  className="fill-primary"
-                />
-                 <ChartLegend
-                  content={<ChartLegendContent nameKey="point" />}
-                  className=""
-                />
+                <ChartTooltip content={<ChartTooltipContent nameKey="total" hideLabel />} />
+                <Pie data={chartData} dataKey="total" nameKey="point" className="fill-primary">
+                  <LabelList
+                  
+                    dataKey="point"
+                    className="fill-white text-[16px] font-bold text-white drop-shadow-[1px_0_0_rgba(0,0,0,0.5)]"
+                    stroke="none"
+                    fontSize={12}
+                    formatter={(value: keyof typeof chartConfig) => chartConfig[value]?.label}
+                  />
+                </Pie>
+                <ChartLegend content={<ChartLegendContent nameKey="point" />} className="" />
               </PieChart>
             </ChartContainer>
           </div>
           <div>
-            <TablePage<SummaryInterface> 
-              title="" 
-              data={summaryData} 
-              columns={columns} 
+            <TablePage<SummaryInterface>
+              title=""
+              data={summaryData}
+              columns={columns}
+              hasPagination={false}
+              hasToolbar={false}
             />
           </div>
         </div>

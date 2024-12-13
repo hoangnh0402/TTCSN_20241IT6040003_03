@@ -3,12 +3,10 @@
 
 import { DataTableColumnHeader } from '@/components/ui/data-table/data-table-column-header';
 
-import { Subject } from '@/types/subject.type';
-
 import { ColumnDef } from '@tanstack/react-table';
 
 import { RegisterDialog } from '@/components/ui/register-dialog';
-import api from '@/services/api.service';
+import { api } from '@/services/api.service';
 import { ApiConstant } from '@/constants/api.constant';
 import { AvailableRegisterSubject } from '@/types/registerSubject.type';
 
@@ -75,9 +73,11 @@ export const registerSubjectTableColumn: ColumnDef<AvailableRegisterSubject>[] =
         <RegisterDialog
           title="Đăng kí"
           onConfirm={async () => {
-            console.log(subject.classroomId)
-            const response = await api.post(ApiConstant.enrollment.register,null, {params : {classroomId: subject.classroomId }});
-            console.log("register subject response: "+ response)
+            console.log(subject.classroomId);
+            const response = await api.post(ApiConstant.enrollment.register, null, {
+              params: { classroomId: subject.classroomId },
+            });
+            console.log('register subject response: ' + response);
           }}
         />
       );
