@@ -17,7 +17,7 @@ const EditAction: React.FC<{ subject: Subject }> = ({ subject }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button onSelect={() => {}}>Sửa</Button>
+        <Button>Sửa</Button>
       </DialogTrigger>
       <SubjectModal
         modalProps={{
