@@ -5,6 +5,7 @@ import { useSubjectStore } from '@/store/useSubjectStore';
 import { Subject } from '@/types/subject.type';
 import { columns } from './columns';
 import SubjectModal from './subject-modal';
+import { useClassroomStore } from '@/store/useClassroomStore';
 
 const SubjectMangement = () => {
   const { subjects, loading, fetchSubjects } = useSubjectStore();

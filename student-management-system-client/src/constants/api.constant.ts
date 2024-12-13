@@ -2,6 +2,7 @@ export const ApiConstant = {
   auth: {
     login: '/auth/login',
     logout: '/auth/logout',
+    profile: '/user/current',
   },
   students: {
     getAll: '/user/student',
@@ -20,7 +21,7 @@ export const ApiConstant = {
     delete: '/user/lock?userId=:id',
   },
   subjects: {
-    getAll: '/admin/subject',
+    getAll: '/user/subject',
     getById: '/admin/subject/id?subjectId=:id',
     create: '/admin/subject',
     update: '/admin/subject?subjectId=:id',
@@ -28,7 +29,7 @@ export const ApiConstant = {
   },
   classrooms: {
     getAll: '/user/classroom',
-    getById: '/admin/classroom/id?classroomId=:id',
+    getById: '/admin/classroom/id',
     create: '/admin/classroom',
     update: '/admin/classroom?classroomId=:id',
     delete: '/admin/classroom?classroomId=:id',
@@ -36,4 +37,25 @@ export const ApiConstant = {
     addStudent: '/admin/classroom/:id/add-student',
     removeStudent: '/admin/classroom/:classroomId/:studentId',
   },
+  documents: {
+    getAll: '/documents',
+    getAllBySubject: '/documents/subject',
+    getById: '/documents/{id}',
+    dowload: '/documents/download',
+    upload: '/upload',
+  },
+  enrollment: {
+    register:'enroll/register',
+  }
 };
+
+
+export const ApiConstantUser = {
+  classrooms:{
+    getAll:'/user/classroom'
+  },
+
+  subjects:{
+    getAll:'/user/subject'
+  }
+}
