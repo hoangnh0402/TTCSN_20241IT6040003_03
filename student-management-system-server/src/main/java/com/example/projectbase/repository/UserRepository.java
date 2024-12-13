@@ -31,4 +31,7 @@ public interface UserRepository extends JpaRepository<User, String> {
 
   List<User> findAllByRoleName(String roleName);
 
+  List<User> findAllByRoleNameAndIsLocked(String roleName, Boolean isLocked);
+
+
 }

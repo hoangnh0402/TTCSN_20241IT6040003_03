@@ -3,6 +3,7 @@ package com.example.projectbase.controller;
 import com.example.projectbase.base.RestApiV1;
 import com.example.projectbase.base.VsResponseUtil;
 import com.example.projectbase.constant.UrlConstant;
+import com.example.projectbase.domain.dto.response.EnrollmentResponse;
 import com.example.projectbase.domain.dto.response.UserDto;
 import com.example.projectbase.domain.entity.Enrollment;
 import com.example.projectbase.security.CurrentUser;
@@ -45,7 +46,7 @@ public class EnrollmentController {
     @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
     @GetMapping("/{classroomId}/students")
     public ResponseEntity<Map<String, Object>> getAllStudentsInClassroom(@PathVariable String classroomId) {
-        List<UserDto> students = enrollmentService.getAllStudentsInClassroom(classroomId);
+        List<EnrollmentResponse> students = enrollmentService.getAllStudentsInClassroom(classroomId);
         Map<String, Object> response = new HashMap<>();
         response.put("data", students);
         return ResponseEntity.ok(response);

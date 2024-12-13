@@ -70,12 +70,16 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public List<UserDto> getAllStudents() {
-    return userMapper.toUserDtos(userRepository.findAllByRoleName(RoleConstant.STUDENT));
+    return userMapper.toUserDtos(
+            userRepository.findAllByRoleNameAndIsLocked(RoleConstant.STUDENT, false)
+    );
   }
 
   @Override
   public List<UserDto> getAllTeachers() {
-    return userMapper.toUserDtos(userRepository.findAllByRoleName(RoleConstant.TEACHER));
+    return userMapper.toUserDtos(
+            userRepository.findAllByRoleNameAndIsLocked(RoleConstant.TEACHER, false)
+    );
   }
 
   @Override
