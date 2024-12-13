@@ -117,6 +117,7 @@ public class DocumentServiceImpl implements DocumentService {
             throw new RuntimeException(ERR_READ_FILE, e);
         }
     }
+
     @Override
     public Document getDocumentById(String id) {
         return documentRepository.findById(id)

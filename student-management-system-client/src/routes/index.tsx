@@ -1,82 +1,144 @@
-import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom';
+import { Toaster } from '@/components/ui/toaster';
+import { Role } from '@/types/user.type';
+import React, { Suspense } from 'react';
+import { createBrowserRouter, Navigate, Outlet, RouterProvider } from 'react-router-dom';
 
-import Login from '@/pages/auth/login';
-import ClassroomManagement from '@/pages/dashboard/ClassroomManagement';
-import StudentManagement from '@/pages/dashboard/StudentManagement';
-import SubjectManagement from '@/pages/dashboard/SubjectManagement';
-import TeacherManagement from '@/pages/dashboard/TeacherManagerment';
-import MainLayout from '@/layouts/MainLayout';
-import ClassroomDetailManagement from '@/pages/dashboard/ClassroomDetailManagement';
-import SeeDocument from '@/pages/document/SeeDocument';
-import DocumentList from '@/pages/document/DocumentList';
-import RegisterSubject from '@/pages/registerSubject';
-import Summary from '@/pages/summary';
-import SubjectList from '@/pages/Classroom/ClassroomList';
-import ClassroomDetail from '@/pages/Classroom/ClassroomDetail';
+const ClassroomDetailManagement = React.lazy(() => import('@/pages/dashboard/ClassroomDetailManagement'));
+const ClassroomManagement = React.lazy(() => import('@/pages/dashboard/ClassroomManagement'));
+const Loading = React.lazy(() => import('@/components/ui/loading'));
+const Login = React.lazy(() => import('@/pages/auth/login'));
+const MainLayout = React.lazy(() => import('@/layouts/MainLayout'));
+const ProtectedRoute = React.lazy(() => import('./ProtectedRoute'));
+const RegisterSubject = React.lazy(() => import('@/pages/registerSubject'));
+const StudentManagement = React.lazy(() => import('@/pages/dashboard/StudentManagement'));
+const SubjectManagement = React.lazy(() => import('@/pages/dashboard/SubjectManagement'));
+const Summary = React.lazy(() => import('@/pages/summary'));
+const TeacherManagement = React.lazy(() => import('@/pages/dashboard/TeacherManagerment'));
+const SeeDocument = React.lazy(() => import('@/pages/document/SeeDocument'));
+const DocumentList = React.lazy(() => import('@/pages/document/DocumentList'));
+const SubjectList = React.lazy(() => import('@/pages/Classroom/ClassroomList'));
+const ClassroomDetail = React.lazy(() => import('@/pages/Classroom/ClassroomDetail'));
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <MainLayout />,
+    element: (
+      <ProtectedRoute>
+        <Suspense fallback={<Loading />}>
+          <MainLayout />
+        </Suspense>
+      </ProtectedRoute>
+    ),
     children: [
       {
         path: 'admin',
+        element: (
+          <ProtectedRoute allowedRoles={[Role.ADMIN]}>
+            <Outlet />
+          </ProtectedRoute>
+        ),
         children: [
           {
             path: 'subjects',
-            element: <SubjectManagement />,
+            element: (
+              <Suspense fallback={<Loading />}>
+                <SubjectManagement />
+              </Suspense>
+            ),
           },
           {
             path: 'students',
-            element: <StudentManagement />,
+            element: (
+              <Suspense fallback={<Loading />}>
+                <StudentManagement />
+              </Suspense>
+            ),
           },
           {
             path: 'teachers',
-            element: <TeacherManagement />,
+            element: (
+              <Suspense fallback={<Loading />}>
+                <TeacherManagement />
+              </Suspense>
+            ),
           },
           {
             path: 'classrooms',
-            element: <ClassroomManagement />,
+            element: (
+              <Suspense fallback={<Loading />}>
+                <ClassroomManagement />
+              </Suspense>
+            ),
           },
           {
             path: 'lectures',
-            element: <SeeDocument />,
+            element: (
+              <Suspense fallback={<Loading />}>
+                <SeeDocument />
+              </Suspense>
+            ),
           },
           {
             path: 'documents/:id',
-            element: <DocumentList />,
+            element: (
+              <Suspense fallback={<Loading />}>
+                <DocumentList />
+              </Suspense>
+            ),
           },
           {
             path: 'classrooms/:id',
-            element: <ClassroomDetailManagement />,
+            element: (
+              <Suspense fallback={<Loading />}>
+                <ClassroomDetailManagement />
+              </Suspense>
+            ),
           },
         ],
       },
       {
-        children: [
-          {
-            path: 'register',
-            element: <RegisterSubject />,
-          },
-          {
-            path: 'summary',
-            element: <Summary />,
-          },
-          {
-            path: '/classrooms',
-            element: <SubjectList />,
-          },
-          {
-            path: '/classrooms/:classroomCode',
-            element: <ClassroomDetail />,
-          },
-        ],
+        path: 'register',
+        element: (
+          <ProtectedRoute allowedRoles={[Role.STUDENT, Role.ADMIN]}>
+            <Suspense fallback={<Loading />}>
+              <RegisterSubject />
+            </Suspense>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'summary',
+        element: (
+          <ProtectedRoute allowedRoles={[Role.ADMIN, Role.TEACHER]}>
+            <Summary />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: '/classrooms',
+        element: (
+          <Suspense fallback={<Loading />}>
+            <SubjectList />
+          </Suspense>
+        ),
+      },
+      {
+        path: '/classrooms/:classroomCode',
+        element: (
+          <Suspense fallback={<Loading />}>
+            <ClassroomDetail />
+          </Suspense>
+        ),
       },
     ],
   },
   {
     path: '/login',
-    element: <Login />,
+    element: (
+      <Suspense fallback={<Loading />}>
+        <Login />
+      </Suspense>
+    ),
   },
   {
     path: '*',
