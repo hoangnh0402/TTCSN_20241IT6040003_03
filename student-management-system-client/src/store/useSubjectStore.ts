@@ -77,7 +77,7 @@ export const useSubjectStore = create<SubjectStore>((set) => ({
   getSubjectById: async (id) => {
     set({ loading: true, error: null });
     try {
-      const { data } = await api.get<Subject>(`${ApiConstant.subjects.getById}?subjectId=${id}`);
+      const { data } = await api.get<Subject>(ApiConstant.subjects.getById.replace(':id', id));
       set({ subject: data });
     } catch (error) {
       set({ error: error.message });

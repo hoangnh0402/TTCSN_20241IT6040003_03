@@ -21,7 +21,7 @@ export const ApiConstant = {
   },
   subjects: {
     getAll: '/admin/subject',
-    getById: '/admin/subject/id',
+    getById: '/admin/subject/id?subjectId=:id',
     create: '/admin/subject',
     update: '/admin/subject?subjectId=:id',
     delete: '/admin/subject?subjectId=:id',
