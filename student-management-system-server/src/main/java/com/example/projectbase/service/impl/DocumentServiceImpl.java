@@ -8,6 +8,8 @@ import com.example.projectbase.repository.SubjectRepository;
 import com.example.projectbase.service.DocumentService;
 import com.example.projectbase.util.UploadFileUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -115,8 +117,57 @@ public class DocumentServiceImpl implements DocumentService {
             throw new RuntimeException(ERR_READ_FILE, e);
         }
     }
-
-
+//    @Override
+//    public byte[] downloadDocument(String id) {
+//        Document document = documentRepository.findById(id)
+//                .orElseThrow(() -> new RuntimeException(String.format(ERR_NOT_FOUND_ID, id)));
+//
+//        try {
+//            String documentPath = document.getPath();
+//            String contentType = Files.probeContentType(Paths.get(documentPath));
+//            if (contentType == null) {
+//                contentType = "application/octet-stream"; // Fallback nếu không xác định được content type
+//            }
+//
+//            System.out.println("Document Path: " + documentPath);
+//            System.out.println("Content-Type: " + contentType);
+//
+//            if (documentPath.startsWith("http://") || documentPath.startsWith("https://")) {
+//                URL url = new URL(documentPath);
+//                try (InputStream inputStream = url.openStream()) {
+//                    byte[] fileBytes = inputStream.readAllBytes();
+//                    return fileBytes;
+//                }
+//            } else {
+//                Path filePath = Paths.get(documentPath);
+//                byte[] fileBytes = Files.readAllBytes(filePath);
+//                return fileBytes;
+//            }
+//        } catch (IOException e) {
+//            throw new RuntimeException(ERR_READ_FILE, e);
+//        }
+//    }
+//
+//    public ResponseEntity<byte[]> handleFileDownload(String id) {
+//        try {
+//            byte[] fileContent = downloadDocument(id);
+//
+//            Document document = documentRepository.findById(id)
+//                    .orElseThrow(() -> new RuntimeException(String.format(ERR_NOT_FOUND_ID, id)));
+//
+//            String contentType = Files.probeContentType(Paths.get(document.getPath()));
+//            if (contentType == null) {
+//                contentType = "application/octet-stream";
+//            }
+//
+//            return ResponseEntity.ok()
+//                    .header(HttpHeaders.CONTENT_TYPE, contentType)
+//                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + document.getName())
+//                    .body(fileContent);
+//        } catch (IOException e) {
+//            throw new RuntimeException("Could not determine content type", e);
+//        }
+//    }
     @Override
     public Document getDocumentById(String id) {
         return documentRepository.findById(id)

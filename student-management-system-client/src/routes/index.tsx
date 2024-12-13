@@ -11,6 +11,8 @@ import SeeDocument from '@/pages/document/SeeDocument';
 import DocumentList from '@/pages/document/DocumentList';
 import RegisterSubject from '@/pages/registerSubject';
 import Summary from '@/pages/summary';
+import SubjectList from '@/pages/Classroom/ClassroomList';
+import ClassroomDetail from '@/pages/Classroom/ClassroomDetail';
 
 const router = createBrowserRouter([
   {
@@ -37,19 +39,17 @@ const router = createBrowserRouter([
             element: <ClassroomManagement />,
           },
           {
-
             path: 'lectures',
             element: <SeeDocument />,
           },
           {
             path: 'documents/:id',
             element: <DocumentList />,
-
           },
           {
             path: 'classrooms/:id',
             element: <ClassroomDetailManagement />,
-          }
+          },
         ],
       },
       {
@@ -61,6 +61,14 @@ const router = createBrowserRouter([
           {
             path: 'summary',
             element: <Summary />,
+          },
+          {
+            path: '/classrooms',
+            element: <SubjectList />,
+          },
+          {
+            path: '/classrooms/:classroomCode',
+            element: <ClassroomDetail />,
           },
         ],
       },

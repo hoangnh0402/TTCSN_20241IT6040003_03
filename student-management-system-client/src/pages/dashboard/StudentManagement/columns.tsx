@@ -68,17 +68,17 @@ export const columns: ColumnDef<User>[] = [
       return value.includes(row.getValue(id));
     },
   },
-  {
-    accessorKey: 'birthday',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Ngày sinh" />,
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
-    },
-    cell: ({ row }) => {
-      const birthday = row.original.birthday || '';
-      return <div>{format(new Date(birthday), 'dd/MM/yyyy')}</div>;
-    },
-  },
+  // {
+  //   accessorKey: 'birthday',
+  //   header: ({ column }) => <DataTableColumnHeader column={column} title="Ngày sinh" />,
+  //   filterFn: (row, id, value) => {
+  //     return value.includes(row.getValue(id));
+  //   },
+  //   cell: ({ row }) => {
+  //     const birthday = row.original.birthday || '';
+  //     return <div>{format(new Date(birthday), 'dd/MM/yyyy')}</div>;
+  //   },
+  // },
   {
     accessorKey: 'classId',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Lớp" />,

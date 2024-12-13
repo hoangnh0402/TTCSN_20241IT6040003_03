@@ -6,17 +6,20 @@ import { Classroom } from '@/types/classroom.type';
 
 interface ClassroomStore {
   classrooms: Classroom[];
+  classroom: Classroom | null;
+
   loading: boolean;
   error: string | null;
   fetchClassrooms: () => Promise<void>;
   createClassroom: (Classroom: Omit<Classroom, 'id'>) => Promise<void>;
   updateClassroom: (id: string, Classroom: Omit<Classroom, 'id'>) => Promise<void>;
   deleteClassroom: (id: string) => Promise<void>;
+  getClassroomById: (id: string) => Promise<void>;
 }
 
 export const useClassroomStore = create<ClassroomStore>((set) => ({
   classrooms: [],
-
+  classroom: null,
   loading: false,
   error: null,
 
@@ -65,6 +68,18 @@ export const useClassroomStore = create<ClassroomStore>((set) => ({
       set((state) => ({
         classrooms: state.classrooms.filter((c) => c.id !== id),
       }));
+    } catch (error) {
+      set({ error: error.message });
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+  getClassroomById: async (id) => {
+    set({ loading: true, error: null });
+    try {
+      const { data } = await api.get<Classroom>(`${ApiConstant.classrooms.getById}?classroomId=${id}`);
+      set({ classroom: data });
     } catch (error) {
       set({ error: error.message });
     } finally {

@@ -15,7 +15,7 @@ const FormSchema = z.object({
   type: z.string({ required_error: 'Loại tài liệu không được để trống' }),
   description: z.string({ required_error: 'Mô tả không được để trống' }),
   subjectId: z.string({ required_error: 'Subject ID không được để trống' }),
-  file: z.instanceof(FileList).refine((files) => files.length > 0, {
+  files: z.instanceof(FileList).refine((files) => files.length > 0, {
     message: 'Bạn cần chọn file',
   }),
 });
@@ -38,9 +38,7 @@ const DocumentModal = ({ modalProps, document }: DocumentModalProps) => {
       formData.append('type', data.type);
       formData.append('description', data.description);
       formData.append('subjectId', data.subjectId);
-      if (data.file && data.file.length > 0) {
-        formData.append('file', data.file[0]); // Chỉ lấy tệp đầu tiên
-      }
+      formData.append('files', data.files[0]);
       await uploadDocument(formData);
     },
   };
@@ -115,7 +113,7 @@ const DocumentModal = ({ modalProps, document }: DocumentModalProps) => {
             />
             <FormField
               control={form.control}
-              name="file"
+              name="files"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>File tải lên</FormLabel>
@@ -123,7 +121,6 @@ const DocumentModal = ({ modalProps, document }: DocumentModalProps) => {
                     <Input
                       type="file"
                       onChange={(e) => {
-                        // Chỉ lấy tệp đầu tiên
                         field.onChange(e.target.files);
                       }}
                     />

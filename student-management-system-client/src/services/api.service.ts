@@ -39,7 +39,7 @@ apiDefaultUpload.interceptors.request.use((config) => {
   return config;
 }, Promise.reject);
 apiDefaultUpload.interceptors.response.use(
-  (response) => response.data,
+  (response) => response,
   (error) => {
     if (error.response?.status === 401) {
       localStorage.removeItem('token');

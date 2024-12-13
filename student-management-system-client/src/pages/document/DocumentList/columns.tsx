@@ -1,24 +1,8 @@
 import { DataTableColumnHeader } from '@/components/ui/data-table/data-table-column-header';
-import { useDocumentStore } from '@/store/useDocumentStore';
 import { Document } from '@/types/document.type';
 import { ColumnDef } from '@tanstack/react-table';
-const DownloadButton = ({ documentId }: { documentId: string }) => {
-  const { downloadDocument } = useDocumentStore();
+import DownloadButton from './dowload-button';
 
-  const handleDownload = async () => {
-    try {
-      await downloadDocument(documentId);
-    } catch (error) {
-      console.error('Lỗi tải file:', error);
-    }
-  };
-
-  return (
-    <button onClick={handleDownload} className="cursor-pointer text-blue-600 hover:text-blue-800">
-      &#8681; Tải về
-    </button>
-  );
-};
 export const documentColumns: ColumnDef<Document>[] = [
   {
     accessorKey: 'id',
@@ -73,29 +57,7 @@ export const documentColumns: ColumnDef<Document>[] = [
   {
     accessorKey: 'download',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Tải về" />,
-    cell: ({ row }) => {
-      const handleDownload = () => {
-        const link = document.createElement('a');
-        link.href = row.original.path;
-        link.setAttribute('download', row.original.name);
-        link.setAttribute('target', '_blank');
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      };
-
-      return (
-        <button onClick={handleDownload} className="cursor-pointer text-blue-600 hover:text-blue-800">
-          &#8681; Tải về
-        </button>
-      );
-    },
+    cell: ({ row }) => <DownloadButton documentId={row.original.id} />,
     enableSorting: false,
   },
-  // {
-  //   accessorKey: 'download',
-  //   header: ({ column }) => <DataTableColumnHeader column={column} title="Tải về" />,
-  //   cell: ({ row }) => <DownloadButton documentId={row.original.id} />,
-  //   enableSorting: false,
-  // },
 ];
