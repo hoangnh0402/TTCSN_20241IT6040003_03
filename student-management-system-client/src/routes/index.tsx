@@ -14,6 +14,10 @@ const StudentManagement = React.lazy(() => import('@/pages/dashboard/StudentMana
 const SubjectManagement = React.lazy(() => import('@/pages/dashboard/SubjectManagement'));
 const Summary = React.lazy(() => import('@/pages/summary'));
 const TeacherManagement = React.lazy(() => import('@/pages/dashboard/TeacherManagerment'));
+const SeeDocument = React.lazy(() => import('@/pages/document/SeeDocument'));
+const DocumentList = React.lazy(() => import('@/pages/document/DocumentList'));
+const SubjectList = React.lazy(() => import('@/pages/Classroom/ClassroomList'));
+const ClassroomDetail = React.lazy(() => import('@/pages/Classroom/ClassroomDetail'));
 
 const router = createBrowserRouter([
   {
@@ -67,6 +71,22 @@ const router = createBrowserRouter([
             ),
           },
           {
+            path: 'lectures',
+            element: (
+              <Suspense fallback={<Loading />}>
+                <SeeDocument />
+              </Suspense>
+            ),
+          },
+          {
+            path: 'documents/:id',
+            element: (
+              <Suspense fallback={<Loading />}>
+                <DocumentList />
+              </Suspense>
+            ),
+          },
+          {
             path: 'classrooms/:id',
             element: (
               <Suspense fallback={<Loading />}>
@@ -79,7 +99,7 @@ const router = createBrowserRouter([
       {
         path: 'register',
         element: (
-          <ProtectedRoute allowedRoles={[Role.STUDENT,Role.ADMIN]}>
+          <ProtectedRoute allowedRoles={[Role.STUDENT, Role.ADMIN]}>
             <Suspense fallback={<Loading />}>
               <RegisterSubject />
             </Suspense>
@@ -92,6 +112,22 @@ const router = createBrowserRouter([
           <ProtectedRoute allowedRoles={[Role.ADMIN, Role.TEACHER]}>
             <Summary />
           </ProtectedRoute>
+        ),
+      },
+      {
+        path: '/classrooms',
+        element: (
+          <Suspense fallback={<Loading />}>
+            <SubjectList />
+          </Suspense>
+        ),
+      },
+      {
+        path: '/classrooms/:classroomCode',
+        element: (
+          <Suspense fallback={<Loading />}>
+            <ClassroomDetail />
+          </Suspense>
         ),
       },
     ],

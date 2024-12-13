@@ -29,13 +29,20 @@ export const ApiConstant = {
   },
   classrooms: {
     getAll: '/user/classroom',
-    getById: '/admin/classroom/id?classroomId=:id',
+    getById: '/admin/classroom/id',
     create: '/admin/classroom',
     update: '/admin/classroom?classroomId=:id',
     delete: '/admin/classroom?classroomId=:id',
     getStudents: '/:id/students',
     addStudent: '/admin/classroom/:id/add-student',
     removeStudent: '/admin/classroom/:classroomId/:studentId',
+  },
+  documents: {
+    getAll: '/documents',
+    getAllBySubject: '/documents/subject',
+    getById: '/documents/{id}',
+    dowload: '/documents/download',
+    upload: '/upload',
   },
   enrollment: {
     register:'enroll/register',

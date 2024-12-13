@@ -8,6 +8,8 @@ import com.example.projectbase.repository.SubjectRepository;
 import com.example.projectbase.service.DocumentService;
 import com.example.projectbase.util.UploadFileUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -115,7 +117,6 @@ public class DocumentServiceImpl implements DocumentService {
             throw new RuntimeException(ERR_READ_FILE, e);
         }
     }
-
 
     @Override
     public Document getDocumentById(String id) {

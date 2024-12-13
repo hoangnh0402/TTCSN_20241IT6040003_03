@@ -1,5 +1,3 @@
-import { Link, Outlet } from 'react-router-dom';
-
 import Logo from '@/assets/images/logo.png';
 import { Button } from '@/components/ui/button';
 import {
@@ -22,15 +20,17 @@ import {
   SidebarMenuItem,
   SidebarProvider,
 } from '@/components/ui/sidebar';
+
+import { FaBook, FaUser } from 'react-icons/fa';
 import { useUserStore } from '@/store/useUserStore';
 import { Role } from '@/types/user.type';
 import { ChevronDown, LogOut } from 'lucide-react';
-import { FaUser } from 'react-icons/fa';
 import { FaUserGroup } from 'react-icons/fa6';
 import { IoMdHome, IoMdKey } from 'react-icons/io';
 import { MdClass } from 'react-icons/md';
 import { RiTableView } from 'react-icons/ri';
 import { SiGoogleclassroom } from 'react-icons/si';
+import { Link, Outlet } from 'react-router-dom';
 
 const items = [
   {
@@ -62,13 +62,27 @@ const items = [
     tooltip: 'Quản lý lớp học',
     roles: [Role.ADMIN],
   },
-  { title: 'Đăng kí học phần', icon: IoMdKey, href: '/register', tooltip: 'Đăng kí học phần', roles: [Role.STUDENT, Role.ADMIN] },
+  { title: 'Học phần', icon: FaBook, href: '/admin/lectures', tooltip: 'Học phần', roles: [Role.ADMIN] },
+  {
+    title: 'Đăng kí học phần',
+    icon: IoMdKey,
+    href: '/register',
+    tooltip: 'Đăng kí học phần',
+    roles: [Role.STUDENT, Role.ADMIN],
+  },
   {
     title: 'Xem thống kê điểm tích lũy',
     icon: RiTableView,
     href: '/summary',
     tooltip: 'Xem thống kê điểm tích lũy',
     roles: [Role.ADMIN, Role.TEACHER],
+  },
+  {
+    title: 'Xem thông tin lớp học',
+    icon: FaBook,
+    href: '/classrooms',
+    tooltip: 'Xem thông tin lớp học',
+    roles: [Role.ADMIN],
   },
 ];
 
