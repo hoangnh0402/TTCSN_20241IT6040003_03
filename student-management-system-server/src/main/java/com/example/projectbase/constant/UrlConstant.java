@@ -23,7 +23,7 @@ public class UrlConstant {
     public static final String UPDATE_USER = PRE_FIX;
     public static final String LOCK_USER = PRE_FIX+"/lock";
     public static final String UNLOCK_USER = PRE_FIX+"/unlock";
-    public static final String GET_USER = PRE_FIX + "/{userId}";
+    public static final String GET_USER = PRE_FIX + "/id/{userId}";
     public static final String GET_USER_BY_USERCODE = PRE_FIX + "/{userCode}";
     public static final String GET_CURRENT_USER = PRE_FIX + "/current";
 

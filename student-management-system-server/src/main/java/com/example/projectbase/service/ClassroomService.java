@@ -26,4 +26,6 @@ public interface ClassroomService {
     List<Classroom> findBySchedule(String schedule);
 
     CommonResponseDto deleteClassroom(String id);
+
+    List<ClassroomResponseDTO> getAllClassroomsStudentCode(String studentCode);
 }

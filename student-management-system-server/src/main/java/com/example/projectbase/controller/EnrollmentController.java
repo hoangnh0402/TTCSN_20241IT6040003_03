@@ -32,7 +32,6 @@ public class EnrollmentController {
     private final EnrollmentService enrollmentService;
 
     @Tags({@Tag(name = "enrollment-controller-user")})
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @PostMapping(UrlConstant.Enrollment.REGISTER_SUBJECT)
     public ResponseEntity<?> registerSubject(@Parameter(name = "principal", hidden = true)
                                              @CurrentUser UserPrincipal principal,
@@ -43,10 +42,19 @@ public class EnrollmentController {
 
     @Tags({@Tag(name = "enrollment-controller-admin"), @Tag(name = "enrollment-controller-teacher")})
     @Operation(summary = "API get all students in a classroom")
-    @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
     @GetMapping("/{classroomId}/students")
     public ResponseEntity<Map<String, Object>> getAllStudentsInClassroom(@PathVariable String classroomId) {
         List<EnrollmentResponse> students = enrollmentService.getAllStudentsInClassroom(classroomId);
+        Map<String, Object> response = new HashMap<>();
+        response.put("data", students);
+        return ResponseEntity.ok(response);
+    }
+
+    @Tags({@Tag(name = "enrollment-controller-admin"), @Tag(name = "enrollment-controller-teacher")})
+    @Operation(summary = "API get all students in a classroom")
+    @GetMapping("/{classroomId}/students1")
+    public ResponseEntity<Map<String, Object>> getAllStudentsInClassroom1(@PathVariable String classroomId) {
+        List<UserDto> students = enrollmentService.getAllStudentsInClassroom1(classroomId);
         Map<String, Object> response = new HashMap<>();
         response.put("data", students);
         return ResponseEntity.ok(response);

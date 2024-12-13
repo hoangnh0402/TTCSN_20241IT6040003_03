@@ -1,6 +1,7 @@
 package com.example.projectbase.controller;
 
 import com.example.projectbase.base.RestApiV1;
+import com.example.projectbase.base.RestData;
 import com.example.projectbase.base.VsResponseUtil;
 import com.example.projectbase.constant.UrlConstant;
 import com.example.projectbase.domain.dto.request.UpdateClassroomRequestDTO;
@@ -110,6 +111,14 @@ public class ClassroomController {
     @DeleteMapping(UrlConstant.Classroom.REMOVE_STUDENT_FROM_CLASSROOM)
     public ResponseEntity<?> removeStudentFromClassroom(@PathVariable String classroomId, @PathVariable String userId) {
         return VsResponseUtil.success(enrollmentService.removeStudentFromClassroom(classroomId, userId));
+    }
+
+    @Tags({@Tag(name = "classroom-controller")})
+    @Operation(summary = "API get classrooms by student code")
+    @GetMapping("/api/v1/classrooms/byStudentCode/{studentCode}")
+    public ResponseEntity<RestData<?>> getClassroomsByStudentCode(@PathVariable String studentCode) {
+        List<ClassroomResponseDTO> classrooms = classroomService.getAllClassroomsStudentCode(studentCode);
+        return VsResponseUtil.success(classrooms);
     }
 
 }
