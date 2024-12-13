@@ -4,6 +4,9 @@ export const ApiConstant = {
     logout: '/auth/logout',
     profile: '/user/current',
   },
+  classes: {
+    getAll: '/class',
+  },
   students: {
     getAll: '/user/student',
     getById: '/user/:id',
@@ -21,7 +24,7 @@ export const ApiConstant = {
     delete: '/user/lock?userId=:id',
   },
   subjects: {
-    getAll: '/user/subject',
+    getAll: '/user/subject?pageSize=1000',
     getById: '/admin/subject/id?subjectId=:id',
     create: '/admin/subject',
     update: '/admin/subject?subjectId=:id',
@@ -36,11 +39,11 @@ export const ApiConstant = {
   },
   classrooms: {
     getAll: '/user/classroom',
-    getById: '/admin/classroom/id',
+    getById: '/admin/classroom/id?classroomId=:id',
     create: '/admin/classroom',
     update: '/admin/classroom?classroomId=:id',
     delete: '/admin/classroom?classroomId=:id',
-    getStudents: '/:id/students',
+    getStudents: '/:id/students1',
     addStudent: '/admin/classroom/:id/add-student',
     removeStudent: '/admin/classroom/:classroomId/:studentId',
   },
@@ -52,17 +55,16 @@ export const ApiConstant = {
     upload: '/upload',
   },
   enrollment: {
-    register:'enroll/register',
-  }
+    register: 'enroll/register',
+  },
 };
 
-
 export const ApiConstantUser = {
-  classrooms:{
-    getAll:'/user/classroom'
+  classrooms: {
+    getAll: '/user/classroom',
   },
 
-  subjects:{
-    getAll:'/user/subject'
-  }
-}
+  subjects: {
+    getAll: '/user/subject',
+  },
+};

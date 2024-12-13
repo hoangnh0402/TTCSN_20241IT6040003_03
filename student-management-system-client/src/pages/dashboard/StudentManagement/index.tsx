@@ -9,9 +9,9 @@ const StudentManagement = () => {
   const { students, loading, fetchStudents } = useStudentStore();
 
   useEffect(() => {
-    fetchStudents();
-  }, [fetchStudents]);
-  console.log('first', students);
+    if (!students.length) fetchStudents();
+  }, [students, fetchStudents]);
+
   return (
     <TablePage<User>
       title="Quản lý sinh viên"

@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -10,11 +10,9 @@ import { DropdownSelectField } from '@/components/ui/dropdown-select-field';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Class } from '@/types/class.type';
-import { Gender, User } from '@/types/user.type';
+import { useClassStore } from '@/store/useClassStore';
 import { useStudentStore } from '@/store/useStudentStore';
-import { api } from '@/services/api.service';
-import { ApiConstant } from '@/constants/api.constant';
+import { Gender, User } from '@/types/user.type';
 
 interface StudentModalProps {
   modalProps?: {
@@ -27,6 +25,9 @@ interface StudentModalProps {
 export const FormSchema = z.object({
   classId: z.string().nullable().optional(),
   username: z.string({ required_error: 'Mã sinh viên không được để trống' }),
+  phoneNumber: z.string({ required_error: 'Số điện thoại không được để trống' }).refine((v) => v.length === 10, {
+    message: 'Số điện thoại phải có 10 chữ số',
+  }),
   fullName: z.string({ required_error: 'Họ tên không được để trống' }),
   gender: z.nativeEnum(Gender, { required_error: 'Giới tính không được để trống' }),
   birthday: z.string().nullable().optional(),
@@ -34,7 +35,11 @@ export const FormSchema = z.object({
 
 const StudentModal = ({ modalProps, student }: StudentModalProps) => {
   const { createStudent } = useStudentStore();
-  const [classes, setClasses] = useState<Class[]>([]);
+  const { classes, fetchClasses } = useClassStore();
+
+  useEffect(() => {
+    if (!classes.length) fetchClasses();
+  }, [classes, fetchClasses]);
 
   
 
@@ -84,7 +89,7 @@ const StudentModal = ({ modalProps, student }: StudentModalProps) => {
                 <FormItem>
                   <FormLabel>Mã sinh viên</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} value={field.value || ''} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -97,7 +102,7 @@ const StudentModal = ({ modalProps, student }: StudentModalProps) => {
                 <FormItem>
                   <FormLabel>Họ tên</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} value={field.value ?? ''} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -124,6 +129,19 @@ const StudentModal = ({ modalProps, student }: StudentModalProps) => {
                         <FormLabel className="font-normal">Nữ</FormLabel>
                       </FormItem>
                     </RadioGroup>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="phoneNumber"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Số điện thoại</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
