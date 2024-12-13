@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
 import { ApiConstant } from '@/constants/api.constant';
-import api from '@/services/api.service';
+import { api } from '@/services/api.service';
 import { Subject } from '@/types/subject.type';
 import { AvailableRegisterSubject } from '@/types/registerSubject.type';
 import { Classroom } from '@/types/classroom.type';
@@ -24,7 +24,7 @@ export const useRegisterSubjectStore = create<RegisterSubjectStore>((set) => ({
       const { data } = await api.get<{ items: Subject[] }>(ApiConstant.subjects.getAll);
       const { data: classrooms } = await api.get<Classroom[]>(ApiConstant.classrooms.getAll);
       const subjects = data.items;
-    
+
       let subjectsWithClassroomsAvailable: any[] = [];
 
       subjects.map((subject) => {
