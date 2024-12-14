@@ -1,6 +1,6 @@
 export interface Enrollment {
   id: string;
-  userId: string;
+  userID: string;
   classroomId: string;
   firstRegularPoint?: number;
   secondRegularPoint?: number;

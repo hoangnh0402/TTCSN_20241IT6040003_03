@@ -45,17 +45,17 @@ export const ApiConstant = {
     upload: '/upload',
   },
   enrollment: {
-    register:'enroll/register',
-  }
+    register: 'enroll/register',
+    getAll: '/:id/students',
+  },
 };
 
-
 export const ApiConstantUser = {
-  classrooms:{
-    getAll:'/user/classroom'
+  classrooms: {
+    getAll: '/user/classroom',
   },
 
-  subjects:{
-    getAll:'/user/subject'
-  }
-}
+  subjects: {
+    getAll: '/user/subject',
+  },
+};
