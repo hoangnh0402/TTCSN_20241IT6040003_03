@@ -7,7 +7,8 @@ export const ApiConstant = {
   students: {
     getAll: '/user/student',
     getById: '/user/:id',
-    getByUsercode: '/user/student/:userCode',
+    // getByUsercode: '/user/student/:userCode',
+    getByUsercode: '/user/:userCode',
     create: '/user/student',
     update: '/user?userId=:id',
     delete: '/user/lock?userId=:id',
@@ -36,6 +37,7 @@ export const ApiConstant = {
     getStudents: '/:id/students',
     addStudent: '/admin/classroom/:id/add-student',
     removeStudent: '/admin/classroom/:classroomId/:studentId',
+    getClassByStudent: 'classrooms/byStudentCode/:username',
   },
   documents: {
     getAll: '/documents',

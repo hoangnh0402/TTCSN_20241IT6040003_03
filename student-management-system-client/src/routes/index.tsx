@@ -132,6 +132,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/student/:username',
+        
       },
     ],
   },

@@ -15,6 +15,7 @@ interface ClassroomStore {
   updateClassroom: (id: string, Classroom: Omit<Classroom, 'id'>) => Promise<void>;
   deleteClassroom: (id: string) => Promise<void>;
   getClassroomById: (id: string) => Promise<void>;
+  getClassroomByStudent: (id: string) => Promise<void>;
 }
 
 export const useClassroomStore = create<ClassroomStore>((set) => ({
@@ -80,6 +81,19 @@ export const useClassroomStore = create<ClassroomStore>((set) => ({
     try {
       const { data } = await api.get<Classroom>(`${ApiConstant.classrooms.getById}?classroomId=${id}`);
       set({ classroom: data });
+    } catch (error) {
+      set({ error: error.message });
+    } finally {
+      set({ loading: false });
+    }
+  },
+  getClassroomByStudent: async (id) => {
+    set({ loading: true, error: null });
+    try {
+      const { data: classrooms } = await api.get<Classroom[]>(
+        ApiConstant.classrooms.getClassByStudent.replace(':username', id),
+      );
+      set({ classrooms });
     } catch (error) {
       set({ error: error.message });
     } finally {

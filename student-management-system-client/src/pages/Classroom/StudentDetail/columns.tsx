@@ -1,28 +1,26 @@
 import { Button } from '@/components/ui/button';
 import { DataTableColumnHeader } from '@/components/ui/data-table/data-table-column-header';
 import { useEnrollmentStore } from '@/store/useEnrollmentStore';
+import { useUserStore } from '@/store/useUserStore';
+import { Classroom } from '@/types/classroom.type';
 import { Enrollment } from '@/types/enrollment.type';
 import { Subject } from '@/types/subject.type';
 import { User } from '@/types/user.type';
 import { ColumnDef } from '@tanstack/react-table';
+import { useParams } from 'react-router-dom';
 
-const ViewDetailsButton = ({ enrollment }: { enrollment: Enrollment }) => {
-  const handleViewDetails = () => {
-    // Hành động khi nhấn nút, ví dụ điều hướng hoặc hiển thị thông tin chi tiết
-    console.log(`Viewing details for enrollment ID: ${enrollment.id}`);
-  };
-
-  return <Button onClick={handleViewDetails}>Xem chi tiết</Button>;
-};
-
-export const transformData = (subjects: Subject[], users: User[]) => {
-  return enrollments.map((enrollment) => {
-    const { fetchEnrollments } = useEnrollmentStore();
-    const user = users.find((user) => enrollment.userID === user.id);
-    console.log('usser', user);
+export const transformData = (subjects: Subject[], classrooms: Classroom[]) => {
+  return classrooms.map(async (classroom) => {
+    const { enrollments, fetchEnrollments } = useEnrollmentStore();
+    const { user, getByUsercode } = useUserStore();
+    const { username } = useParams();
+    await getByUsercode(username as string);
+    await fetchEnrollments(classroom.id);
+    const enrollment = enrollments.find((enrollment) => enrollment.userID === user?.id);
+    const subject = subjects.find((subject) => subject.id === classroom.subjectId);
     return {
-      userID: enrollment?.userID,
-      fullName: user?.fullName || '',
+      subjectName: subject?.name || '',
+      classroomCode: classroom.code,
       firstRegularPoint: enrollment?.firstRegularPoint || 0,
       secondRegularPoint: enrollment?.secondRegularPoint || 0,
       midTermPoint: enrollment?.midTermPoint || 0,
@@ -49,7 +47,7 @@ export const columns: ColumnDef<Enrollment>[] = [
   {
     accessorKey: 'classroomCode',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Mã lớp" />,
-    cell: ({ row }) => <div>{row.original.code}</div>,
+    cell: ({ row }) => <div>{row.original.classroomCode}</div>,
     // cell: ({ row }) => {
     //   const classroomCode = row.original.classroomCode;
     //   return (
