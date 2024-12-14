@@ -62,7 +62,7 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     public List<SubjectResponseDTO> findSubjects(String name) {
-        List<Subject> subjects = subjectRepository.getSubjectByName(name);
+        List<Subject> subjects = subjectRepository.findAllByNameContainingIgnoreCase(name);
         if (subjects.isEmpty()) {
             throw new NotFoundException(
                     ErrorMessage.Subject.ERR_NOT_FOUND_NAME,

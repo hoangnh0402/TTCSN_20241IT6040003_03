@@ -1,4 +1,4 @@
-package com.example.projectbase.dto;
+package com.example.projectbase.domain.dto.request;
 
 import lombok.*;
 
@@ -23,6 +23,9 @@ public class CreateClassroomRequestDTO {
 
     @NotBlank(message = "Room is required")
     private String room;
+
+    @NotBlank(message = "Teacher ID is required")
+    private String teacherId;
 
     @NotNull(message = "Start date is required")
     @FutureOrPresent(message = "Start date must be today or in the future")

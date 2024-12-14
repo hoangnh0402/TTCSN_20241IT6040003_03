@@ -2,16 +2,18 @@ package com.example.projectbase.service.impl;
 
 import com.example.projectbase.constant.ErrorMessage;
 import com.example.projectbase.constant.MessageConstrant;
+import com.example.projectbase.domain.dto.request.CreateClassroomRequestDTO;
 import com.example.projectbase.domain.dto.request.UpdateClassroomRequestDTO;
 import com.example.projectbase.domain.dto.response.ClassroomResponseDTO;
 import com.example.projectbase.domain.dto.response.CommonResponseDto;
 import com.example.projectbase.domain.entity.Classroom;
 import com.example.projectbase.domain.entity.Subject;
+import com.example.projectbase.domain.entity.User;
 import com.example.projectbase.domain.mapper.ClassroomMapper;
-import com.example.projectbase.dto.CreateClassroomRequestDTO;
 
 import com.example.projectbase.exception.NotFoundException;
 import com.example.projectbase.repository.ClassroomRepository;
+import com.example.projectbase.repository.UserRepository;
 import com.example.projectbase.service.ClassroomService;
 import com.example.projectbase.service.SubjectService;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +30,7 @@ public class ClassroomServiceImpl implements ClassroomService {
     private final ClassroomRepository classroomRepository;
     private final ClassroomMapper classroomMapper;
     private final SubjectService subjectService;
+    private final UserRepository userRepository;
 
     @Override
     public ClassroomResponseDTO createClassroom(CreateClassroomRequestDTO requestDTO) {
@@ -35,12 +38,17 @@ public class ClassroomServiceImpl implements ClassroomService {
         Subject subject = subjectService.getSubjectById(requestDTO.getSubjectId())
                 .orElseThrow(() -> new NotFoundException(ErrorMessage.Subject.ERR_NOT_FOUND_ID, new String[]{requestDTO.getSubjectId()}));
 
+        User teacher = userRepository.findById(requestDTO.getTeacherId())
+                .orElseThrow(() -> new NotFoundException(ErrorMessage.User.ERR_NOT_FOUND_ID, new String[]{requestDTO.getTeacherId()}));
+
         // Map DTO to Entity and set the Subject
         Classroom classroom = classroomMapper.toEntity(requestDTO, subject);
+        classroom.setTeacher(teacher);
 
         // Save and map back to DTO
         return classroomMapper.toDto(classroomRepository.save(classroom));
     }
+
 
     @Override
     public List<ClassroomResponseDTO> getAllClassrooms() {

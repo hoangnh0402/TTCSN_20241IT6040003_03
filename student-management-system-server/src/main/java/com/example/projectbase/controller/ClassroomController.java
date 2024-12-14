@@ -7,7 +7,7 @@ import com.example.projectbase.constant.UrlConstant;
 import com.example.projectbase.domain.dto.request.UpdateClassroomRequestDTO;
 import com.example.projectbase.domain.dto.response.ClassroomResponseDTO;
 import com.example.projectbase.domain.entity.Classroom;
-import com.example.projectbase.dto.CreateClassroomRequestDTO;
+import com.example.projectbase.domain.dto.request.CreateClassroomRequestDTO;
 import com.example.projectbase.service.ClassroomService;
 import com.example.projectbase.service.EnrollmentService;
 import io.swagger.v3.oas.annotations.Operation;
