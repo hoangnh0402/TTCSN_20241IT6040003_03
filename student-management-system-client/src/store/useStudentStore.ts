@@ -25,12 +25,11 @@ export const useStudentStore = create<StudentStore>((set) => ({
     set({ loading: true, error: null });
     try {
       const { data: students } = await api.get<User[]>(ApiConstant.students.getAll);
-      const { classes, fetchClasses } = useClassStore.getState();
-      const resolvedClasses: Class[] = classes.length ? classes : await fetchClasses();
+      const classes: Class[] = await useClassStore.getState().fetchClasses();
       set({
         students: students.map((student) => ({
           ...student,
-          class: (resolvedClasses.find((c) => c.id === student.classId) as Class) || null,
+          class: (classes.find((c) => c.id === student.classId) as Class) || null,
         })),
       });
     } catch (error) {
@@ -49,6 +48,7 @@ export const useStudentStore = create<StudentStore>((set) => ({
       set((state) => ({ students: [...state.students, data] }));
     } catch (error) {
       set({ error: error.message });
+      throw error;
     } finally {
       set({ loading: false });
     }
@@ -63,6 +63,7 @@ export const useStudentStore = create<StudentStore>((set) => ({
       }));
     } catch (error) {
       set({ error: error.message });
+      throw error;
     } finally {
       set({ loading: false });
     }
@@ -77,6 +78,7 @@ export const useStudentStore = create<StudentStore>((set) => ({
       }));
     } catch (error) {
       set({ error: error.message });
+      throw error;
     } finally {
       set({ loading: false });
     }

@@ -12,6 +12,7 @@ import { Dialog } from '@radix-ui/react-dialog';
 import { ColumnDef } from '@tanstack/react-table';
 import StudentModal, { FormSchema } from './student-modal';
 import { format } from 'date-fns';
+import { toast } from '@/hooks/use-toast';
 
 const EditAction: React.FC<{ student: User }> = ({ student }) => {
   const { updateStudent } = useStudentStore();
@@ -24,7 +25,22 @@ const EditAction: React.FC<{ student: User }> = ({ student }) => {
         modalProps={{
           mode: 'edit',
           onSubmit: async (data: z.infer<typeof FormSchema>) => {
-            await updateStudent(student.id, data);
+            try {
+              await updateStudent(student.id, data);
+              toast({
+                title: 'Sửa thông tin sinh viên thành công',
+                description: 'Thông tin sinh viên đã được cập nhật',
+                variant: 'success',
+                duration: 2000,
+              });
+            } catch (error) {
+              toast({
+                title: 'Sửa thông tin sinh viên thất bại',
+                description: 'Vui lòng thử lại sau',
+                variant: 'destructive',
+                duration: 2000,
+              });
+            }
           },
         }}
         student={student}
@@ -35,7 +51,20 @@ const EditAction: React.FC<{ student: User }> = ({ student }) => {
 
 const DeleteAction: React.FC<{ student: User }> = ({ student }) => {
   const { deleteStudent } = useStudentStore();
-  return <DeleteDialog title="Xóa" onConfirm={() => deleteStudent(student.id)} />;
+  return (
+    <DeleteDialog
+      title="Xóa"
+      onConfirm={() => {
+        deleteStudent(student.id);
+        toast({
+          title: 'Xóa sinh viên thành công',
+          description: 'Sinh viên đã được xóa khỏi hệ thống',
+          variant: 'success',
+          duration: 2000,
+        });
+      }}
+    />
+  );
 };
 
 export const columns: ColumnDef<User>[] = [

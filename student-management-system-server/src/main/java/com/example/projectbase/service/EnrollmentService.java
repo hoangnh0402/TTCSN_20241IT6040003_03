@@ -15,4 +15,5 @@ public interface EnrollmentService {
     public Enrollment addStudentToClassroom(String classroomId, String username);
     public CommonResponseDto removeStudentFromClassroom(String classroomId, String username);
     public List<UserDto> getAllStudentsInClassroom1(String classroomId);
+    CommonResponseDto rejectSubject(UserPrincipal principal, String classroomId);
 }

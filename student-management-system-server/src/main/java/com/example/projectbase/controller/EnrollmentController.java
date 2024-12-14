@@ -3,6 +3,7 @@ package com.example.projectbase.controller;
 import com.example.projectbase.base.RestApiV1;
 import com.example.projectbase.base.VsResponseUtil;
 import com.example.projectbase.constant.UrlConstant;
+import com.example.projectbase.domain.dto.response.CommonResponseDto;
 import com.example.projectbase.domain.dto.response.EnrollmentResponse;
 import com.example.projectbase.domain.dto.response.UserDto;
 import com.example.projectbase.domain.entity.Enrollment;
@@ -17,10 +18,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -59,5 +58,24 @@ public class EnrollmentController {
         response.put("data", students);
         return ResponseEntity.ok(response);
     }
+
+    @DeleteMapping("/reject/{classroomId}")
+    @Tags({
+            @Tag(name = "enrollment-controller-admin"),
+            @Tag(name = "enrollment-controller-user")
+    })
+    @Operation(summary = "API để từ chối hoặc hủy đăng ký một lớp học")
+    public ResponseEntity<CommonResponseDto> rejectSubject(
+            @AuthenticationPrincipal UserPrincipal principal,
+            @PathVariable String classroomId) {
+
+        // Gọi service để xử lý logic
+        CommonResponseDto response = enrollmentService.rejectSubject(principal, classroomId);
+
+        // Trả về phản hồi HTTP
+        return ResponseEntity.ok(response);
+    }
+
+
 
 }
