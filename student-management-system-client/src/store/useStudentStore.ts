@@ -3,6 +3,8 @@ import { create } from 'zustand';
 import { ApiConstant } from '@/constants/api.constant';
 import { api } from '@/services/api.service';
 import { User } from '@/types/user.type';
+import { useClassStore } from './useClassStore';
+import { Class } from '@/types/class.type';
 
 interface StudentStore {
   students: User[];
@@ -23,7 +25,14 @@ export const useStudentStore = create<StudentStore>((set) => ({
     set({ loading: true, error: null });
     try {
       const { data: students } = await api.get<User[]>(ApiConstant.students.getAll);
-      set({ students });
+      const { classes, fetchClasses } = useClassStore.getState();
+      const resolvedClasses: Class[] = classes.length ? classes : await fetchClasses();
+      set({
+        students: students.map((student) => ({
+          ...student,
+          class: (resolvedClasses.find((c) => c.id === student.classId) as Class) || null,
+        })),
+      });
     } catch (error) {
       set({ error: error.message });
     } finally {
@@ -35,6 +44,8 @@ export const useStudentStore = create<StudentStore>((set) => ({
     set({ loading: true, error: null });
     try {
       const { data } = await api.post<User>(ApiConstant.students.create, student);
+      const { classes } = useClassStore.getState();
+      data.class = classes.find((c) => c.id === data.classId);
       set((state) => ({ students: [...state.students, data] }));
     } catch (error) {
       set({ error: error.message });

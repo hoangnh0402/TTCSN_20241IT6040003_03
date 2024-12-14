@@ -11,6 +11,7 @@ import { Input } from '@/components/ui/input';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { useTeacherStore } from '@/store/useTeacherStore';
 import { Gender, User } from '@/types/user.type';
+import { apiTempUpload } from '@/services/api.service';
 
 interface TeacherModalProps {
   modalProps?: {
@@ -29,8 +30,25 @@ export const FormSchema = z.object({
   fullName: z.string({ required_error: 'Họ tên không được để trống' }),
   gender: z.nativeEnum(Gender, { required_error: 'Giới tính không được để trống' }),
   birthday: z.string().nullable().optional(),
-  avatar: z.string().nullable().optional(),
+  avatar: z.instanceof(File).optional(),
 });
+
+export const handleFormData = async (data: z.infer<typeof FormSchema>) => {
+  try {
+    let avatar = '';
+    if (data.avatar instanceof File) {
+      const formData = new FormData();
+      formData.append('image', data.avatar);
+      const response = await apiTempUpload.post('/upload', formData);
+      avatar = response.data.url;
+    }
+
+    return { ...data, avatar };
+  } catch (error) {
+    console.error(error);
+    return { ...data, avatar: '' };
+  }
+};
 
 const TeacherModal = ({ modalProps, teacher }: TeacherModalProps) => {
   const { createTeacher } = useTeacherStore();
@@ -40,7 +58,8 @@ const TeacherModal = ({ modalProps, teacher }: TeacherModalProps) => {
   const { mode, onSubmit } = modalProps || {
     mode: 'create',
     onSubmit: async (data: z.infer<typeof FormSchema>) => {
-      const { username, ...rest } = data;
+      const formData = await handleFormData(data);
+      const { username, ...rest } = formData;
       const teacher = { ...rest, username, password: username };
       await createTeacher(teacher);
     },
@@ -61,6 +80,7 @@ const TeacherModal = ({ modalProps, teacher }: TeacherModalProps) => {
         : {
             ...teacher,
             gender: teacher?.gender as Gender,
+            avatar: undefined,
           },
   });
 

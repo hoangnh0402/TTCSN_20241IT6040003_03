@@ -18,7 +18,7 @@ const EditAction: React.FC<{ student: User }> = ({ student }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button onSelect={() => {}}>Sửa</Button>
+        <Button>Sửa</Button>
       </DialogTrigger>
       <StudentModal
         modalProps={{
@@ -68,19 +68,22 @@ export const columns: ColumnDef<User>[] = [
       return value.includes(row.getValue(id));
     },
   },
-  // {
-  //   accessorKey: 'birthday',
-  //   header: ({ column }) => <DataTableColumnHeader column={column} title="Ngày sinh" />,
-  //   filterFn: (row, id, value) => {
-  //     return value.includes(row.getValue(id));
-  //   },
-  //   cell: ({ row }) => {
-  //     const birthday = row.original.birthday || '';
-  //     return <div>{format(new Date(birthday), 'dd/MM/yyyy')}</div>;
-  //   },
-  // },
   {
-    accessorKey: 'classId',
+    accessorKey: 'birthday',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Ngày sinh" />,
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
+    cell: ({ row }) => {
+      const birthday = row.original.birthday || '';
+      if (!birthday || isNaN(new Date(birthday).getTime())) {
+        return <div></div>;
+      }
+      return <div>{format(new Date(birthday), 'dd/MM/yyyy')}</div>;
+    },
+  },
+  {
+    accessorKey: 'class.name',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Lớp" />,
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));

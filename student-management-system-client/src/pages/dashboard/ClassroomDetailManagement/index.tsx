@@ -7,6 +7,7 @@ import { User } from '@/types/user.type';
 import AddStudentClassroomModal from './add-student-classroom-modal';
 import { columns } from './columns';
 import { useClassroomDetailStore } from '@/store/useClassroomDetailStore';
+import Loading from '@/components/ui/loading';
 
 const ClassroomDetailManagement = () => {
   const { id } = useParams<{ id: string }>();
@@ -19,6 +20,10 @@ const ClassroomDetailManagement = () => {
     }
   }, [id, fetchClassroomDetail]);
 
+  if (loading) {
+    return <Loading />;
+  }
+
   return (
     <TablePage<User>
       title="Quản lý sinh viên trong lớp học"
@@ -26,6 +31,7 @@ const ClassroomDetailManagement = () => {
       columns={columns}
       Modal={AddStudentClassroomModal}
       loading={loading}
+      hasPagination={false}
     >
       <div>
         <Table className="mt-4 border">

@@ -13,7 +13,7 @@ export interface User {
   gender: string;
   avatar?: string | null;
   birthday?: string | null;
-  address?: string;
+  address?: string | null;
   role?: string;
   userCode?: string;
   roleName?: Role;

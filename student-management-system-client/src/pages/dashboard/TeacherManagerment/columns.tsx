@@ -8,7 +8,7 @@ import { DialogTrigger } from '@/components/ui/dialog';
 import { User } from '@/types/user.type';
 import { Dialog } from '@radix-ui/react-dialog';
 import { ColumnDef } from '@tanstack/react-table';
-import TeacherModal, { FormSchema } from './teacher-modal';
+import TeacherModal, { FormSchema, handleFormData } from './teacher-modal';
 import { useTeacherStore } from '@/store/useTeacherStore';
 import { z } from 'zod';
 
@@ -17,13 +17,14 @@ const EditAction: React.FC<{ teacher: User }> = ({ teacher }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button onSelect={() => {}}>Sửa</Button>
+        <Button>Sửa</Button>
       </DialogTrigger>
       <TeacherModal
         modalProps={{
           mode: 'edit',
           onSubmit: async (data: z.infer<typeof FormSchema>) => {
-            await updateTeacher(teacher.id, data);
+            const formData = await handleFormData(data);
+            await updateTeacher(teacher.id, formData);
           },
         }}
         teacher={teacher}
