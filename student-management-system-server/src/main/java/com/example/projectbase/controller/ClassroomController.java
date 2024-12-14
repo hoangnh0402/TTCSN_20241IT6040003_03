@@ -39,7 +39,6 @@ public class ClassroomController {
 
     @Tags({@Tag(name = "classroom-controller")})
     @Operation(summary = "API get all classrooms")
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping(UrlConstant.Classroom.GET_ALL_CLASSROOMS)
     public ResponseEntity<?> getAllClassrooms() {
         List<ClassroomResponseDTO> classrooms = classroomService.getAllClassrooms();
