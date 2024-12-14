@@ -42,6 +42,7 @@ public class ClassroomServiceImpl implements ClassroomService {
         return classroomMapper.toDto(classroomRepository.save(classroom));
     }
 
+
     @Override
     public List<ClassroomResponseDTO> getAllClassrooms() {
         List<Classroom> classrooms = classroomRepository.findAll();

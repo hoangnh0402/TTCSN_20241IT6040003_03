@@ -40,8 +40,7 @@ public class Classroom extends FlagUserDateAuditing {
     @Column(nullable = false)
     private LocalDate startDate;
 
-    //Link to table Enrollment
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "classroom")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "classroom")
     @JsonIgnore
     private Set<Enrollment> enrollments = new HashSet<>();
 
