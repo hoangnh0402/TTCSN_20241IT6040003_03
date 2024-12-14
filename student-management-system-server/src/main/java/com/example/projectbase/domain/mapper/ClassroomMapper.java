@@ -1,5 +1,6 @@
 package com.example.projectbase.domain.mapper;
 
+import com.example.projectbase.domain.dto.request.CreateClassroomRequestDTO;
 import com.example.projectbase.domain.dto.request.UpdateClassroomRequestDTO;
 import com.example.projectbase.domain.dto.response.ClassroomResponseDTO;
 import com.example.projectbase.domain.entity.Classroom;
@@ -25,11 +26,11 @@ public interface ClassroomMapper {
     @Mapping(source = "createClassroomRequestDTO.startDate", target = "startDate")
     @Mapping(source = "subject", target = "subject")
     @Mapping(target = "enrollments", expression = "java(new java.util.HashSet<>())") // Khởi tạo enrollments
-    Classroom toEntity(com.example.projectbase.dto.CreateClassroomRequestDTO createClassroomRequestDTO, Subject subject);
+    Classroom toEntity(CreateClassroomRequestDTO createClassroomRequestDTO, Subject subject);
 
 
     @Mapping(source = "subject.id", target = "subjectId")
-    @Mapping(target = "teacherId", expression = "java(getFirstUserIdFromEnrollments(classroom))")
+    @Mapping(target = "teacherId", source = "classroom.teacher.id")
     ClassroomResponseDTO toDto(Classroom classroom);
 
     default String getFirstUserIdFromEnrollments(Classroom classroom) {

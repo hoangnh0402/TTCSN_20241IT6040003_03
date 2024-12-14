@@ -83,4 +83,8 @@ public class User extends DateAuditing {
   @JsonIgnore
   private Set<Record> records = new HashSet<>();
 
+  //Link to table Classroom
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "teacher")
+  @JsonIgnore
+  private Set<Classroom> classrooms = new HashSet<>();
 }

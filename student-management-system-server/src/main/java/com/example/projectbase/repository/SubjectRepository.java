@@ -17,5 +17,5 @@ public interface SubjectRepository extends JpaRepository<Subject, String> {
     Subject findSubjectById(String id);
 
     // Lấy môn học theo tên
-    List<Subject> getSubjectByName(String name);
+    List<Subject> findAllByNameContainingIgnoreCase(String name);
 }

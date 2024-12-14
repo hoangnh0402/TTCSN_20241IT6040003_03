@@ -48,4 +48,9 @@ public class Classroom extends FlagUserDateAuditing {
     @ManyToOne
     @JoinColumn(name = "subjectId", foreignKey = @ForeignKey(name = "FK_CLASSROOM_SUBJECT"))
     private Subject subject;
+
+    //Link to table User(Teacher)
+    @ManyToOne
+    @JoinColumn(name = "teacherId", foreignKey = @ForeignKey(name = "FK_CLASSROOM_TEACHER"))
+    private User teacher;
 }
