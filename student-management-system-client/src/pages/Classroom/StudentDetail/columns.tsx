@@ -49,7 +49,7 @@ export const columns: ColumnDef<Enrollment>[] = [
   {
     accessorKey: 'classroomCode',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Mã lớp" />,
-    cell: ({ row }) => <div>{row.original.classroomCode}</div>,
+    cell: ({ row }) => <div>{row.original.code}</div>,
     // cell: ({ row }) => {
     //   const classroomCode = row.original.classroomCode;
     //   return (

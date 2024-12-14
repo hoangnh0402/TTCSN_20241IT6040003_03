@@ -15,11 +15,11 @@ const ViewDetailsButton = ({ enrollment }: { enrollment: Enrollment }) => {
 
 export const transformData = (enrollments: Enrollment[], users: User[]) => {
   return enrollments.map((enrollment) => {
-    
     const user = users.find((user) => enrollment.userID === user.id);
     console.log('usser', user);
     return {
       userID: enrollment?.userID,
+      username: user?.username || '',
       fullName: user?.fullName || '',
       firstRegularPoint: enrollment?.firstRegularPoint || 0,
       secondRegularPoint: enrollment?.secondRegularPoint || 0,
@@ -41,7 +41,7 @@ export const columns: ColumnDef<Enrollment>[] = [
   {
     accessorKey: 'userId',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Mã sinh viên" />,
-    cell: ({ row }) => <div>{row.original.userID}</div>,
+    cell: ({ row }) => <div>{row.original.username}</div>,
     size: 100,
     enableSorting: false,
     enableGlobalFilter: false,
@@ -49,7 +49,14 @@ export const columns: ColumnDef<Enrollment>[] = [
   {
     accessorKey: 'username',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Tên sinh viên" />,
-    cell: ({ row }) => <div>{row.original.fullName}</div>,
+    // cell: ({ row }) => <div>{row.original.fullName}</div>,
+    cell: ({ row }) => {
+      return (
+        <a href={`/student/${row.original.username}`} style={{ color: 'blue', textDecoration: 'underline' }}>
+          {row.original.fullName}
+        </a>
+      );
+    },
     size: 100,
     enableSorting: false,
     enableGlobalFilter: false,

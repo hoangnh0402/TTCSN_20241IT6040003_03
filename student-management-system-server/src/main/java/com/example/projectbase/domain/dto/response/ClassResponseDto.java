@@ -14,6 +14,6 @@ public class ClassResponseDto {
     private String id;
     private String name;
     private String classCode;
-    private int academicYear;
+    private String academicYear;
     private Department department;
 }

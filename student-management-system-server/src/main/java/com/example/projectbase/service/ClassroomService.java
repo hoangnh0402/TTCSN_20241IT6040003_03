@@ -3,7 +3,7 @@ package com.example.projectbase.service;
 import com.example.projectbase.domain.dto.request.UpdateClassroomRequestDTO;
 import com.example.projectbase.domain.dto.response.ClassroomResponseDTO;
 import com.example.projectbase.domain.entity.Classroom;
-import com.example.projectbase.dto.CreateClassroomRequestDTO;
+import com.example.projectbase.domain.dto.request.CreateClassroomRequestDTO;
 import com.example.projectbase.domain.dto.response.CommonResponseDto;
 import java.time.LocalDate;
 import java.util.List;
@@ -26,4 +26,6 @@ public interface ClassroomService {
     List<Classroom> findBySchedule(String schedule);
 
     CommonResponseDto deleteClassroom(String id);
+
+    List<ClassroomResponseDTO> getAllClassroomsStudentCode(String studentCode);
 }
