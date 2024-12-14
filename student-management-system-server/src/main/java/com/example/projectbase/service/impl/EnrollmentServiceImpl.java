@@ -125,4 +125,18 @@ public class EnrollmentServiceImpl implements EnrollmentService {
                         .build())
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public CommonResponseDto rejectSubject(UserPrincipal principal, String classroomId) {
+        // Kiểm tra quyền của người dùng
+        String userId = principal.getId();
+        Enrollment enrollment = enrollmentRepository.findByUserIdAndClassroomId(userId, classroomId)
+                .orElseThrow(() -> new NotFoundException("Enrollment not found"));
+
+        // Xóa bản ghi trong bảng enrollment
+        enrollmentRepository.delete(enrollment);
+
+        // Trả về phản hồi
+        return new CommonResponseDto(true, CommonConstant.SUCCESS);
+    }
 }

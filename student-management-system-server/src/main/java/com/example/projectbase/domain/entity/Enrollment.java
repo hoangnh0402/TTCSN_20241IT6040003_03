@@ -33,13 +33,12 @@ public class Enrollment extends FlagUserDateAuditing {
     @Column(nullable = false)
     private double finalPoint;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "userId", foreignKey = @ForeignKey(name = "FK_ENROLLMENT_USER"))
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "classroomId", foreignKey = @ForeignKey(name = "FK_ENROLLMENT_CLASSROOM"))
     private Classroom classroom;
-
 
 }
