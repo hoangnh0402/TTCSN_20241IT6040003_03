@@ -9,29 +9,33 @@ import { useSubjectStore } from '@/store/useSubjectStore';
 import { useClassroomStore } from '@/store/useClassroomStore';
 import { AvailableRegisterSubject } from '@/types/registerSubject.type';
 import { useRegisterSubjectStore } from '@/store/useRegisterSubjectStore';
-
+import { useRegisteredSubjectStore } from '@/store/useRegisterdSubjectStore';
+import { useUserStore } from '@/store/useUserStore';
 
 const RegisterSubject = () => {
-  const { registerSubject, loading, error, fetchRegisterSubjects} = useRegisterSubjectStore();
+  const { user } = useUserStore();
+  const { registerSubject,  error, fetchRegisterSubjects } = useRegisterSubjectStore();
+  const { registeredSubject, loading, fetchRegisteredSubjects } = useRegisteredSubjectStore();
 
-  const [registeredSubjects, setRegisteredSubjects] = useState<AvailableRegisterSubject[]>([]);
-
+  const userId: String | undefined = user?.username;
   useEffect(() => {
     fetchRegisterSubjects();
+    fetchRegisteredSubjects(userId);
   }, []);
 
   return (
     <>
-      <TablePage<AvailableRegisterSubject> 
-        title="Môn đã đăng kí" 
-        data={registeredSubjects} 
-        columns={registeredSubjectTableColumn} 
+      <TablePage<AvailableRegisterSubject>
+        title="Môn đã đăng kí"
+        data={registeredSubject}
+        columns={registeredSubjectTableColumn}
+        loading={loading}
         hasToolbar={false}
       />
-      <TablePage<AvailableRegisterSubject> 
-        title="Đăng kí học phần" 
-        data={registerSubject} 
-        columns={registerSubjectTableColumn} 
+      <TablePage<AvailableRegisterSubject>
+        title="Đăng kí học phần"
+        data={registerSubject}
+        columns={registerSubjectTableColumn}
         hasToolbar={false}
         loading={loading}
       />

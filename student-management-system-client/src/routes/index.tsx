@@ -147,7 +147,11 @@ const router = createBrowserRouter([
 ]);
 
 const AppRoutes = () => {
-  return <RouterProvider router={router} />;
+  return (
+    <>
+      <Toaster /> <RouterProvider router={router} />
+    </>
+  );
 };
 
 export default AppRoutes;

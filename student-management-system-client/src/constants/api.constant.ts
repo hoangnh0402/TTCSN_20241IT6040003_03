@@ -4,9 +4,6 @@ export const ApiConstant = {
     logout: '/auth/logout',
     profile: '/user/current',
   },
-  classes: {
-    getAll: '/class',
-  },
   students: {
     getAll: '/user/student',
     getById: '/user/:id',
@@ -30,6 +27,13 @@ export const ApiConstant = {
     update: '/admin/subject?subjectId=:id',
     delete: '/admin/subject?subjectId=:id',
   },
+  classes: {
+    getAll: '/class',
+    create:'/class',
+    update: '/class',
+    delete:'/class',
+    getById: '/class/:id'
+  },
   classrooms: {
     getAll: '/user/classroom',
     getById: '/admin/classroom/id?classroomId=:id',
@@ -50,14 +54,22 @@ export const ApiConstant = {
   enrollment: {
     register: 'enroll/register',
   },
+  records:{
+    getTotal: 'record/count/department'
+  }
 };
 
 export const ApiConstantUser = {
   classrooms: {
-    getAll: '/user/classroom',
+    getAll: '/api/v1/classrooms/byStudentCode/:studentCode',
   },
 
   subjects: {
     getAll: '/user/subject',
   },
+
+  enrollment:{
+    reject:'reject/:classroomId'
+  }
+
 };

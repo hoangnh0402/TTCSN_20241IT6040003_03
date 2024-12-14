@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-import { ApiConstant } from '@/constants/api.constant';
+import { ApiConstant, ApiConstantUser } from '@/constants/api.constant';
 import { api } from '@/services/api.service';
 import { Subject } from '@/types/subject.type';
 import { AvailableRegisterSubject } from '@/types/registerSubject.type';
@@ -21,7 +21,7 @@ export const useRegisterSubjectStore = create<RegisterSubjectStore>((set) => ({
   fetchRegisterSubjects: async () => {
     set({ loading: true, error: null });
     try {
-      const { data } = await api.get<{ items: Subject[] }>(ApiConstant.subjects.getAll);
+      const { data } = await api.get<{ items: Subject[] }>(ApiConstantUser.subjects.getAll);
       const { data: classrooms } = await api.get<Classroom[]>(ApiConstant.classrooms.getAll);
       const subjects = data.items;
 
@@ -38,7 +38,6 @@ export const useRegisterSubjectStore = create<RegisterSubjectStore>((set) => ({
           ];
         });
       });
-      console.log(subjectsWithClassroomsAvailable);
       // Update register subjects with combined data
 
       set({ registerSubject: subjectsWithClassroomsAvailable });
