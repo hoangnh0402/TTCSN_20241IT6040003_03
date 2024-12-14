@@ -1,4 +1,4 @@
 export interface SummaryInterface {
-    point: string,
-    total: number,
-  }
+  point: string;
+  total: number;
+}

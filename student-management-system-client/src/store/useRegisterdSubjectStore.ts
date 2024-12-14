@@ -27,7 +27,7 @@ export const useRegisteredSubjectStore = create<RegisterSubjectStore>((set) => (
   
       set({ loading: true, error: null });
       try {
-        const { data } = await api.get<{ items: Subject[] }>(ApiConstant.subjects.getAll);
+        const { data } = await api.get<{ items: Subject[] }>(ApiConstantUser.subjects.getAll);
         console.log(userId);
         // Convert userId to a string explicitly
         const userIdString = userId.toString();

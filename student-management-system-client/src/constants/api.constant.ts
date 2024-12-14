@@ -54,6 +54,9 @@ export const ApiConstant = {
   enrollment: {
     register: 'enroll/register',
   },
+  records:{
+    getTotal: 'record/count/department'
+  }
 };
 
 export const ApiConstantUser = {
@@ -64,4 +67,9 @@ export const ApiConstantUser = {
   subjects: {
     getAll: '/user/subject',
   },
+
+  enrollment:{
+    reject:'reject/:classroomId'
+  }
+
 };

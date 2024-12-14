@@ -55,74 +55,76 @@ export const frameworks = [
     total: {
       label: "Số sinh viên",
     },
-    A: {
-      label: "A",
+    excellent: {
+      label: "Xuất sắc",
       color: "hsl(var(--chart-1))",
     },
-    Bplus: {
-      label: "B+",
+    good: {
+      label: "Giỏi",
       color: "hsl(var(--chart-2))",
     },
-    B: {
-      label: "B",
+    rather: {
+      label: "Khá",
       color: "hsl(var(--chart-3))",
     },
-    Cplus: {
-      label: "C",
+    medium: {
+      label: "Trung bình",
       color: "hsl(var(--chart-4))",
     },
-    C: {
-      label: "C+",
+    weak: {
+      label: "Yếu kém",
       color: "hsl(var(--chart-5))",
     },
-    Dplus: {
-      label: "D+",
-      color: "hsl(var(--chart-6))",
-    },
-    D: {
-      label: "D",
-      color: "hsl(var(--chart-7))",
-    },
-    F: {
-      label: "F",
-      color: "hsl(var(--chart-8))",
-    },
+    // Dplus: {
+    //   label: "D+",
+    //   color: "hsl(var(--chart-6))",
+    // },
+    // D: {
+    //   label: "D",
+    //   color: "hsl(var(--chart-7))",
+    // },
+    // F: {
+    //   label: "F",
+    //   color: "hsl(var(--chart-8))",
+    // },
   } satisfies ChartConfig
 
 export const chartData = [
-  { point: 'A', total: 275, fill: 'var(--color-A)' },
-  { point: 'Bplus', total: 200, fill: 'var(--color-Bplus)' },
-  { point: 'B', total: 187, fill: 'var(--color-B)' },
-  { point: 'Cplus', total: 173, fill: 'var(--color-Cplus)' },
-  { point: 'C', total: 90, fill: 'var(--color-C)' },
-  { point: 'Dplus', total: 173, fill: 'var(--color-Dplus)' },
-  { point: 'D', total: 187, fill: 'var(--color-D)' },
-  { point: 'F', total: 90, fill: 'var(--color-F)' },
+  { point: 'excellent', total: 275, fill: 'var(--color-excellent)' },
+  { point: 'good', total: 200, fill: 'var(--color-good)' },
+  { point: 'rather', total: 187, fill: 'var(--color-rather)' },
+  { point: 'medium', total: 173, fill: 'var(--color-medium)' },
+  { point: 'weak', total: 90, fill: 'var(--color-weak)' },
+  // { point: 'Dplus', total: 173, fill: 'var(--color-Dplus)' },
+  // { point: 'D', total: 187, fill: 'var(--color-D)' },
+  // { point: 'F', total: 90, fill: 'var(--color-F)' },
 ];
 
 
 export const summaryData = [{
-  "point": "A",
+  "point": "Xuất sắc",
   "total": 755
 }, {
-  "point": "B+",
+  "point": "Giỏi",
   "total": 771
 }, {
-  "point": "B",
+  "point": "Khá",
   "total": 623
 }, {
-  "point": "C+",
+  "point": "Trung bình",
   "total": 714
 }, {
-  "point": "C",
+  "point": "Yếu/Kém",
   "total": 374
-}, {
-  "point": "D+",
-  "total": 507
-}, {
-  "point": "D",
-  "total": 604
-}, {
-  "point": "F",
-  "total": 110
-}]
+}, 
+// {
+//   "point": "D+",
+//   "total": 507
+// }, {
+//   "point": "D",
+//   "total": 604
+// }, {
+//   "point": "F",
+//   "total": 110
+// }
+]
