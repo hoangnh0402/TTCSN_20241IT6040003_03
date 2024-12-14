@@ -8,6 +8,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { Subject } from '@/types/subject.type';
 import { useSubjectStore } from '@/store/useSubjectStore';
+import { toast } from '@/hooks/use-toast';
 
 interface SubjectModalProps {
   modalProps?: {
@@ -15,6 +16,7 @@ interface SubjectModalProps {
     onSubmit: (data: z.infer<typeof FormSchema>) => void;
   };
   subject?: Subject;
+  onClose?: () => void;
 }
 
 export const FormSchema = z.object({
@@ -28,13 +30,30 @@ export const FormSchema = z.object({
   prerequisiteSubjects: z.string().default('').optional(),
 });
 
-const SubjectModal = ({ modalProps, subject }: SubjectModalProps) => {
+const SubjectModal = ({ modalProps, subject, onClose }: SubjectModalProps) => {
   const { createSubject } = useSubjectStore();
 
   const { mode, onSubmit } = modalProps || {
     mode: 'create',
     onSubmit: async (data: z.infer<typeof FormSchema>) => {
-      await createSubject(data);
+      try {
+        await createSubject(data);
+        form.reset();
+        toast({
+          title: 'Thêm môn học thành công',
+          description: 'Môn học đã được thêm vào hệ thống',
+          variant: 'success',
+          duration: 2000,
+        });
+        onClose?.();
+      } catch (error) {
+        toast({
+          title: 'Thêm môn học thất bại',
+          description: 'Vui lòng thử lại sau',
+          variant: 'destructive',
+          duration: 2000,
+        });
+      }
     },
   };
 

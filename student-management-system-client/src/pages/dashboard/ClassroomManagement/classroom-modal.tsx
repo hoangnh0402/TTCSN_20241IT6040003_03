@@ -13,6 +13,7 @@ import { useClassroomStore } from '@/store/useClassroomStore';
 import { useSubjectStore } from '@/store/useSubjectStore';
 import { useTeacherStore } from '@/store/useTeacherStore';
 import { Classroom } from '@/types/classroom.type';
+import { toast } from '@/hooks/use-toast';
 
 interface ClassroomModalProps {
   modalProps?: {
@@ -20,6 +21,7 @@ interface ClassroomModalProps {
     onSubmit: (data: z.infer<typeof FormSchema>) => void;
   };
   classroom?: Classroom;
+  onClose?: () => void;
 }
 
 export const FormSchema = z.object({
@@ -32,22 +34,37 @@ export const FormSchema = z.object({
   startDate: z.string().optional(),
 });
 
-const ClassroomModal = ({ modalProps, classroom }: ClassroomModalProps) => {
+const ClassroomModal = ({ modalProps, classroom, onClose }: ClassroomModalProps) => {
   const { subjects, fetchSubjects } = useSubjectStore();
   const { teachers, fetchTeachers } = useTeacherStore();
   const { createClassroom } = useClassroomStore();
 
   useEffect(() => {
-    if (subjects.length === 0 || teachers.length === 0) {
-      fetchSubjects();
-      fetchTeachers();
-    }
-  }, [fetchSubjects, fetchTeachers, subjects, teachers]);
+    fetchSubjects();
+    fetchTeachers();
+  }, [fetchSubjects, fetchTeachers]);
 
   const { mode, onSubmit } = modalProps || {
     mode: 'create',
     onSubmit: async (data: z.infer<typeof FormSchema>) => {
-      await createClassroom(data);
+      try {
+        await createClassroom(data);
+        form.reset();
+        toast({
+          title: 'Thêm lớp học thành công',
+          description: 'Lớp học đã được thêm vào hệ thống',
+          variant: 'success',
+          duration: 2000,
+        });
+        onClose?.();
+      } catch (error) {
+        toast({
+          title: 'Thêm lớp học thất bại',
+          description: 'Vui lòng thử lại sau',
+          variant: 'destructive',
+          duration: 2000,
+        });
+      }
     },
   };
 

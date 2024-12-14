@@ -5,6 +5,7 @@ import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Table } from '@tanstack/react-table';
 import { ArrowUpDown, Plus, Search } from 'lucide-react';
+import { useState } from 'react';
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -13,17 +14,19 @@ interface DataTableToolbarProps<TData> {
 }
 
 export function DataTableToolbar<TData>({ table, Modal, modalProps }: DataTableToolbarProps<TData>) {
+  const [open, setOpen] = useState<boolean>(false);
+
   return (
     <div className={`my-4 flex items-center ${Modal ? 'justify-between' : 'justify-end'}`}>
       {Modal && (
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
             <Button variant="default" size="sm">
               <Plus />
               Thêm
             </Button>
           </DialogTrigger>
-          <Modal modalProps={modalProps} />
+          <Modal modalProps={modalProps} onClose={() => setOpen(false)} />
         </Dialog>
       )}
       <div className="flex gap-2">

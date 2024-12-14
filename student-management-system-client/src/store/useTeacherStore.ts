@@ -38,6 +38,7 @@ export const useTeacherStore = create<TeacherStore>((set) => ({
       set((state) => ({ teachers: [...state.teachers, data] }));
     } catch (error) {
       set({ error: error.message });
+      throw error;
     } finally {
       set({ loading: false });
     }
@@ -52,6 +53,7 @@ export const useTeacherStore = create<TeacherStore>((set) => ({
       }));
     } catch (error) {
       set({ error: error.message });
+      throw error;
     } finally {
       set({ loading: false });
     }
@@ -66,6 +68,7 @@ export const useTeacherStore = create<TeacherStore>((set) => ({
       }));
     } catch (error) {
       set({ error: error.message });
+      throw error;
     } finally {
       set({ loading: false });
     }
