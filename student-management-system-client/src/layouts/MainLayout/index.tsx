@@ -36,7 +36,7 @@ const items = [
   {
     title: 'Trang chủ',
     icon: IoMdHome,
-    href: '/admin',
+    href: '/',
     tooltip: 'Trang chủ',
     roles: [Role.ADMIN, Role.TEACHER, Role.STUDENT],
   },

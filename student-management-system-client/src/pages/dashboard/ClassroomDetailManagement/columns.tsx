@@ -1,18 +1,32 @@
 /* eslint-disable react-refresh/only-export-components */
 // eslint-disable-next-line react-refresh/only-export-components
+import { useParams } from 'react-router-dom';
 
 import { DataTableColumnHeader } from '@/components/ui/data-table/data-table-column-header';
 import { DeleteDialog } from '@/components/ui/delete-dialog';
+import { toast } from '@/hooks/use-toast';
 import { useClassroomDetailStore } from '@/store/useClassroomDetailStore';
 import { User } from '@/types/user.type';
 import { ColumnDef } from '@tanstack/react-table';
-import { useParams } from 'react-router-dom';
 
 const DeleteAction: React.FC<{ user: User }> = ({ user }) => {
   const { removeStudent } = useClassroomDetailStore();
   const { id } = useParams<{ id: string }>();
   if (!id) return null;
-  return <DeleteDialog title="Xóa" onConfirm={() => removeStudent(id, user.id)} />;
+  return (
+    <DeleteDialog
+      title="Xóa"
+      onConfirm={() => {
+        removeStudent(id, user.id);
+        toast({
+          title: 'Xóa sinh viên khỏi lớp học thành công',
+          description: 'Sinh viên đã được xóa khỏi lớp học',
+          variant: 'success',
+          duration: 2000,
+        });
+      }}
+    />
+  );
 };
 
 export const columns: ColumnDef<User>[] = [

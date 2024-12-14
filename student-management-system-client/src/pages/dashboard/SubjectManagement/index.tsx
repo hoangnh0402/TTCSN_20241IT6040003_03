@@ -10,8 +10,8 @@ const SubjectMangement = () => {
   const { subjects, loading, fetchSubjects } = useSubjectStore();
 
   useEffect(() => {
-    if (!subjects.length) fetchSubjects();
-  }, [subjects, fetchSubjects]);
+    fetchSubjects();
+  }, [fetchSubjects]);
 
   return (
     <TablePage<Subject>

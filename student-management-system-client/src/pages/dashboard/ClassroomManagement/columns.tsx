@@ -6,12 +6,14 @@ import { Button } from '@/components/ui/button';
 import { DataTableColumnHeader } from '@/components/ui/data-table/data-table-column-header';
 import { DeleteDialog } from '@/components/ui/delete-dialog';
 import { DialogTrigger } from '@/components/ui/dialog';
+import { toast } from '@/hooks/use-toast';
+import { useClassroomStore } from '@/store/useClassroomStore';
 import { Classroom } from '@/types/classroom.type';
 import { Dialog } from '@radix-ui/react-dialog';
 import { ColumnDef } from '@tanstack/react-table';
-import ClassroomModal, { FormSchema } from './classroom-modal';
-import { useClassroomStore } from '@/store/useClassroomStore';
+import { format } from 'date-fns';
 import { z } from 'zod';
+import ClassroomModal, { FormSchema } from './classroom-modal';
 
 const EditAction: React.FC<{ classroom: Classroom }> = ({ classroom }) => {
   const { updateClassroom } = useClassroomStore();
@@ -24,7 +26,22 @@ const EditAction: React.FC<{ classroom: Classroom }> = ({ classroom }) => {
         modalProps={{
           mode: 'edit',
           onSubmit: async (data: z.infer<typeof FormSchema>) => {
-            await updateClassroom(classroom.id, data);
+            try {
+              await updateClassroom(classroom.id, data);
+              toast({
+                title: 'Sửa thông tin lớp học thành công',
+                description: 'Thông tin lớp học đã được cập nhật',
+                variant: 'success',
+                duration: 2000,
+              });
+            } catch (error) {
+              toast({
+                title: 'Sửa thông tin lớp học thất bại',
+                description: 'Vui lòng thử lại sau',
+                variant: 'destructive',
+                duration: 2000,
+              });
+            }
           },
         }}
         classroom={classroom}
@@ -35,7 +52,20 @@ const EditAction: React.FC<{ classroom: Classroom }> = ({ classroom }) => {
 
 const DeleteAction: React.FC<{ classroom: Classroom }> = ({ classroom }) => {
   const { deleteClassroom } = useClassroomStore();
-  return <DeleteDialog title="Xóa" onConfirm={() => deleteClassroom(classroom.id)} />;
+  return (
+    <DeleteDialog
+      title="Xóa"
+      onConfirm={() => {
+        deleteClassroom(classroom.id);
+        toast({
+          title: 'Xóa lớp học thành công',
+          description: 'Lớp học đã được xóa khỏi hệ thống',
+          variant: 'success',
+          duration: 2000,
+        });
+      }}
+    />
+  );
 };
 
 export const columns: ColumnDef<Classroom>[] = [
@@ -84,6 +114,13 @@ export const columns: ColumnDef<Classroom>[] = [
     header: ({ column }) => <DataTableColumnHeader column={column} title="Ngày bắt đầu" />,
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
+    },
+    cell: ({ row }) => {
+      const startDate = row.original.startDate || '';
+      if (!startDate || isNaN(new Date(startDate).getTime())) {
+        return <div></div>;
+      }
+      return <div>{format(new Date(startDate), 'dd/MM/yyyy')}</div>;
     },
     enableSorting: false,
   },
