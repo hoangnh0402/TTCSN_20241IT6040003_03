@@ -42,6 +42,7 @@ export const useClassroomStore = create<ClassroomStore>((set) => ({
       set((state) => ({ classrooms: [...state.classrooms, data] }));
     } catch (error) {
       set({ error: error.message });
+      throw error;
     } finally {
       set({ loading: false });
     }
@@ -70,6 +71,7 @@ export const useClassroomStore = create<ClassroomStore>((set) => ({
       }));
     } catch (error) {
       set({ error: error.message });
+      throw error;
     } finally {
       set({ loading: false });
     }
@@ -78,7 +80,7 @@ export const useClassroomStore = create<ClassroomStore>((set) => ({
   getClassroomById: async (id) => {
     set({ loading: true, error: null });
     try {
-      const { data } = await api.get<Classroom>(`${ApiConstant.classrooms.getById}?classroomId=${id}`);
+      const { data } = await api.get<Classroom>(ApiConstant.classrooms.getById.replace(':id', id));
       set({ classroom: data });
     } catch (error) {
       set({ error: error.message });

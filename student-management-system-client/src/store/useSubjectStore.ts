@@ -42,6 +42,7 @@ export const useSubjectStore = create<SubjectStore>((set) => ({
       set((state) => ({ subjects: [...state.subjects, data] }));
     } catch (error) {
       set({ error: error.message });
+      throw error;
     } finally {
       set({ loading: false });
     }
@@ -56,6 +57,7 @@ export const useSubjectStore = create<SubjectStore>((set) => ({
       }));
     } catch (error) {
       set({ error: error.message });
+      throw error;
     } finally {
       set({ loading: false });
     }
@@ -70,10 +72,12 @@ export const useSubjectStore = create<SubjectStore>((set) => ({
       }));
     } catch (error) {
       set({ error: error.message });
+      throw error;
     } finally {
       set({ loading: false });
     }
   },
+
   getSubjectById: async (id) => {
     set({ loading: true, error: null });
     try {

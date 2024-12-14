@@ -1,16 +1,20 @@
-import { User } from '@/types/user.type';
+import { useEffect } from 'react';
+
 import TablePage from '@/components/ui/data-table';
+import { useClassStore } from '@/store/useClassStore';
+import { useStudentStore } from '@/store/useStudentStore';
+import { User } from '@/types/user.type';
 import { columns } from './columns';
 import StudentModal from './student-modal';
-import { useEffect } from 'react';
-import { useStudentStore } from '@/store/useStudentStore';
 
 const StudentManagement = () => {
   const { students, loading, fetchStudents } = useStudentStore();
+  const { fetchClasses } = useClassStore();
 
   useEffect(() => {
-    if (!students.length) fetchStudents();
-  }, [students, fetchStudents]);
+    fetchStudents();
+    fetchClasses();
+  }, [fetchStudents, fetchClasses]);
 
   return (
     <TablePage<User>

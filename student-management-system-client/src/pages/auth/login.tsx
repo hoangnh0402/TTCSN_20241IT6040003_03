@@ -52,7 +52,9 @@ const Login = () => {
         duration: 1500,
         className: 'bg-green-600 text-white border-green-600',
       });
-      navigate('/');
+      setTimeout(() => {
+        navigate('/');
+      }, 1000);
     } catch (error) {
       toast({
         title: 'Đăng nhập thất bại',
