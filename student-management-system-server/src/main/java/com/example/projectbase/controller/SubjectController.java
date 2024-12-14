@@ -34,7 +34,6 @@ public class SubjectController {
 
     @Tags({@Tag(name = "subject-controller")})
     @Operation(summary = "API get all subjects")
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping(UrlConstant.Subject.GET_ALL_SUBJECTS)
     public ResponseEntity<?> readAllSubjects(@Valid @ParameterObject PaginationFullRequestDto paginationRequestDto) {
         return VsResponseUtil.success(subjectService.readAllSubjects(paginationRequestDto));
