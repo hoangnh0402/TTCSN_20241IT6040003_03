@@ -37,7 +37,7 @@ export const ApiConstant = {
     getStudents: '/:id/students',
     addStudent: '/admin/classroom/:id/add-student',
     removeStudent: '/admin/classroom/:classroomId/:studentId',
-    getClassByStudent: 'classrooms/byStudentCode/:username',
+    getClassByStudent: 'api/v1/classrooms/byStudentCode/:username',
   },
   documents: {
     getAll: '/documents',

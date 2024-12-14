@@ -1,33 +1,32 @@
-import { Button } from '@/components/ui/button';
 import { DataTableColumnHeader } from '@/components/ui/data-table/data-table-column-header';
-import { useEnrollmentStore } from '@/store/useEnrollmentStore';
-import { useUserStore } from '@/store/useUserStore';
 import { Classroom } from '@/types/classroom.type';
 import { Enrollment } from '@/types/enrollment.type';
 import { Subject } from '@/types/subject.type';
 import { User } from '@/types/user.type';
 import { ColumnDef } from '@tanstack/react-table';
-import { useParams } from 'react-router-dom';
 
-export const transformData = (subjects: Subject[], classrooms: Classroom[]) => {
-  return classrooms.map(async (classroom) => {
-    const { enrollments, fetchEnrollments } = useEnrollmentStore();
-    const { user, getByUsercode } = useUserStore();
-    const { username } = useParams();
-    await getByUsercode(username as string);
-    await fetchEnrollments(classroom.id);
-    const enrollment = enrollments.find((enrollment) => enrollment.userID === user?.id);
-    const subject = subjects.find((subject) => subject.id === classroom.subjectId);
-    return {
-      subjectName: subject?.name || '',
-      classroomCode: classroom.code,
-      firstRegularPoint: enrollment?.firstRegularPoint || 0,
-      secondRegularPoint: enrollment?.secondRegularPoint || 0,
-      midTermPoint: enrollment?.midTermPoint || 0,
-      finalPoint: enrollment?.finalPoint || 0,
-    };
-  });
+export const transformData = async (
+  subjects: Subject[],
+  classrooms: Classroom[],
+  enrollments: Enrollment[],
+  user: User | null,
+) => {
+  return Promise.all(
+    classrooms.map(async (classroom) => {
+      const enrollment = enrollments.find((enrollment) => enrollment.userID === user?.id);
+      const subject = subjects.find((subject) => subject.id === classroom.subjectId);
+      return {
+        subjectName: subject?.name || '',
+        classroomCode: classroom.code,
+        firstRegularPoint: enrollment?.firstRegularPoint || 0,
+        secondRegularPoint: enrollment?.secondRegularPoint || 0,
+        midTermPoint: enrollment?.midTermPoint || 0,
+        finalPoint: enrollment?.finalPoint || 0,
+      };
+    }),
+  );
 };
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const columns: ColumnDef<Enrollment>[] = [
   {
@@ -48,16 +47,6 @@ export const columns: ColumnDef<Enrollment>[] = [
     accessorKey: 'classroomCode',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Mã lớp" />,
     cell: ({ row }) => <div>{row.original.classroomCode}</div>,
-    // cell: ({ row }) => {
-    //   const classroomCode = row.original.classroomCode;
-    //   return (
-    //     <a href={`/classrooms/${row.original.id}`} style={{ color: 'blue', textDecoration: 'underline' }}>
-    //       {classroomCode}
-    //     </a>
-    //   );
-    // },
-    // size: 70,
-    // enableSorting: false,
   },
 
   {

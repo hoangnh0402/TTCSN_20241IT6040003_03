@@ -16,6 +16,7 @@ const ViewDetailsButton = ({ enrollment }: { enrollment: Enrollment }) => {
 export const transformData = (enrollments: Enrollment[], users: User[]) => {
   return enrollments.map((enrollment) => {
     const user = users.find((user) => enrollment.userID === user.id);
+    console.log('usser111', enrollment.userID);
     console.log('usser', user);
     return {
       userID: enrollment?.userID,
@@ -49,7 +50,6 @@ export const columns: ColumnDef<Enrollment>[] = [
   {
     accessorKey: 'username',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Tên sinh viên" />,
-    // cell: ({ row }) => <div>{row.original.fullName}</div>,
     cell: ({ row }) => {
       return (
         <a href={`/student/${row.original.username}`} style={{ color: 'blue', textDecoration: 'underline' }}>

@@ -1,25 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import TablePage from '@/components/ui/data-table';
 import { useParams } from 'react-router-dom';
-import { useClassroomStore } from '@/store/useClassroomStore';
-import { useSubjectStore } from '@/store/useSubjectStore';
 import { columns, transformData } from './columns';
+import { getByUsercode } from '@/services/user.api';
+import { fetchById } from '@/services/enrollment.api';
+import { getClassByStudent } from '@/services/classroom.api';
+import { fetchSubjects } from '@/services/subject.api';
 
 const StudentDetail: React.FC = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const { classrooms, getClassroomByStudent } = useClassroomStore();
-  const { subjects, fetchSubjects } = useSubjectStore();
-
-  console.log('asdasdasdas', classrooms);
   const { username } = useParams();
+
   const getData = async () => {
     try {
       if (username) {
-        await getClassroomByStudent(username);
-        await fetchSubjects();
-        const transformedData = transformData(subjects, classrooms);
+        const classrooms = await getClassByStudent(username);
+        const subjects = await fetchSubjects();
+        const user = await getByUsercode(username);
+        const allEnrollments = await Promise.all(
+          classrooms.map(async (classroom) => {
+            const enrollments = await fetchById(classroom.id);
+            return enrollments;
+          }),
+        );
+        const flatEnrollments = allEnrollments.flat();
+        const transformedData = await transformData(subjects, classrooms, flatEnrollments, user);
+        console.log('transformedData', transformedData);
         setData(transformedData);
       }
     } catch (error) {
@@ -28,6 +36,7 @@ const StudentDetail: React.FC = () => {
       setLoading(false);
     }
   };
+
   useEffect(() => {
     getData();
   }, []);

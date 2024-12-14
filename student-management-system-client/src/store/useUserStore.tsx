@@ -14,7 +14,6 @@ interface useUserStore {
   login: (studentId: string, password: string) => Promise<void>;
   logout: () => Promise<boolean>;
   checkAuth: () => Promise<void>;
-  getByUsercode: (id: string) => Promise<void>;
 }
 
 export const useUserStore = create<useUserStore>()(
@@ -64,17 +63,6 @@ export const useUserStore = create<useUserStore>()(
           set({ user: response.data, checkingAuth: false });
         } catch (error) {
           set({ loading: false, error: error.message });
-        } finally {
-          set({ loading: false });
-        }
-      },
-      getByUsercode: async (id) => {
-        set({ loading: true, error: null });
-        try {
-          const { data: user } = await api.get<User>(ApiConstant.students.getByUsercode.replace(':userCode', id));
-          set({ user });
-        } catch (error) {
-          set({ error: error.message });
         } finally {
           set({ loading: false });
         }

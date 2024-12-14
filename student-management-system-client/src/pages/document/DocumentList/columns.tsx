@@ -14,14 +14,6 @@ export const documentColumns: ColumnDef<Document>[] = [
   {
     accessorKey: 'name',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Tên tài liệu" />,
-    // cell: ({ row }) => {
-    //   console.log('123', row); // In ra giá trị của row trong console
-    //   return (
-    //     <div>
-    //       {row.original.name} {/* Hiển thị tên tài liệu */}
-    //     </div>
-    //   );
-    // },
     cell: ({ row }) => (
       <a
         href={row.original.path}

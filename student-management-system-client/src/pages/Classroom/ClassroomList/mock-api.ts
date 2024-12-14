@@ -23,7 +23,6 @@ export const fetchClassrooms = async (): Promise<Classroom[]> => {
   }
 };
 
-// Example usage of fetchSubjects and fetchClassrooms
 (async () => {
   try {
     const subjects = await fetchSubjects();
