@@ -1,5 +1,4 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -10,9 +9,10 @@ import { DropdownSelectField } from '@/components/ui/dropdown-select-field';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Class } from '@/types/class.type';
-import { Gender, User } from '@/types/user.type';
+import { toast } from '@/hooks/use-toast';
+import { useClassStore } from '@/store/useClassStore';
 import { useStudentStore } from '@/store/useStudentStore';
+import { Gender, User } from '@/types/user.type';
 
 interface StudentModalProps {
   modalProps?: {
@@ -20,26 +20,52 @@ interface StudentModalProps {
     onSubmit: (data: z.infer<typeof FormSchema>) => void;
   };
   student?: User;
+  onClose?: () => void;
 }
 
 export const FormSchema = z.object({
   classId: z.string().nullable().optional(),
   username: z.string({ required_error: 'Mã sinh viên không được để trống' }),
+  phoneNumber: z
+    .string()
+    .refine((v) => v.length === 10, {
+      message: 'Số điện thoại phải có 10 chữ số',
+    })
+    .optional(),
   fullName: z.string({ required_error: 'Họ tên không được để trống' }),
   gender: z.nativeEnum(Gender, { required_error: 'Giới tính không được để trống' }),
   birthday: z.string().nullable().optional(),
 });
 
-const StudentModal = ({ modalProps, student }: StudentModalProps) => {
+const StudentModal = ({ modalProps, student, onClose }: StudentModalProps) => {
   const { createStudent } = useStudentStore();
-  const [classes, setClasses] = useState<Class[]>([]);
+  const { classes } = useClassStore();
+
+  
 
   const { mode, onSubmit } = modalProps || {
     mode: 'create',
     onSubmit: async (data: z.infer<typeof FormSchema>) => {
-      const { username, ...rest } = data;
-      const student = { ...rest, username, password: username };
-      await createStudent(student);
+      try {
+        const { username, ...rest } = data;
+        const student = { ...rest, username, password: username };
+        await createStudent(student);
+        form.reset();
+        toast({
+          title: 'Thêm sinh viên thành công',
+          description: 'Sinh viên đã được thêm vào hệ thống',
+          variant: 'success',
+          duration: 2000,
+        });
+        onClose?.();
+      } catch (error) {
+        toast({
+          title: 'Thêm sinh viên thất bại',
+          description: 'Vui lòng thử lại sau',
+          variant: 'destructive',
+          duration: 2000,
+        });
+      }
     },
   };
 
@@ -80,7 +106,7 @@ const StudentModal = ({ modalProps, student }: StudentModalProps) => {
                 <FormItem>
                   <FormLabel>Mã sinh viên</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} value={field.value || ''} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -93,7 +119,7 @@ const StudentModal = ({ modalProps, student }: StudentModalProps) => {
                 <FormItem>
                   <FormLabel>Họ tên</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} value={field.value ?? ''} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -120,6 +146,19 @@ const StudentModal = ({ modalProps, student }: StudentModalProps) => {
                         <FormLabel className="font-normal">Nữ</FormLabel>
                       </FormItem>
                     </RadioGroup>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="phoneNumber"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Số điện thoại</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

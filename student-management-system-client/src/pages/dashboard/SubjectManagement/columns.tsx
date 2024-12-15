@@ -11,19 +11,35 @@ import { ColumnDef } from '@tanstack/react-table';
 import SubjectModal, { FormSchema } from './subject-modal';
 import { useSubjectStore } from '@/store/useSubjectStore';
 import { z } from 'zod';
+import { toast } from '@/hooks/use-toast';
 
 const EditAction: React.FC<{ subject: Subject }> = ({ subject }) => {
   const { updateSubject } = useSubjectStore();
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button onSelect={() => {}}>Sửa</Button>
+        <Button>Sửa</Button>
       </DialogTrigger>
       <SubjectModal
         modalProps={{
           mode: 'edit',
           onSubmit: async (data: z.infer<typeof FormSchema>) => {
-            await updateSubject(subject.id, data);
+            try {
+              await updateSubject(subject.id, data);
+              toast({
+                title: 'Sửa thông tin môn học thành công',
+                description: 'Thông tin môn học đã được cập nhật',
+                variant: 'success',
+                duration: 2000,
+              });
+            } catch (error) {
+              toast({
+                title: 'Sửa thông tin môn học thất bại',
+                description: 'Vui lòng thử lại sau',
+                variant: 'destructive',
+                duration: 2000,
+              });
+            }
           },
         }}
         subject={subject}
@@ -34,7 +50,20 @@ const EditAction: React.FC<{ subject: Subject }> = ({ subject }) => {
 
 const DeleteAction: React.FC<{ subject: Subject }> = ({ subject }) => {
   const { deleteSubject } = useSubjectStore();
-  return <DeleteDialog title="Xóa" onConfirm={() => deleteSubject(subject.id)} />;
+  return (
+    <DeleteDialog
+      title="Xóa"
+      onConfirm={() => {
+        deleteSubject(subject.id);
+        toast({
+          title: 'Xóa môn học thành công',
+          description: 'Môn học đã được xóa khỏi hệ thống',
+          variant: 'success',
+          duration: 2000,
+        });
+      }}
+    />
+  );
 };
 
 export const columns: ColumnDef<Subject>[] = [

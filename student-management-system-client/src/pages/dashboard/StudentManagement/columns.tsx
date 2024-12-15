@@ -12,19 +12,35 @@ import { Dialog } from '@radix-ui/react-dialog';
 import { ColumnDef } from '@tanstack/react-table';
 import StudentModal, { FormSchema } from './student-modal';
 import { format } from 'date-fns';
+import { toast } from '@/hooks/use-toast';
 
 const EditAction: React.FC<{ student: User }> = ({ student }) => {
   const { updateStudent } = useStudentStore();
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button onSelect={() => {}}>Sửa</Button>
+        <Button>Sửa</Button>
       </DialogTrigger>
       <StudentModal
         modalProps={{
           mode: 'edit',
           onSubmit: async (data: z.infer<typeof FormSchema>) => {
-            await updateStudent(student.id, data);
+            try {
+              await updateStudent(student.id, data);
+              toast({
+                title: 'Sửa thông tin sinh viên thành công',
+                description: 'Thông tin sinh viên đã được cập nhật',
+                variant: 'success',
+                duration: 2000,
+              });
+            } catch (error) {
+              toast({
+                title: 'Sửa thông tin sinh viên thất bại',
+                description: 'Vui lòng thử lại sau',
+                variant: 'destructive',
+                duration: 2000,
+              });
+            }
           },
         }}
         student={student}
@@ -35,7 +51,20 @@ const EditAction: React.FC<{ student: User }> = ({ student }) => {
 
 const DeleteAction: React.FC<{ student: User }> = ({ student }) => {
   const { deleteStudent } = useStudentStore();
-  return <DeleteDialog title="Xóa" onConfirm={() => deleteStudent(student.id)} />;
+  return (
+    <DeleteDialog
+      title="Xóa"
+      onConfirm={() => {
+        deleteStudent(student.id);
+        toast({
+          title: 'Xóa sinh viên thành công',
+          description: 'Sinh viên đã được xóa khỏi hệ thống',
+          variant: 'success',
+          duration: 2000,
+        });
+      }}
+    />
+  );
 };
 
 export const columns: ColumnDef<User>[] = [
@@ -68,19 +97,22 @@ export const columns: ColumnDef<User>[] = [
       return value.includes(row.getValue(id));
     },
   },
-  // {
-  //   accessorKey: 'birthday',
-  //   header: ({ column }) => <DataTableColumnHeader column={column} title="Ngày sinh" />,
-  //   filterFn: (row, id, value) => {
-  //     return value.includes(row.getValue(id));
-  //   },
-  //   cell: ({ row }) => {
-  //     const birthday = row.original.birthday || '';
-  //     return <div>{format(new Date(birthday), 'dd/MM/yyyy')}</div>;
-  //   },
-  // },
   {
-    accessorKey: 'classId',
+    accessorKey: 'birthday',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Ngày sinh" />,
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
+    cell: ({ row }) => {
+      const birthday = row.original.birthday || '';
+      if (!birthday || isNaN(new Date(birthday).getTime())) {
+        return <div></div>;
+      }
+      return <div>{format(new Date(birthday), 'dd/MM/yyyy')}</div>;
+    },
+  },
+  {
+    accessorKey: 'class.name',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Lớp" />,
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));

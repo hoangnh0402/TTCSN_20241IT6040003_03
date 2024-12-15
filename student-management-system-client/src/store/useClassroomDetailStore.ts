@@ -1,10 +1,11 @@
 import { create } from 'zustand';
 
 import { ApiConstant } from '@/constants/api.constant';
-import {api} from '@/services/api.service';
+import { api } from '@/services/api.service';
 import { Subject } from '@/types/subject.type';
 import { User } from '@/types/user.type';
 import { Classroom } from '@/types/classroom.type';
+import { useClassStore } from './useClassStore';
 
 interface ClassroomDetailStore {
   classroom: Classroom | null;
@@ -28,7 +29,12 @@ export const useClassroomDetailStore = create<ClassroomDetailStore>((set) => ({
     set({ loading: true, error: null });
     try {
       const { data: classroom } = await api.get<Classroom>(ApiConstant.classrooms.getById.replace(':id', id));
-      const { data: students } = await api.get<User[]>(ApiConstant.classrooms.getStudents.replace(':id', classroom.id));
+      const { data } = await api.get<User[]>(ApiConstant.classrooms.getStudents.replace(':id', classroom.id));
+      const classes = await useClassStore.getState().fetchClasses();
+      const students = data.map((student) => ({
+        ...student,
+        class: classes.find((c) => c.id === student.classId),
+      }));
       const { data: subject } = await api.get<Subject>(
         ApiConstant.subjects.getById.replace(':id', classroom.subjectId),
       );
@@ -48,6 +54,7 @@ export const useClassroomDetailStore = create<ClassroomDetailStore>((set) => ({
       set({ students });
     } catch (error) {
       set({ error: error.message });
+      throw error;
     } finally {
       set({ loading: false });
     }
@@ -62,6 +69,7 @@ export const useClassroomDetailStore = create<ClassroomDetailStore>((set) => ({
       set((state) => ({ students: state.students.filter((s) => s.id !== studentId) }));
     } catch (error) {
       set({ error: error.message });
+      throw error;
     } finally {
       set({ loading: false });
     }

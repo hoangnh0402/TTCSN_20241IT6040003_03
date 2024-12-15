@@ -1,17 +1,21 @@
-import { User } from '@/types/user.type';
+import { useEffect } from 'react';
+
 import TablePage from '@/components/ui/data-table';
+import { useClassStore } from '@/store/useClassStore';
+import { useStudentStore } from '@/store/useStudentStore';
+import { User } from '@/types/user.type';
 import { columns } from './columns';
 import StudentModal from './student-modal';
-import { useEffect } from 'react';
-import { useStudentStore } from '@/store/useStudentStore';
 
 const StudentManagement = () => {
   const { students, loading, fetchStudents } = useStudentStore();
+  const { fetchClasses } = useClassStore();
 
   useEffect(() => {
     fetchStudents();
-  }, [fetchStudents]);
-  console.log('first', students);
+    fetchClasses();
+  }, [fetchStudents, fetchClasses]);
+
   return (
     <TablePage<User>
       title="Quản lý sinh viên"

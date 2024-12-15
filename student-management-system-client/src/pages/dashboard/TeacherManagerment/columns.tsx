@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-// eslint-disable-next-line react-refresh/only-export-components
+// @ts-nocheck
 
 import { Button } from '@/components/ui/button';
 import { DataTableColumnHeader } from '@/components/ui/data-table/data-table-column-header';
@@ -8,22 +8,39 @@ import { DialogTrigger } from '@/components/ui/dialog';
 import { User } from '@/types/user.type';
 import { Dialog } from '@radix-ui/react-dialog';
 import { ColumnDef } from '@tanstack/react-table';
-import TeacherModal, { FormSchema } from './teacher-modal';
+import TeacherModal, { FormSchema, handleFormData } from './teacher-modal';
 import { useTeacherStore } from '@/store/useTeacherStore';
 import { z } from 'zod';
+import { toast } from '@/hooks/use-toast';
 
 const EditAction: React.FC<{ teacher: User }> = ({ teacher }) => {
   const { updateTeacher } = useTeacherStore();
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button onSelect={() => {}}>Sửa</Button>
+        <Button>Sửa</Button>
       </DialogTrigger>
       <TeacherModal
         modalProps={{
           mode: 'edit',
           onSubmit: async (data: z.infer<typeof FormSchema>) => {
-            await updateTeacher(teacher.id, data);
+            try {
+              const formData = await handleFormData(data);
+              await updateTeacher(teacher.id, formData);
+              toast({
+                title: 'Sửa thông tin giảng viên thành công',
+                description: 'Thông tin giảng viên đã được cập nhật',
+                variant: 'success',
+                duration: 2000,
+              });
+            } catch (error) {
+              toast({
+                title: 'Sửa thông tin giảng viên thất bại',
+                description: 'Vui lòng thử lại sau',
+                variant: 'destructive',
+                duration: 2000,
+              });
+            }
           },
         }}
         teacher={teacher}
@@ -34,7 +51,20 @@ const EditAction: React.FC<{ teacher: User }> = ({ teacher }) => {
 
 const DeleteAction: React.FC<{ teacher: User }> = ({ teacher }) => {
   const { deleteTeacher } = useTeacherStore();
-  return <DeleteDialog title="Xóa" onConfirm={() => deleteTeacher(teacher.id)} />;
+  return (
+    <DeleteDialog
+      title="Xóa"
+      onConfirm={() => {
+        deleteTeacher(teacher.id);
+        toast({
+          title: 'Xóa giảng viên thành công',
+          description: 'Giảng viên đã được xóa khỏi hệ thống',
+          variant: 'success',
+          duration: 2000,
+        });
+      }}
+    />
+  );
 };
 
 export const columns: ColumnDef<User>[] = [
@@ -45,9 +75,9 @@ export const columns: ColumnDef<User>[] = [
       const user = row.original;
       return (
         <img
-          src={user.avatar ? user.avatar : 'https://placehold.co/75x113'}
-          alt="Ảnh dự án"
-          className="h-[113px] w-[75px] border border-black object-cover"
+          src={user.avatar ? user.avatar : 'https://placehold.co/140x100?text='}
+          alt="Ảnh giảng viên"
+          className="h-[140px] w-[100px] border border-black object-cover"
         />
       );
     },

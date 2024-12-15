@@ -3,8 +3,6 @@
 
 import { DataTableColumnHeader } from '@/components/ui/data-table/data-table-column-header';
 
-import { Subject } from '@/types/subject.type';
-
 import { ColumnDef } from '@tanstack/react-table';
 
 import { RegisterDialog } from '@/components/ui/register-dialog';

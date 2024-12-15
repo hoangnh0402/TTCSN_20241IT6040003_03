@@ -1,9 +1,12 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
+
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
 import { z } from 'zod';
+
+import {api} from '@/services/api.service';
+import { useEffect, useState } from 'react';
 
 import bgLogin from '@/assets/images/bg-login.jpg';
 import logo from '@/assets/images/logo.png';
@@ -30,7 +33,6 @@ const Login = () => {
 
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-  const { loading, login } = useUserStore();
 
   const form = useForm<z.infer<typeof formSchema>>({
     mode: 'onTouched',
@@ -40,6 +42,8 @@ const Login = () => {
       password: '',
     },
   });
+
+  const { user, loading, error, login } = useUserStore();
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
     try {
@@ -52,7 +56,9 @@ const Login = () => {
         duration: 1500,
         className: 'bg-green-600 text-white border-green-600',
       });
-      navigate('/');
+      setTimeout(() => {
+        navigate('/');
+      }, 1000);
     } catch (error) {
       toast({
         title: 'Đăng nhập thất bại',
