@@ -55,6 +55,7 @@ export const ApiConstant = {
   enrollment: {
     register: 'enroll/register',
     getAll: '/:id/students',
+    updateScore: '/enroll',
   },
   records: {
     getTotal: 'record/count/department',

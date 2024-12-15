@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -50,8 +51,13 @@ const DocumentModal = ({ modalProps, document }: DocumentModalProps) => {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     mode: 'onTouched',
-    defaultValues:
-      mode === 'create' ? { name: '', type: '', description: '', subjectId: id || '', files: undefined } : document,
+    defaultValues: {
+      name: document?.name || '',
+      type: document?.type || '',
+      description: document?.description || '',
+      subjectId: document?.subjectId || id || '',
+      files: undefined,
+    },
   });
   const { reset } = form;
 

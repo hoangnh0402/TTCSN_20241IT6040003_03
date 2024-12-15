@@ -4,13 +4,18 @@ import { Enrollment } from '@/types/enrollment.type';
 import { User } from '@/types/user.type';
 import { ColumnDef } from '@tanstack/react-table';
 
-const ViewDetailsButton = ({ enrollment }: { enrollment: Enrollment }) => {
+export const ViewDetailsButton = ({
+  enrollment,
+  onOpenModal,
+}: {
+  enrollment: Enrollment;
+  onOpenModal: (enrollment: Enrollment) => void;
+}) => {
   const handleViewDetails = () => {
-    // Hành động khi nhấn nút, ví dụ điều hướng hoặc hiển thị thông tin chi tiết
-    console.log(`Viewing details for enrollment ID: ${enrollment.id}`);
+    onOpenModal(enrollment);
   };
 
-  return <Button onClick={handleViewDetails}>Xem chi tiết</Button>;
+  return <Button onClick={handleViewDetails}>Nhập điểm</Button>;
 };
 
 export const transformData = (enrollments: Enrollment[], users: User[]) => {
@@ -28,7 +33,7 @@ export const transformData = (enrollments: Enrollment[], users: User[]) => {
   });
 };
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const columns: ColumnDef<Enrollment>[] = [
+export const columns = (onOpenModal: (enrollment: Enrollment) => void): ColumnDef<Enrollment>[] => [
   {
     accessorKey: 'No',
     header: ({ column }) => <DataTableColumnHeader column={column} title="STT" />,
@@ -95,10 +100,19 @@ export const columns: ColumnDef<Enrollment>[] = [
 
   {
     accessorKey: 'details',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Chi tiết" />,
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Hành động" />,
     cell: ({ row }) => {
       const enrollment = row.original;
-      return <ViewDetailsButton enrollment={enrollment} />;
+      console.log('first, ', enrollment);
+      return (
+        <Button
+          onClick={() => {
+            onOpenModal(enrollment);
+          }}
+        >
+          Nhập điểm
+        </Button>
+      );
     },
     enableSorting: false,
     enableHiding: false,
