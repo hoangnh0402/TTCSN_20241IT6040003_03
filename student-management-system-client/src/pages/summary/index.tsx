@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/chart';
 import ComboBox from './combo-box';
 import TablePage from '@/components/ui/data-table';
-import { frameworks, chartConfig, summaryData } from './mock-data';
+import { frameworks, chartConfig } from './mock-data';
 import { ChartInterface, SummaryInterface } from './summary-table/summary';
 import { columns } from './summary-table/columns';
 import { useSummaryStore } from '@/store/useSummaryStore';
