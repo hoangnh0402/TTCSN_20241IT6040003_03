@@ -21,18 +21,18 @@ export const ApiConstant = {
     delete: '/user/lock?userId=:id',
   },
   subjects: {
-    getAll: '/user/subject?pageSize=1000',
-    getById: '/admin/subject/id?subjectId=:id',
+    getAll: '/subject?pageSize=1000',
+    getById: '/subject/id?subjectId=:id',
     create: '/admin/subject',
     update: '/admin/subject?subjectId=:id',
     delete: '/admin/subject?subjectId=:id',
   },
   classes: {
     getAll: '/class',
-    create:'/class',
+    create: '/class',
     update: '/class',
-    delete:'/class',
-    getById: '/class/:id'
+    delete: '/class',
+    getById: '/class/:id',
   },
   classrooms: {
     getAll: '/user/classroom',
@@ -56,9 +56,9 @@ export const ApiConstant = {
     register: 'enroll/register',
     getAll: '/:id/students',
   },
-  records:{
-    getTotal: 'record/count/department'
-  }
+  records: {
+    getTotal: 'record/count/department',
+  },
 };
 
 export const ApiConstantUser = {
@@ -70,8 +70,7 @@ export const ApiConstantUser = {
     getAll: '/user/subject',
   },
 
-  enrollment:{
-    reject:'reject/:classroomId'
-  }
-
+  enrollment: {
+    reject: 'reject/:classroomId',
+  },
 };

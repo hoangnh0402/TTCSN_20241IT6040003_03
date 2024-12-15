@@ -70,22 +70,6 @@ const router = createBrowserRouter([
             ),
           },
           {
-            path: 'lectures',
-            element: (
-              <Suspense fallback={<Loading />}>
-                <SeeDocument />
-              </Suspense>
-            ),
-          },
-          {
-            path: 'documents/:id',
-            element: (
-              <Suspense fallback={<Loading />}>
-                <DocumentList />
-              </Suspense>
-            ),
-          },
-          {
             path: 'classrooms/:id',
             element: (
               <Suspense fallback={<Loading />}>
@@ -114,7 +98,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: '/classrooms',
+        path: 'classrooms',
         element: (
           <Suspense fallback={<Loading />}>
             <SubjectList />
@@ -122,10 +106,18 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: '/classrooms/:classroomCode',
+        path: 'classrooms/:classroomCode',
         element: (
           <Suspense fallback={<Loading />}>
             <ClassroomDetail />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'lectures',
+        element: (
+          <Suspense fallback={<Loading />}>
+            <SeeDocument />
           </Suspense>
         ),
       },
@@ -134,6 +126,14 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<Loading />}>
             <StudentDetail />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'documents/:id',
+        element: (
+          <Suspense fallback={<Loading />}>
+            <DocumentList />
           </Suspense>
         ),
       },
@@ -156,7 +156,7 @@ const router = createBrowserRouter([
 const AppRoutes = () => {
   return (
     <>
-      <Toaster /> <RouterProvider router={router} />
+      <RouterProvider router={router} />
     </>
   );
 };

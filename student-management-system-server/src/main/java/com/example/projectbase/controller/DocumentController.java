@@ -68,7 +68,7 @@ public class DocumentController {
 
     @Tags({@Tag(name = "document-controller-admin")})
     @Operation(summary = "API get all documents by subject")
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER', 'ROLE_STUDENT')")
     @GetMapping(UrlConstant.Document.GET_DOCUMENTS_BY_SUBJECT)
     public ResponseEntity<?> getAllDocumentsBySubject(@RequestParam("subjectId") String subjectId) {
         List<Document> documents = documentService.getAllDocumentsBySubject(subjectId);

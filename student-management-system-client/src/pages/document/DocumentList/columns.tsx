@@ -1,3 +1,5 @@
+import { format } from 'date-fns';
+
 import { DataTableColumnHeader } from '@/components/ui/data-table/data-table-column-header';
 import { Document } from '@/types/document.type';
 import { ColumnDef } from '@tanstack/react-table';
@@ -41,8 +43,11 @@ export const documentColumns: ColumnDef<Document>[] = [
     accessorKey: 'createdDate',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Ngày tạo" />,
     cell: ({ row }) => {
-      const createdDate = row.getValue('createdDate') as string | undefined;
-      return createdDate ? new Date(createdDate).toLocaleDateString() : '-';
+      const createdDate = row.original.createdDate || '';
+      if (!createdDate || isNaN(new Date(createdDate).getTime())) {
+        return <div></div>;
+      }
+      return <div>{format(new Date(createdDate), 'dd/MM/yyyy')}</div>;
     },
     enableSorting: false,
   },
