@@ -1,26 +1,37 @@
 import TablePage from '@/components/ui/data-table';
 import { Document } from '@/types/document.type';
 import { useParams } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { documentColumns } from './columns';
 import DocumentModal from './document-modal';
 import { useDocumentStore } from '@/store/useDocumentStore';
-import { useSubjectStore } from '@/store/useSubjectStore';
+import { getById } from '@/services/subject.api';
+
 const DocumentList = () => {
   const { id } = useParams<{ id: string }>();
   const { documents, loading, fetchDocumentBySubject } = useDocumentStore();
-  const { subject, getSubjectById } = useSubjectStore();
+  const [subjectName, setSubjectName] = useState<string>('');
+
   useEffect(() => {
-    if (id) {
-      fetchDocumentBySubject(id);
-      getSubjectById(id);
-    }
+    const fetchData = async () => {
+      try {
+        if (id) {
+          await fetchDocumentBySubject(id);
+          const subject = await getById(id);
+          setSubjectName(subject.name);
+        }
+      } catch (error) {
+        console.error('Failed to fetch subject:', error);
+      }
+    };
+
+    fetchData();
   }, [id]);
 
   return (
     <div>
       <TablePage<Document>
-        title={`Danh sách tài liệu thuộc học phần: ${subject?.name}`}
+        title={`Danh sách tài liệu thuộc học phần: ${subjectName}`}
         data={documents}
         columns={documentColumns}
         loading={loading}

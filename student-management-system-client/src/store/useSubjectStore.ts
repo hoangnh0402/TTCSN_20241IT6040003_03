@@ -13,7 +13,6 @@ interface SubjectStore {
   createSubject: (Subject: Omit<Subject, 'id'>) => Promise<void>;
   updateSubject: (id: string, Subject: Omit<Subject, 'id'>) => Promise<void>;
   deleteSubject: (id: string) => Promise<void>;
-  getSubjectById: (id: string) => Promise<void>;
 }
 
 export const useSubjectStore = create<SubjectStore>((set) => ({
@@ -73,18 +72,6 @@ export const useSubjectStore = create<SubjectStore>((set) => ({
     } catch (error) {
       set({ error: error.message });
       throw error;
-    } finally {
-      set({ loading: false });
-    }
-  },
-
-  getSubjectById: async (id) => {
-    set({ loading: true, error: null });
-    try {
-      const { data } = await api.get<Subject>(ApiConstant.subjects.getById.replace(':id', id));
-      set({ subject: data });
-    } catch (error) {
-      set({ error: error.message });
     } finally {
       set({ loading: false });
     }

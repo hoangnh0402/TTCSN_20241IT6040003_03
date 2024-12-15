@@ -3,12 +3,13 @@ import { useEffect, useState } from 'react';
 import TablePage from '@/components/ui/data-table';
 import { Enrollment } from '@/types/enrollment.type';
 import { columns, transformData } from './columns';
-import { fetchMockEnrollments, fetchMockUser } from './mock-api';
 import { useParams } from 'react-router-dom';
 import { classInforColumns, transformDataSubject } from './classInforColumns';
-import { useSubjectStore } from '@/store/useSubjectStore';
-import { useClassroomStore } from '@/store/useClassroomStore';
 import { Subject } from '@/types/subject.type';
+import { fetchById } from '@/services/enrollment.api';
+import { fetchSubjects } from '@/services/subject.api';
+import { getClassroomById } from '@/services/classroom.api';
+import { fetchStudents } from '@/services/student.api';
 
 const ClassroomDetail = () => {
   const { classroomCode } = useParams<{ classroomCode: string }>();
@@ -16,15 +17,16 @@ const ClassroomDetail = () => {
   const [dataSubject, setDataSubject] = useState<any[]>([]);
 
   const [loading, setLoading] = useState<boolean>(true);
-  const { subjects, fetchSubjects } = useSubjectStore();
-  const { classroom, getClassroomById } = useClassroomStore();
-  // console.log('ádasdasdasdasd', classroom);
+
+  const [classroomName, setClassroomName] = useState<any>(null);
   const getData = async () => {
     try {
-      const enrollments = await fetchMockEnrollments();
-      const users = await fetchMockUser();
-      const transformedData = transformData(enrollments, users);
-      setData(transformedData);
+      if (classroomCode) {
+        const enrollments = await fetchById(classroomCode);
+        const students = await fetchStudents();
+        const transformedData = transformData(enrollments, students);
+        setData(transformedData);
+      }
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
@@ -33,14 +35,11 @@ const ClassroomDetail = () => {
   };
   const getDataSubject = async () => {
     try {
-      if (classroom) {
-        const subject = transformDataSubject(subjects, classroom);
-        console.log('ádasdasd', subjects);
-        setDataSubject(subject);
-        console.log('first', subject);
-      } else {
-        console.error('Classroom is null');
-      }
+      const subjects = await fetchSubjects();
+      const classroom = await getClassroomById(classroomCode as string);
+      setClassroomName(classroom);
+      const subject = transformDataSubject(subjects, classroom);
+      setDataSubject(subject);
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
@@ -48,24 +47,19 @@ const ClassroomDetail = () => {
     }
   };
   useEffect(() => {
-    if (classroomCode) {
-      getData();
-      fetchSubjects();
-      getDataSubject();
-      getClassroomById(classroomCode);
-    } else {
-      console.error('classroomCode is undefined');
-    }
-  }, [classroomCode]);
+    getData();
+    getDataSubject();
+  }, []);
 
   return (
     <>
       <TablePage<Subject>
-        title={`Danh sách lớp: ${classroom?.code}`}
+        title={`Danh sách lớp: ${classroomName?.code}`}
         data={dataSubject}
         columns={classInforColumns}
         loading={loading}
         hasToolbar={false}
+        hasPagination={false}
       />
       <br />
       <TablePage<Enrollment> title="" data={data} columns={columns} loading={loading} />

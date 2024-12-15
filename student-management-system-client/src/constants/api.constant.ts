@@ -7,7 +7,7 @@ export const ApiConstant = {
   students: {
     getAll: '/user/student',
     getById: '/user/:id',
-    getByUsercode: '/user/student/:userCode',
+    getByUsercode: '/user/:userCode',
     create: '/user/student',
     update: '/user?userId=:id',
     delete: '/user/lock?userId=:id',
@@ -43,6 +43,7 @@ export const ApiConstant = {
     getStudents: '/:id/students1',
     addStudent: '/admin/classroom/:id/add-student',
     removeStudent: '/admin/classroom/:classroomId/:studentId',
+    getClassByStudent: 'api/v1/classrooms/byStudentCode/:username',
   },
   documents: {
     getAll: '/documents',
@@ -53,6 +54,7 @@ export const ApiConstant = {
   },
   enrollment: {
     register: 'enroll/register',
+    getAll: '/:id/students',
   },
   records:{
     getTotal: 'record/count/department'

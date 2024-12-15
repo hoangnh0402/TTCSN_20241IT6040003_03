@@ -29,7 +29,7 @@ interface DocumentModalProps {
 }
 
 const DocumentModal = ({ modalProps, document }: DocumentModalProps) => {
-  const { uploadDocument } = useDocumentStore();
+  const { uploadDocument, fetchDocumentBySubject } = useDocumentStore();
   const { mode, onSubmit } = modalProps || {
     mode: 'create',
     onSubmit: async (data: z.infer<typeof FormSchema>) => {
@@ -40,15 +40,20 @@ const DocumentModal = ({ modalProps, document }: DocumentModalProps) => {
       formData.append('subjectId', data.subjectId);
       formData.append('files', data.files[0]);
       await uploadDocument(formData);
+      fetchDocumentBySubject(data.subjectId);
+      reset();
     },
   };
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { id } = useParams<{ id: string }>();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     mode: 'onTouched',
-    defaultValues: mode === 'create' ? undefined : document,
+    defaultValues:
+      mode === 'create' ? { name: '', type: '', description: '', subjectId: id || '', files: undefined } : document,
   });
+  const { reset } = form;
 
   return (
     <DialogContent>
@@ -98,19 +103,19 @@ const DocumentModal = ({ modalProps, document }: DocumentModalProps) => {
                 </FormItem>
               )}
             />
-            <FormField
+            {/* <FormField
               control={form.control}
               name="subjectId"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Subject ID</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} disabled />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            /> */}
             <FormField
               control={form.control}
               name="files"

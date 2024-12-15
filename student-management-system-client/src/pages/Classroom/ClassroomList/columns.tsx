@@ -46,7 +46,6 @@ export const columns: ColumnDef<any>[] = [
   {
     accessorKey: 'classroomCode',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Mã lớp" />,
-    // cell: ({ row }) => <div>{row.original.classroomCode}</div>,
     cell: ({ row }) => {
       const classroomCode = row.original.classroomCode;
       return (

@@ -83,4 +83,5 @@ export const useStudentStore = create<StudentStore>((set) => ({
       set({ loading: false });
     }
   },
+  
 }));

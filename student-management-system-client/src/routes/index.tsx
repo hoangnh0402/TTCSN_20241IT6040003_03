@@ -1,4 +1,3 @@
-import { Toaster } from '@/components/ui/toaster';
 import { Role } from '@/types/user.type';
 import React, { Suspense } from 'react';
 import { createBrowserRouter, Navigate, Outlet, RouterProvider } from 'react-router-dom';
@@ -18,7 +17,7 @@ const SeeDocument = React.lazy(() => import('@/pages/document/SeeDocument'));
 const DocumentList = React.lazy(() => import('@/pages/document/DocumentList'));
 const SubjectList = React.lazy(() => import('@/pages/Classroom/ClassroomList'));
 const ClassroomDetail = React.lazy(() => import('@/pages/Classroom/ClassroomDetail'));
-
+const StudentDetail = React.lazy(() => import('@/pages/Classroom/StudentDetail'));
 const router = createBrowserRouter([
   {
     path: '/',
@@ -127,6 +126,14 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<Loading />}>
             <ClassroomDetail />
+          </Suspense>
+        ),
+      },
+      {
+        path: '/student/:username',
+        element: (
+          <Suspense fallback={<Loading />}>
+            <StudentDetail />
           </Suspense>
         ),
       },
