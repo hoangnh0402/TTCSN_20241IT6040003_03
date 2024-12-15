@@ -16,8 +16,6 @@ const ViewDetailsButton = ({ enrollment }: { enrollment: Enrollment }) => {
 export const transformData = (enrollments: Enrollment[], users: User[]) => {
   return enrollments.map((enrollment) => {
     const user = users.find((user) => enrollment.userID === user.id);
-    console.log('usser111', enrollment.userID);
-    console.log('usser', user);
     return {
       userID: enrollment?.userID,
       username: user?.username || '',

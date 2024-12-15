@@ -47,7 +47,7 @@ public class ClassroomController {
 
     @Tags({@Tag(name = "classroom-controller-admin")})
     @Operation(summary = "API get classroom by id")
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER', 'STUDENT')")
     @GetMapping(UrlConstant.Classroom.GET_CLASSROOM_BY_ID)
     public ResponseEntity<?> getClassroomById(@RequestParam String classroomId) {
         return VsResponseUtil.success(classroomService.getClassroomById(classroomId));

@@ -85,7 +85,7 @@ public class UrlConstant {
     public static final String BASE = "/admin/classroom";
     public static final String CREATE_CLASSROOM = BASE; // POST /admin/classroom
     public static final String GET_ALL_CLASSROOMS = "/user/classroom"; // GET /user/classroom
-    public static final String GET_CLASSROOM_BY_ID = BASE + "/id"; // GET /admin/classroom/id
+    public static final String GET_CLASSROOM_BY_ID = "/classroom/id"; // GET /classroom/id
     public static final String UPDATE_CLASSROOM = BASE; // PUT /admin/classroom
     public static final String DELETE_CLASSROOM = BASE; // DELETE /admin/classroom
     public static final String GET_CLASSROOMS_BY_START_DATE = "/user/classroom/start-date"; // GET /user/classroom/start-date
