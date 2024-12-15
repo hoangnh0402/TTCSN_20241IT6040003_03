@@ -28,5 +28,5 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment, String> 
 
 
 
-
+    Enrollment findByUserAndClassroom(User user, Classroom classroom);
 }

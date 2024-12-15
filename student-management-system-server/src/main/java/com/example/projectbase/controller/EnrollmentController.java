@@ -3,6 +3,7 @@ package com.example.projectbase.controller;
 import com.example.projectbase.base.RestApiV1;
 import com.example.projectbase.base.VsResponseUtil;
 import com.example.projectbase.constant.UrlConstant;
+import com.example.projectbase.domain.dto.request.EnrollmentUpdateDto;
 import com.example.projectbase.domain.dto.response.CommonResponseDto;
 import com.example.projectbase.domain.dto.response.EnrollmentResponse;
 import com.example.projectbase.domain.dto.response.UserDto;
@@ -15,9 +16,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.tags.Tags;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,6 +36,13 @@ public class EnrollmentController {
                                              @RequestParam String classroomId) {
         Enrollment enrollment = enrollmentService.registerSubject(principal, classroomId);
         return VsResponseUtil.success(enrollment);
+    }
+
+    @Tags({@Tag(name = "enrollment-controller-admin"), @Tag(name = "enrollment-controller-teacher")})
+    @Operation(summary = "API update date score for student")
+    @PutMapping(UrlConstant.Enrollment.UPDATE_ENROLLMENT)
+    public ResponseEntity<?> updateEnrollment(@RequestBody EnrollmentUpdateDto updateDto) {
+        return VsResponseUtil.success(enrollmentService.updateStudentInClassroom(updateDto));
     }
 
     @Tags({@Tag(name = "enrollment-controller-admin"), @Tag(name = "enrollment-controller-teacher")})
