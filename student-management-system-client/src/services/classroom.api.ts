@@ -14,9 +14,9 @@ const classroomApi = () => ({
     return data;
   },
   getClassroomById: async (id: string): Promise<Classroom> => {
-    const { data } = await api.get<Classroom>(`${ApiConstant.classrooms.getById}?classroomId=${id}`);
+    const { data } = await api.get<Classroom>(ApiConstant.classrooms.getById.replace(':id', id));
     return data;
-  }
+  },
 });
 
 export const { getClassByStudent, fetchClassrooms, getClassroomById } = classroomApi();

@@ -24,8 +24,6 @@ const ClassroomDetailManagement = () => {
     return <Loading />;
   }
 
-  console.log(students);
-
   return (
     <TablePage<User>
       title="Quản lý sinh viên trong lớp học"
