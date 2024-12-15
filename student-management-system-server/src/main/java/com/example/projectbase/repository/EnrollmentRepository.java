@@ -18,5 +18,5 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment, String> 
     @Query("SELECT e FROM Enrollment e WHERE e.user.id = :userId AND e.classroom.id = :classroomId")
     Optional<Enrollment> findByUserIdAndClassroomId(String userId, String classroomId);
 
-
+    Enrollment findByUserAndClassroom(User user, Classroom classroom);
 }
