@@ -13,6 +13,32 @@ import { AvailableRegisterSubject } from '@/types/registerSubject.type';
 import { ApiConstant } from '@/constants/api.constant';
 import { api } from '@/services/api.service';
 import { useUserStore } from '@/store/useUserStore';
+import { useRegisteredSubjectStore } from '@/store/useRegisterdSubjectStore';
+import { toast } from '@/hooks/use-toast';
+
+
+const DeleteAction: React.FC<{ registeredSubject: AvailableRegisterSubject }> = ({ registeredSubject }) => {
+  const { deleteRegisteredSubjects } = useRegisteredSubjectStore();
+  const {user} = useUserStore();
+
+  const {classroomId} = registeredSubject;
+  const userId = user?.id;
+  return (
+    <DeleteDialog
+      title="Xóa"
+      onConfirm={() => {
+        deleteRegisteredSubjects(classroomId ?? '', userId ?? '');
+        toast({
+          title: 'Hủy đăng kí thành công',
+          description: 'Đã hủy đăng kí môn học',
+          variant: 'success',
+          duration: 2000,
+        });
+      }}
+    />
+  );
+};
+
 
 export const registeredSubjectTableColumn: ColumnDef<AvailableRegisterSubject>[] = [
   {
@@ -71,23 +97,7 @@ export const registeredSubjectTableColumn: ColumnDef<AvailableRegisterSubject>[]
   {
     accessorKey: 'register-action',
     header: ({ column }) => <DataTableColumnHeader column={column} title="" />,
-    cell: ({ row }) => {
-      const subject = row.original;
-      const { user } = useUserStore();
-      console.log(subject);
-      return (
-        <DeleteDialog
-          title="Hủy"
-          onConfirm={async () => {
-            const removeStudentUrl = ApiConstant.classrooms.removeStudent
-              .replace(':classroomId', subject.classroomId ?? '')
-              .replace(':studentId', user?.id ?? '');
-
-            api.delete(removeStudentUrl);
-          }}
-        />
-      );
-    },
+    cell: ({ row }) => <DeleteAction registeredSubject={row.original} />,
     enableSorting: false,
     enableHiding: false,
     size: 44,
