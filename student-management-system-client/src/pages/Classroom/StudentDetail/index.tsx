@@ -27,7 +27,6 @@ const StudentDetail: React.FC = () => {
         );
         const flatEnrollments = allEnrollments.flat();
         const transformedData = await transformData(subjects, classrooms, flatEnrollments, user);
-        console.log('transformedData', transformedData);
         setData(transformedData);
       }
     } catch (error) {

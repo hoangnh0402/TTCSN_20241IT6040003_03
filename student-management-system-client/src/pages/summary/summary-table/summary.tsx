@@ -2,7 +2,6 @@ export interface SummaryInterface {
   point: string;
   total: number;
   fill?: string;
-
 }
 
 export interface ChartInterface {

@@ -36,7 +36,7 @@ export const ApiConstant = {
   },
   classrooms: {
     getAll: '/user/classroom',
-    getById: '/admin/classroom/id?classroomId=:id',
+    getById: '/classroom/id?classroomId=:id',
     create: '/admin/classroom',
     update: '/admin/classroom?classroomId=:id',
     delete: '/admin/classroom?classroomId=:id',
@@ -67,7 +67,7 @@ export const ApiConstantUser = {
   },
 
   subjects: {
-    getAll: '/user/subject',
+    getAll: '/subject',
   },
 
   enrollment: {

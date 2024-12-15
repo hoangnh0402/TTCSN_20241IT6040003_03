@@ -73,11 +73,9 @@ export const registerSubjectTableColumn: ColumnDef<AvailableRegisterSubject>[] =
         <RegisterDialog
           title="Đăng kí"
           onConfirm={async () => {
-            console.log(subject.classroomId);
             const response = await api.post(ApiConstant.enrollment.register, null, {
               params: { classroomId: subject.classroomId },
             });
-            console.log('register subject response: ' + response);
           }}
         />
       );

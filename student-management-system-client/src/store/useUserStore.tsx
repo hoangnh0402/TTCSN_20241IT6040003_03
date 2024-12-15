@@ -48,7 +48,6 @@ export const useUserStore = create<useUserStore>()(
           set({ user: null, isAuthenticated: false });
           return true;
         } catch (error) {
-          console.log(error.response.data.message);
           set({ loading: false, error: error.response.data.message });
           return false;
         } finally {

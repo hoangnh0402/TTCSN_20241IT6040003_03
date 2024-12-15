@@ -14,7 +14,7 @@ import { useUserStore } from '@/store/useUserStore';
 
 const RegisterSubject = () => {
   const { user } = useUserStore();
-  const { registerSubject,  error, fetchRegisterSubjects } = useRegisterSubjectStore();
+  const { registerSubject, error, fetchRegisterSubjects } = useRegisterSubjectStore();
   const { registeredSubject, loading, fetchRegisteredSubjects } = useRegisteredSubjectStore();
 
   const userId: String | undefined = user?.username;
