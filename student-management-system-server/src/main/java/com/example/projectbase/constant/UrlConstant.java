@@ -98,12 +98,12 @@ public class UrlConstant {
   public static final class Subject {
     public static final String BASE = "/admin/subject";
     public static final String CREATE_SUBJECT = BASE; // POST /admin/subject
-    public static final String GET_ALL_SUBJECTS = "/user/subject"; // GET /user/subject
+    public static final String GET_ALL_SUBJECTS = "/subject"; // GET /subject
     public static final String GET_SUBJECTS = BASE; // GET /admin/subject
     public static final String FIND_SUBJECTS = "/user/subject/find"; // GET /user/subject/find
     public static final String UPDATE_SUBJECT = BASE; // PUT /admin/subject
     public static final String DELETE_SUBJECT = BASE; // DELETE /admin/subject
-    public static final String GET_SUBJECT_BY_ID = BASE + "/id"; // GET /admin/subject/id
+    public static final String GET_SUBJECT_BY_ID = "/subject/id"; // GET /subject/id
   }
 
   public static class Enrollment {

@@ -13,6 +13,6 @@ export interface Document {
   files: DocumentFile[];
   size?: number;
   createdBy?: string;
-  createdAt?: string;
+  createdDate?: string;
   path: string;
 }
