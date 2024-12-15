@@ -9,7 +9,32 @@ import { RegisterDialog } from '@/components/ui/register-dialog';
 import { api } from '@/services/api.service';
 import { ApiConstant } from '@/constants/api.constant';
 import { AvailableRegisterSubject } from '@/types/registerSubject.type';
+import { useRegisteredSubjectStore } from '@/store/useRegisterdSubjectStore';
+import { useUserStore } from '@/store/useUserStore';
+import { toast } from '@/hooks/use-toast';
 
+
+const AddAction: React.FC<{ registerSubject: AvailableRegisterSubject }> = ({ registerSubject }) => {
+  const { addRegisteredSubjects } = useRegisteredSubjectStore();
+  // const {user} = useUserStore();
+
+  // const {classroomId} = registeredSubject;
+  // const userId = user?.id;
+  return (
+    <RegisterDialog
+      title="Đăng kí"
+      onConfirm={() => {
+        addRegisteredSubjects(registerSubject);
+        toast({
+          title: 'Đăng kí thành công',
+          description: 'Đã đăng kí môn học',
+          variant: 'success',
+          duration: 2000,
+        });
+      }}
+    />
+  );
+};
 export const registerSubjectTableColumn: ColumnDef<AvailableRegisterSubject>[] = [
   {
     accessorKey: 'No',
@@ -67,19 +92,7 @@ export const registerSubjectTableColumn: ColumnDef<AvailableRegisterSubject>[] =
   {
     accessorKey: 'register-action',
     header: ({ column }) => <DataTableColumnHeader column={column} title="" />,
-    cell: ({ row }) => {
-      const subject = row.original;
-      return (
-        <RegisterDialog
-          title="Đăng kí"
-          onConfirm={async () => {
-            const response = await api.post(ApiConstant.enrollment.register, null, {
-              params: { classroomId: subject.classroomId },
-            });
-          }}
-        />
-      );
-    },
+    cell: ({ row }) => <AddAction registerSubject={row.original} />,
     enableSorting: false,
     enableHiding: false,
     size: 44,

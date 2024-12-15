@@ -5,12 +5,15 @@ import { api } from '@/services/api.service';
 import { Subject } from '@/types/subject.type';
 import { AvailableRegisterSubject } from '@/types/registerSubject.type';
 import { Classroom } from '@/types/classroom.type';
+import { User } from '@/types/user.type';
 
 interface RegisterSubjectStore {
   registeredSubject: AvailableRegisterSubject[];
   loading: boolean;
   error: string | null;
   fetchRegisteredSubjects: (userId: String | undefined) => Promise<void>;
+  deleteRegisteredSubjects: (classroomId: string, userId: string) => Promise<void>;
+  addRegisteredSubjects: (registerSubject:AvailableRegisterSubject ) => Promise<void>;
 }
 
 export const useRegisteredSubjectStore = create<RegisterSubjectStore>((set) => ({
@@ -57,4 +60,40 @@ export const useRegisteredSubjectStore = create<RegisterSubjectStore>((set) => (
       set({ loading: false });
     }
   },
+
+  addRegisteredSubjects: async (registerSubject:AvailableRegisterSubject) => {
+    set({ loading: true, error: null });
+    try {
+      const response = await api.post(ApiConstant.enrollment.register, null, {
+        params: { classroomId: registerSubject.classroomId },
+      });
+      set((state) => ({ registeredSubject: [...state.registeredSubject, registerSubject] }));
+    } catch (error) {
+      set({ error: error.message });
+      throw error;
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+
+  deleteRegisteredSubjects: async (classroomId: string, userId: string) => {
+    set({ loading: true, error: null });
+    try {
+      const removeStudentUrl = await ApiConstant.classrooms.removeStudent
+              .replace(':classroomId', classroomId )
+              .replace(':studentId', userId);
+
+            await api.delete(removeStudentUrl);
+      set((state) => ({
+        registeredSubject: state.registeredSubject.filter((t) => t.classroomId !== classroomId),
+      }));
+    } catch (error) {
+      set({ error: error.message });
+      throw error;
+    } finally {
+      set({ loading: false });
+    }
+  },
+  
 }));
