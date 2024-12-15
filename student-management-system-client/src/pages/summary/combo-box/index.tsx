@@ -6,16 +6,15 @@ import { Button } from '@/components/ui/button';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 type ComboBoxItem = {
-    value: string;
-    label: string;
-  };
-  
-  interface ComboBoxProps {
-    data: ComboBoxItem[];
-    value: string;
-    setValue: React.Dispatch<React.SetStateAction<string>>; // Type for state updater function
-  }
-  
+  value: string;
+  label: string;
+};
+
+interface ComboBoxProps {
+  data: ComboBoxItem[];
+  value: string;
+  setValue: React.Dispatch<React.SetStateAction<string>>; // Type for state updater function
+}
 
 const ComboBox: React.FC<ComboBoxProps> = ({ data, value, setValue }) => {
   const [open, setOpen] = React.useState(false);

@@ -1,4 +1,3 @@
-import { Toaster } from '@/components/ui/toaster';
 import { Role } from '@/types/user.type';
 import React, { Suspense } from 'react';
 import { createBrowserRouter, Navigate, Outlet, RouterProvider } from 'react-router-dom';
@@ -18,7 +17,7 @@ const SeeDocument = React.lazy(() => import('@/pages/document/SeeDocument'));
 const DocumentList = React.lazy(() => import('@/pages/document/DocumentList'));
 const SubjectList = React.lazy(() => import('@/pages/Classroom/ClassroomList'));
 const ClassroomDetail = React.lazy(() => import('@/pages/Classroom/ClassroomDetail'));
-
+const StudentDetail = React.lazy(() => import('@/pages/Classroom/StudentDetail'));
 const router = createBrowserRouter([
   {
     path: '/',
@@ -71,22 +70,6 @@ const router = createBrowserRouter([
             ),
           },
           {
-            path: 'lectures',
-            element: (
-              <Suspense fallback={<Loading />}>
-                <SeeDocument />
-              </Suspense>
-            ),
-          },
-          {
-            path: 'documents/:id',
-            element: (
-              <Suspense fallback={<Loading />}>
-                <DocumentList />
-              </Suspense>
-            ),
-          },
-          {
             path: 'classrooms/:id',
             element: (
               <Suspense fallback={<Loading />}>
@@ -115,7 +98,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: '/classrooms',
+        path: 'classrooms',
         element: (
           <Suspense fallback={<Loading />}>
             <SubjectList />
@@ -123,10 +106,34 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: '/classrooms/:classroomCode',
+        path: 'classrooms/:classroomCode',
         element: (
           <Suspense fallback={<Loading />}>
             <ClassroomDetail />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'lectures',
+        element: (
+          <Suspense fallback={<Loading />}>
+            <SeeDocument />
+          </Suspense>
+        ),
+      },
+      {
+        path: '/student/:username',
+        element: (
+          <Suspense fallback={<Loading />}>
+            <StudentDetail />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'documents/:id',
+        element: (
+          <Suspense fallback={<Loading />}>
+            <DocumentList />
           </Suspense>
         ),
       },
@@ -149,7 +156,7 @@ const router = createBrowserRouter([
 const AppRoutes = () => {
   return (
     <>
-      <Toaster /> <RouterProvider router={router} />
+      <RouterProvider router={router} />
     </>
   );
 };

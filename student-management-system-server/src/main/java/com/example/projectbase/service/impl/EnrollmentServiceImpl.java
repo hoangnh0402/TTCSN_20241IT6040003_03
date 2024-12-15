@@ -3,6 +3,7 @@ package com.example.projectbase.service.impl;
 import com.example.projectbase.constant.CommonConstant;
 import com.example.projectbase.constant.ErrorMessage;
 import com.example.projectbase.constant.RoleConstant;
+import com.example.projectbase.domain.dto.request.EnrollmentUpdateDto;
 import com.example.projectbase.domain.dto.response.CommonResponseDto;
 import com.example.projectbase.domain.dto.response.EnrollmentResponse;
 import com.example.projectbase.domain.dto.response.UserDto;
@@ -92,6 +93,24 @@ public class EnrollmentServiceImpl implements EnrollmentService {
         enrollmentRepository.save(enrollment);
 
         return enrollment;
+    }
+
+    @Override
+    public Enrollment updateStudentInClassroom(EnrollmentUpdateDto updateDto) {
+        User student = userRepository.findById(updateDto.getUserId())
+                .orElseThrow(() -> new NotFoundException(ErrorMessage.User.ERR_NOT_FOUND_ID));
+
+        if (!student.getRole().getName().equals(RoleConstant.STUDENT)) {
+            throw new IllegalStateException(ErrorMessage.Enrollment.USER_NOT_STUDENT);
+        }
+        Classroom classroom = classroomRepository.findById(updateDto.getClassroomId())
+                .orElseThrow(() -> new NotFoundException(ErrorMessage.Classroom.ERR_NOT_FOUND_ID));
+        Enrollment enrollment = enrollmentRepository.findByUserAndClassroom(student, classroom);
+        enrollment.setFirstRegularPoint(updateDto.getFirstRegularPoint());
+        enrollment.setSecondRegularPoint(updateDto.getSecondRegularPoint());
+        enrollment.setMidTermPoint(updateDto.getMidTermPoint());
+        enrollment.setFinalPoint(updateDto.getFinalPoint());
+        return enrollmentRepository.save(enrollment);
     }
 
     @Override

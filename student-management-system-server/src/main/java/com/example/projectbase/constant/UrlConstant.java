@@ -85,7 +85,7 @@ public class UrlConstant {
     public static final String BASE = "/admin/classroom";
     public static final String CREATE_CLASSROOM = BASE; // POST /admin/classroom
     public static final String GET_ALL_CLASSROOMS = "/user/classroom"; // GET /user/classroom
-    public static final String GET_CLASSROOM_BY_ID = BASE + "/id"; // GET /admin/classroom/id
+    public static final String GET_CLASSROOM_BY_ID = "/classroom/id"; // GET /classroom/id
     public static final String UPDATE_CLASSROOM = BASE; // PUT /admin/classroom
     public static final String DELETE_CLASSROOM = BASE; // DELETE /admin/classroom
     public static final String GET_CLASSROOMS_BY_START_DATE = "/user/classroom/start-date"; // GET /user/classroom/start-date
@@ -98,17 +98,18 @@ public class UrlConstant {
   public static final class Subject {
     public static final String BASE = "/admin/subject";
     public static final String CREATE_SUBJECT = BASE; // POST /admin/subject
-    public static final String GET_ALL_SUBJECTS = "/user/subject"; // GET /user/subject
+    public static final String GET_ALL_SUBJECTS = "/subject"; // GET /subject
     public static final String GET_SUBJECTS = BASE; // GET /admin/subject
     public static final String FIND_SUBJECTS = "/user/subject/find"; // GET /user/subject/find
     public static final String UPDATE_SUBJECT = BASE; // PUT /admin/subject
     public static final String DELETE_SUBJECT = BASE; // DELETE /admin/subject
-    public static final String GET_SUBJECT_BY_ID = BASE + "/id"; // GET /admin/subject/id
+    public static final String GET_SUBJECT_BY_ID = "/subject/id"; // GET /subject/id
   }
 
   public static class Enrollment {
     private static final String PRE_FIX = "/enroll";
     public static final String REGISTER_SUBJECT = PRE_FIX + "/register";
+    public static final String UPDATE_ENROLLMENT = PRE_FIX;
   }
 
 

@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { z } from 'zod';
 
-import {api} from '@/services/api.service';
+import { api } from '@/services/api.service';
 import { useEffect, useState } from 'react';
 
 import bgLogin from '@/assets/images/bg-login.jpg';

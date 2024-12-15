@@ -43,28 +43,30 @@ export const useSummaryStore = create<SummaryStore>((set) => ({
         params: { rating: 'yếu', departmentName: departmentId },
       });
 
-      let summaryData = [{
-        point: 'Xuất sắc',
-        total: totalExcellent,
-      },
-      {
-        point: 'Giỏi',
-        total: totalGood,
-      },
-      {
-        point: 'Khá',
-        total: totalRather,
-      },
-      {
-        point: 'Trung bình',
-        total: totalMedium,
-      },
-      {
-        point: 'Yếu/Kém',
-        total: totalWeak,
-      },]
+      let summaryData = [
+        {
+          point: 'Xuất sắc',
+          total: totalExcellent,
+        },
+        {
+          point: 'Giỏi',
+          total: totalGood,
+        },
+        {
+          point: 'Khá',
+          total: totalRather,
+        },
+        {
+          point: 'Trung bình',
+          total: totalMedium,
+        },
+        {
+          point: 'Yếu/Kém',
+          total: totalWeak,
+        },
+      ];
 
-      set({summaryData: summaryData});
+      set({ summaryData: summaryData });
     } catch (error) {
       set({ error: error.message });
     } finally {

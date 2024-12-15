@@ -10,22 +10,22 @@ import {
 } from '@/components/ui/chart';
 import ComboBox from './combo-box';
 import TablePage from '@/components/ui/data-table';
-import { frameworks, chartConfig } from './mock-data';
+import { frameworks, chartConfig, summaryData } from './mock-data';
 import { ChartInterface, SummaryInterface } from './summary-table/summary';
 import { columns } from './summary-table/columns';
 import { useSummaryStore } from '@/store/useSummaryStore';
 
 const Summary = () => {
   const [departmentId, setDepartmentId] = React.useState<string>('78a3dd94-a78b-4908-8c5e-bd6c2ab57954');
-  
+
   const { summaryData, loading, error, fetchSummaryData } = useSummaryStore();
-  
+
   // Correctly use useState with a type assertion and default empty array
   const [chartData, setChartData] = React.useState<ChartInterface[]>([]);
 
   React.useEffect(() => {
     fetchSummaryData(departmentId);
-    
+
     // Only set chart data if summaryData is not empty
     if (summaryData && summaryData.length > 0) {
       setChartData([
@@ -36,8 +36,6 @@ const Summary = () => {
         { point: 'weak', total: summaryData[4].total, fill: 'var(--color-weak)' },
       ]);
     }
-    
-    console.log(summaryData);
   }, [departmentId]);
 
   return (
@@ -47,7 +45,7 @@ const Summary = () => {
       </CardHeader>
       <CardContent>
         <ComboBox data={frameworks} value={departmentId} setValue={setDepartmentId} />
-        
+
         <div className="mt-4 grid grid-cols-2 gap-4">
           <div className="flex flex-col items-center justify-center">
             <ChartContainer config={chartConfig} className="aspect-square max-h-[400px] w-full">

@@ -25,15 +25,11 @@ export function RegisterDialog({ title, onConfirm }: RegisterDialogProps) {
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Bạn có chắc chắn không?</AlertDialogTitle>
-          <AlertDialogDescription>
-            Xác nhận đăng kí học phần.
-          </AlertDialogDescription>
+          <AlertDialogDescription>Xác nhận đăng kí học phần.</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Huỷ bỏ</AlertDialogCancel>
-          <AlertDialogAction onClick={onConfirm}>
-            Đăng kí
-          </AlertDialogAction>
+          <AlertDialogAction onClick={onConfirm}>Đăng kí</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

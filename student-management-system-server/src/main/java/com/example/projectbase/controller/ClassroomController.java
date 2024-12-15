@@ -47,7 +47,7 @@ public class ClassroomController {
 
     @Tags({@Tag(name = "classroom-controller-admin")})
     @Operation(summary = "API get classroom by id")
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER', 'STUDENT')")
     @GetMapping(UrlConstant.Classroom.GET_CLASSROOM_BY_ID)
     public ResponseEntity<?> getClassroomById(@RequestParam String classroomId) {
         return VsResponseUtil.success(classroomService.getClassroomById(classroomId));
@@ -104,9 +104,8 @@ public class ClassroomController {
         return VsResponseUtil.success(enrollmentService.addStudentToClassroom(classroomId, username));
     }
 
-    @Tags({@Tag(name = "classroom-controller-admin")})
+    @Tags({@Tag(name = "classroom-controller-admin"), @Tag(name = "classroom-controller")})
     @Operation(summary = "API remove student from classroom")
-    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping(UrlConstant.Classroom.REMOVE_STUDENT_FROM_CLASSROOM)
     public ResponseEntity<?> removeStudentFromClassroom(@PathVariable String classroomId, @PathVariable String userId) {
         return VsResponseUtil.success(enrollmentService.removeStudentFromClassroom(classroomId, userId));

@@ -1,7 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 // eslint-disable-next-line react-refresh/only-export-components
 
-
 import { DataTableColumnHeader } from '@/components/ui/data-table/data-table-column-header';
 
 import { Subject } from '@/types/subject.type';
@@ -9,9 +8,6 @@ import { Subject } from '@/types/subject.type';
 import { ColumnDef } from '@tanstack/react-table';
 
 import { DeleteDialog } from '@/components/ui/delete-dialog';
-
-
-
 
 export const registeredSubjectTableColumn: ColumnDef<Subject>[] = [
   {
@@ -66,7 +62,7 @@ export const registeredSubjectTableColumn: ColumnDef<Subject>[] = [
     size: 70,
     enableSorting: false,
   },
-  
+
   {
     accessorKey: 'register-action',
     header: ({ column }) => <DataTableColumnHeader column={column} title="" />,
@@ -76,8 +72,6 @@ export const registeredSubjectTableColumn: ColumnDef<Subject>[] = [
     },
     enableSorting: false,
     enableHiding: false,
-    size: 44
+    size: 44,
   },
 ];
-
-

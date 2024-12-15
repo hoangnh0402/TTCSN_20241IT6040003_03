@@ -7,7 +7,7 @@ export const ApiConstant = {
   students: {
     getAll: '/user/student',
     getById: '/user/:id',
-    getByUsercode: '/user/student/:userCode',
+    getByUsercode: '/user/:userCode',
     create: '/user/student',
     update: '/user?userId=:id',
     delete: '/user/lock?userId=:id',
@@ -21,28 +21,29 @@ export const ApiConstant = {
     delete: '/user/lock?userId=:id',
   },
   subjects: {
-    getAll: '/user/subject?pageSize=1000',
-    getById: '/admin/subject/id?subjectId=:id',
+    getAll: '/subject?pageSize=1000',
+    getById: '/subject/id?subjectId=:id',
     create: '/admin/subject',
     update: '/admin/subject?subjectId=:id',
     delete: '/admin/subject?subjectId=:id',
   },
   classes: {
     getAll: '/class',
-    create:'/class',
+    create: '/class',
     update: '/class',
-    delete:'/class',
-    getById: '/class/:id'
+    delete: '/class',
+    getById: '/class/:id',
   },
   classrooms: {
     getAll: '/user/classroom',
-    getById: '/admin/classroom/id?classroomId=:id',
+    getById: '/classroom/id?classroomId=:id',
     create: '/admin/classroom',
     update: '/admin/classroom?classroomId=:id',
     delete: '/admin/classroom?classroomId=:id',
     getStudents: '/:id/students1',
     addStudent: '/admin/classroom/:id/add-student',
     removeStudent: '/admin/classroom/:classroomId/:studentId',
+    getClassByStudent: 'api/v1/classrooms/byStudentCode/:username',
   },
   documents: {
     getAll: '/documents',
@@ -53,10 +54,11 @@ export const ApiConstant = {
   },
   enrollment: {
     register: 'enroll/register',
+    getAll: '/:id/students',
   },
-  records:{
-    getTotal: 'record/count/department'
-  }
+  records: {
+    getTotal: 'record/count/department',
+  },
 };
 
 export const ApiConstantUser = {
@@ -65,11 +67,10 @@ export const ApiConstantUser = {
   },
 
   subjects: {
-    getAll: '/user/subject',
+    getAll: '/subject',
   },
 
-  enrollment:{
-    reject:'reject/:classroomId'
-  }
-
+  enrollment: {
+    reject: 'reject/:classroomId',
+  },
 };

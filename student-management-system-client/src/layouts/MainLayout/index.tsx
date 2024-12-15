@@ -62,7 +62,13 @@ const items = [
     tooltip: 'Quản lý lớp học',
     roles: [Role.ADMIN],
   },
-  { title: 'Học phần', icon: FaBook, href: '/admin/lectures', tooltip: 'Học phần', roles: [Role.ADMIN] },
+  {
+    title: 'Học phần',
+    icon: FaBook,
+    href: '/lectures',
+    tooltip: 'Học phần',
+    roles: [Role.ADMIN, Role.TEACHER, Role.STUDENT],
+  },
   {
     title: 'Đăng kí học phần',
     icon: IoMdKey,
@@ -82,7 +88,7 @@ const items = [
     icon: FaBook,
     href: '/classrooms',
     tooltip: 'Xem thông tin lớp học',
-    roles: [Role.ADMIN],
+    roles: [Role.ADMIN, Role.TEACHER, Role.STUDENT],
   },
 ];
 

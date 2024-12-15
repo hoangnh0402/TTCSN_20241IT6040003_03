@@ -8,7 +8,7 @@ const DocumentsButton = ({ subject }: { subject: Subject }) => {
   const navigate = useNavigate();
 
   const handleViewDocuments = () => {
-    navigate(`/admin/documents/${subject.id}`);
+    navigate(`/documents/${subject.id}`);
   };
 
   return <Button onClick={handleViewDocuments}>Xem tài liệu</Button>;
