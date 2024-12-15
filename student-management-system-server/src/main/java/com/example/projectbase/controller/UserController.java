@@ -45,14 +45,14 @@ public class UserController {
     return VsResponseUtil.success(userService.getCurrentUser(principal));
   }
 
-  @Tags({@Tag(name = "user-controller-admin"), @Tag(name = "user-controller")})
+  @Tags({@Tag(name = "user-controller-admin")})
   @Operation(summary = "API create new student")
   @PostMapping(UrlConstant.User.CREATE_STUDENT)
   public ResponseEntity<?> createStudent(@RequestBody UserCreateDto userCreateDto) {
     return VsResponseUtil.success(userService.createStudent(userCreateDto));
   }
 
-  @Tags({@Tag(name = "user-controller-admin"), @Tag(name = "user-controller")})
+  @Tags({@Tag(name = "user-controller-admin")})
   @Operation(summary = "API create new teacher")
   @PostMapping(UrlConstant.User.CREATE_TEACHER)
   public ResponseEntity<?> createTeacher(@RequestBody TeacherCreateDto teacherCreateDto) {
@@ -87,7 +87,7 @@ public class UserController {
     return VsResponseUtil.success(userService.lockUser(userId));
   }
 
-  @Tags({@Tag(name = "user-controller-admin"), @Tag(name = "user-controller")})
+  @Tags({@Tag(name = "user-controller-admin")})
   @Operation(summary = "API unlock user")
   @PatchMapping(UrlConstant.User.UNLOCK_USER)
   public ResponseEntity<?> unlockUser(@RequestParam String userId) {

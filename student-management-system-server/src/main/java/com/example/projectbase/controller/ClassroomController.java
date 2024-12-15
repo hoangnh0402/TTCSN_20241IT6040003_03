@@ -104,9 +104,8 @@ public class ClassroomController {
         return VsResponseUtil.success(enrollmentService.addStudentToClassroom(classroomId, username));
     }
 
-    @Tags({@Tag(name = "classroom-controller-admin")})
+    @Tags({@Tag(name = "classroom-controller-admin"), @Tag(name = "classroom-controller")})
     @Operation(summary = "API remove student from classroom")
-    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping(UrlConstant.Classroom.REMOVE_STUDENT_FROM_CLASSROOM)
     public ResponseEntity<?> removeStudentFromClassroom(@PathVariable String classroomId, @PathVariable String userId) {
         return VsResponseUtil.success(enrollmentService.removeStudentFromClassroom(classroomId, userId));
