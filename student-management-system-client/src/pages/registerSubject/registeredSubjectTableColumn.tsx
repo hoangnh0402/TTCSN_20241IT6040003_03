@@ -8,8 +8,13 @@ import { Subject } from '@/types/subject.type';
 import { ColumnDef } from '@tanstack/react-table';
 
 import { DeleteDialog } from '@/components/ui/delete-dialog';
+import { sub } from 'date-fns';
+import { AvailableRegisterSubject } from '@/types/registerSubject.type';
+import { ApiConstant } from '@/constants/api.constant';
+import { api } from '@/services/api.service';
+import { useUserStore } from '@/store/useUserStore';
 
-export const registeredSubjectTableColumn: ColumnDef<Subject>[] = [
+export const registeredSubjectTableColumn: ColumnDef<AvailableRegisterSubject>[] = [
   {
     accessorKey: 'No',
     header: ({ column }) => <DataTableColumnHeader column={column} title="STT" />,
@@ -68,7 +73,20 @@ export const registeredSubjectTableColumn: ColumnDef<Subject>[] = [
     header: ({ column }) => <DataTableColumnHeader column={column} title="" />,
     cell: ({ row }) => {
       const subject = row.original;
-      return <DeleteDialog title="Hủy" onConfirm={() => {}} />;
+      const { user } = useUserStore();
+      console.log(subject);
+      return (
+        <DeleteDialog
+          title="Hủy"
+          onConfirm={async () => {
+            const removeStudentUrl = ApiConstant.classrooms.removeStudent
+              .replace(':classroomId', subject.classroomId ?? '')
+              .replace(':studentId', user?.id ?? '');
+
+            api.delete(removeStudentUrl);
+          }}
+        />
+      );
     },
     enableSorting: false,
     enableHiding: false,
