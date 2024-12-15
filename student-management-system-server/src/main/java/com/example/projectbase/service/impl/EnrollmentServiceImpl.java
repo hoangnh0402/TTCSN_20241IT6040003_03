@@ -115,14 +115,11 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 
     @Override
     public CommonResponseDto removeStudentFromClassroom(String classroomId, String userId) {
-        Enrollment enrollment = enrollmentRepository.findByUserIdAndClassroomId(userId, classroomId)
-                .orElseThrow(() -> new NotFoundException(ErrorMessage.Enrollment.ERR_NOT_FOUND_ENROLLMENT));
-
-        enrollmentRepository.deleteById(enrollment.getId());
-
+        enrollmentRepository.deleteByUserIdAndClassroomId(userId, classroomId);
         return new CommonResponseDto(true, CommonConstant.SUCCESS);
     }
-    
+
+
     @Override
     public List<UserDto> getAllStudentsInClassroom1(String classroomId) {
         List<Enrollment> enrollments = enrollmentRepository.findAllByClassroomId(classroomId);
