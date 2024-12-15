@@ -37,6 +37,7 @@ const ClassroomDetail = () => {
     try {
       const subjects = await fetchSubjects();
       const classroom = await getClassroomById(classroomCode as string);
+      console.log('sadasdasdsadsadsa', classroom);
       setClassroomName(classroom);
       const subject = transformDataSubject(subjects, classroom);
       setDataSubject(subject);

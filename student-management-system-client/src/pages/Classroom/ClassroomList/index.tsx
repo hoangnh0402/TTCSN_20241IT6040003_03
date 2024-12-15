@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { fetchSubjects, fetchClassrooms } from './mock-api';
 import TablePage from '@/components/ui/data-table';
 import { columns, transformData } from './columns';
+import { fetchSubjects } from '@/services/subject.api';
+import { fetchClassrooms } from '@/services/classroom.api';
 
 const SubjectList: React.FC = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
