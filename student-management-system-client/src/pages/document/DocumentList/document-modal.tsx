@@ -103,7 +103,7 @@ const DocumentModal = ({ modalProps, document }: DocumentModalProps) => {
                 </FormItem>
               )}
             />
-            <FormField
+            {/* <FormField
               control={form.control}
               name="subjectId"
               render={({ field }) => (
@@ -115,7 +115,7 @@ const DocumentModal = ({ modalProps, document }: DocumentModalProps) => {
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            /> */}
             <FormField
               control={form.control}
               name="files"
