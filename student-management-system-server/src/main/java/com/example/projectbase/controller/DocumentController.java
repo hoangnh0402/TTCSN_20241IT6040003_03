@@ -35,7 +35,7 @@ public class DocumentController {
 
     @Tags({@Tag(name = "document-controller-admin")})
     @Operation(summary = "API upload document")
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER')")
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> uploadDocument(@Valid @ModelAttribute UploadDocumentDTO uploadDocumentDTO) {
         try {
@@ -48,7 +48,7 @@ public class DocumentController {
 
     @Tags({@Tag(name = "document-controller-admin")})
     @Operation(summary = "API download document")
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER', 'STUDENT')")
     @GetMapping(UrlConstant.Document.DOWNLOAD_DOCUMENT)
     public ResponseEntity<?> downloadDocument(@RequestParam("id") String id) {
         byte[] fileContent = documentService.downloadDocument(id);
@@ -59,7 +59,7 @@ public class DocumentController {
 
     @Tags({@Tag(name = "document-controller-admin")})
     @Operation(summary = "API get document by id")
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER', 'STUDENT')")
     @GetMapping(UrlConstant.Document.GET_DOCUMENT)
     public ResponseEntity<?> getDocumentById(@RequestParam("id") String id) {
         Document document = documentService.getDocumentById(id);
@@ -68,7 +68,7 @@ public class DocumentController {
 
     @Tags({@Tag(name = "document-controller-admin")})
     @Operation(summary = "API get all documents by subject")
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER', 'ROLE_STUDENT')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER', 'STUDENT')")
     @GetMapping(UrlConstant.Document.GET_DOCUMENTS_BY_SUBJECT)
     public ResponseEntity<?> getAllDocumentsBySubject(@RequestParam("subjectId") String subjectId) {
         List<Document> documents = documentService.getAllDocumentsBySubject(subjectId);

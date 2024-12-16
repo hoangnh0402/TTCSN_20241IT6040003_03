@@ -48,6 +48,7 @@ export const useDocumentStore = create<DocumentStore>((set) => ({
       await apiDefaultUpload.post(ApiConstant.documents.upload, formData);
     } catch (error) {
       set({ error: error.message });
+      throw error;
     } finally {
       set({ loading: false });
     }
