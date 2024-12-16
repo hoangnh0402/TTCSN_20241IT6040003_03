@@ -73,7 +73,7 @@ public class SubjectController {
 
     @Tags({@Tag(name = "subject-controller-admin")})
     @Operation(summary = "API get subject by id")
-    @PreAuthorize("hasAnyRole('ADMIN', 'STUDENT')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TEACHER', 'STUDENT')")
     @GetMapping(UrlConstant.Subject.GET_SUBJECT_BY_ID)
     public ResponseEntity<?> readById(@RequestParam String subjectId) throws Exception {
         return VsResponseUtil.success(subjectService.getSubjectById(subjectId));

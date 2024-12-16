@@ -10,6 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Document } from '@/types/document.type';
 import { useParams } from 'react-router-dom';
 import { useDocumentStore } from '@/store/useDocumentStore';
+import { toast } from '@/hooks/use-toast';
 
 const FormSchema = z.object({
   name: z.string({ required_error: 'Tên tài liệu không được để trống' }),
@@ -34,15 +35,30 @@ const DocumentModal = ({ modalProps, document }: DocumentModalProps) => {
   const { mode, onSubmit } = modalProps || {
     mode: 'create',
     onSubmit: async (data: z.infer<typeof FormSchema>) => {
-      const formData = new FormData();
-      formData.append('name', data.name);
-      formData.append('type', data.type);
-      formData.append('description', data.description);
-      formData.append('subjectId', data.subjectId);
-      formData.append('files', data.files[0]);
-      await uploadDocument(formData);
-      fetchDocumentBySubject(data.subjectId);
-      reset();
+      try {
+        const formData = new FormData();
+        formData.append('name', data.name);
+        formData.append('type', data.type);
+        formData.append('description', data.description);
+        formData.append('subjectId', data.subjectId);
+        formData.append('files', data.files[0]);
+        await uploadDocument(formData);
+        fetchDocumentBySubject(data.subjectId);
+        reset();
+        toast({
+          title: 'Tải lên tài liệu thành công',
+          description: 'Tài liệu đã được tải lên thành công',
+          variant: 'success',
+          duration: 2000,
+        });
+      } catch (error) {
+        toast({
+          title: 'Tải lên tài liệu thất bại',
+          description: 'Vui lòng thử lại sau',
+          variant: 'destructive',
+          duration: 2000,
+        });
+      }
     },
   };
 
