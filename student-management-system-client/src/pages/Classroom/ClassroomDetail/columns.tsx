@@ -1,21 +1,26 @@
 import { Button } from '@/components/ui/button';
 import { DataTableColumnHeader } from '@/components/ui/data-table/data-table-column-header';
+import { useUserStore } from '@/store/useUserStore';
 import { Enrollment } from '@/types/enrollment.type';
-import { User } from '@/types/user.type';
+import { Role, User } from '@/types/user.type';
 import { ColumnDef } from '@tanstack/react-table';
 
-export const ViewDetailsButton = ({
+const EntryPointAction: React.FC<{ enrollment: Enrollment; onOpenModal: (enrollment: Enrollment) => void }> = ({
   enrollment,
   onOpenModal,
-}: {
-  enrollment: Enrollment;
-  onOpenModal: (enrollment: Enrollment) => void;
 }) => {
-  const handleViewDetails = () => {
-    onOpenModal(enrollment);
-  };
-
-  return <Button onClick={handleViewDetails}>Nhập điểm</Button>;
+  const { user } = useUserStore();
+  return (
+    user?.roleName === Role.TEACHER && (
+      <Button
+        onClick={() => {
+          onOpenModal(enrollment);
+        }}
+      >
+        Nhập điểm
+      </Button>
+    )
+  );
 };
 
 export const transformData = (enrollments: Enrollment[], users: User[]) => {
@@ -97,23 +102,10 @@ export const columns = (onOpenModal: (enrollment: Enrollment) => void): ColumnDe
     enableSorting: false,
     enableGlobalFilter: false,
   },
-
   {
     accessorKey: 'details',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Hành động" />,
-    cell: ({ row }) => {
-      const enrollment = row.original;
-      console.log('first, ', enrollment);
-      return (
-        <Button
-          onClick={() => {
-            onOpenModal(enrollment);
-          }}
-        >
-          Nhập điểm
-        </Button>
-      );
-    },
+    cell: ({ row }) => <EntryPointAction enrollment={row.original} onOpenModal={onOpenModal} />,
     enableSorting: false,
     enableHiding: false,
     size: 100,

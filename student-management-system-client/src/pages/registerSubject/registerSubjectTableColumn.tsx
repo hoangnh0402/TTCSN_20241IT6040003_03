@@ -13,7 +13,6 @@ import { useRegisteredSubjectStore } from '@/store/useRegisterdSubjectStore';
 import { useUserStore } from '@/store/useUserStore';
 import { toast } from '@/hooks/use-toast';
 
-
 const AddAction: React.FC<{ registerSubject: AvailableRegisterSubject }> = ({ registerSubject }) => {
   const { addRegisteredSubjects } = useRegisteredSubjectStore();
   // const {user} = useUserStore();

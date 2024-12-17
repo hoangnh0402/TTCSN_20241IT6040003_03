@@ -5,7 +5,6 @@ import { fetchClassrooms } from '@/services/classroom.api';
 import { fetchSubjects } from '@/services/subject.api';
 import { columns, transformData } from './columns';
 
-
 const SubjectList: React.FC = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [data, setData] = useState<any[]>([]);

@@ -13,7 +13,7 @@ interface RegisterSubjectStore {
   error: string | null;
   fetchRegisteredSubjects: (userId: String | undefined) => Promise<void>;
   deleteRegisteredSubjects: (classroomId: string, userId: string) => Promise<void>;
-  addRegisteredSubjects: (registerSubject:AvailableRegisterSubject ) => Promise<void>;
+  addRegisteredSubjects: (registerSubject: AvailableRegisterSubject) => Promise<void>;
 }
 
 export const useRegisteredSubjectStore = create<RegisterSubjectStore>((set) => ({
@@ -61,7 +61,7 @@ export const useRegisteredSubjectStore = create<RegisterSubjectStore>((set) => (
     }
   },
 
-  addRegisteredSubjects: async (registerSubject:AvailableRegisterSubject) => {
+  addRegisteredSubjects: async (registerSubject: AvailableRegisterSubject) => {
     set({ loading: true, error: null });
     try {
       const response = await api.post(ApiConstant.enrollment.register, null, {
@@ -76,15 +76,14 @@ export const useRegisteredSubjectStore = create<RegisterSubjectStore>((set) => (
     }
   },
 
-
   deleteRegisteredSubjects: async (classroomId: string, userId: string) => {
     set({ loading: true, error: null });
     try {
       const removeStudentUrl = await ApiConstant.classrooms.removeStudent
-              .replace(':classroomId', classroomId )
-              .replace(':studentId', userId);
+        .replace(':classroomId', classroomId)
+        .replace(':studentId', userId);
 
-            await api.delete(removeStudentUrl);
+      await api.delete(removeStudentUrl);
       set((state) => ({
         registeredSubject: state.registeredSubject.filter((t) => t.classroomId !== classroomId),
       }));
@@ -95,5 +94,4 @@ export const useRegisteredSubjectStore = create<RegisterSubjectStore>((set) => (
       set({ loading: false });
     }
   },
-  
 }));

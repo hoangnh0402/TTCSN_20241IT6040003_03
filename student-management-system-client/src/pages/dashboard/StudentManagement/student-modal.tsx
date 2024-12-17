@@ -41,8 +41,6 @@ const StudentModal = ({ modalProps, student, onClose }: StudentModalProps) => {
   const { createStudent } = useStudentStore();
   const { classes } = useClassStore();
 
-  
-
   const { mode, onSubmit } = modalProps || {
     mode: 'create',
     onSubmit: async (data: z.infer<typeof FormSchema>) => {

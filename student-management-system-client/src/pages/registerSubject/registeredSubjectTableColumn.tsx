@@ -16,12 +16,11 @@ import { useUserStore } from '@/store/useUserStore';
 import { useRegisteredSubjectStore } from '@/store/useRegisterdSubjectStore';
 import { toast } from '@/hooks/use-toast';
 
-
 const DeleteAction: React.FC<{ registeredSubject: AvailableRegisterSubject }> = ({ registeredSubject }) => {
   const { deleteRegisteredSubjects } = useRegisteredSubjectStore();
-  const {user} = useUserStore();
+  const { user } = useUserStore();
 
-  const {classroomId} = registeredSubject;
+  const { classroomId } = registeredSubject;
   const userId = user?.id;
   return (
     <DeleteDialog
@@ -38,7 +37,6 @@ const DeleteAction: React.FC<{ registeredSubject: AvailableRegisterSubject }> = 
     />
   );
 };
-
 
 export const registeredSubjectTableColumn: ColumnDef<AvailableRegisterSubject>[] = [
   {
