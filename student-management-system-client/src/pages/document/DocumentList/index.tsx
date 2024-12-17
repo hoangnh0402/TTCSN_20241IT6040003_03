@@ -6,9 +6,12 @@ import { documentColumns } from './columns';
 import DocumentModal from './document-modal';
 import { useDocumentStore } from '@/store/useDocumentStore';
 import { getById } from '@/services/subject.api';
+import { useUserStore } from '@/store/useUserStore';
+import { Role } from '@/types/user.type';
 
 const DocumentList = () => {
   const { id } = useParams<{ id: string }>();
+  const { user } = useUserStore();
   const { documents, loading, fetchDocumentBySubject } = useDocumentStore();
   const [subjectName, setSubjectName] = useState<string>('');
 
@@ -35,7 +38,7 @@ const DocumentList = () => {
         data={documents}
         columns={documentColumns}
         loading={loading}
-        Modal={DocumentModal}
+        Modal={user?.roleName === Role.STUDENT ? undefined : DocumentModal}
       />
     </div>
   );

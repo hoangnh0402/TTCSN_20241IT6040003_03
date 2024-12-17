@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react';
 import TablePage from '@/components/ui/data-table';
 import { useParams } from 'react-router-dom';
@@ -6,9 +7,9 @@ import { getByUsercode } from '@/services/user.api';
 import { fetchById } from '@/services/enrollment.api';
 import { getClassByStudent } from '@/services/classroom.api';
 import { fetchSubjects } from '@/services/subject.api';
+import Loading from '@/components/ui/loading';
 
 const StudentDetail: React.FC = () => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const { username } = useParams();
@@ -39,13 +40,14 @@ const StudentDetail: React.FC = () => {
   useEffect(() => {
     getData();
   }, []);
+
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   return (
     <div>
-      <TablePage data={data} columns={columns} title="Chi tiết thông tin sinh viên " />{' '}
+      <TablePage data={data} columns={columns} title="Chi tiết thông tin sinh viên" />
     </div>
   );
 };

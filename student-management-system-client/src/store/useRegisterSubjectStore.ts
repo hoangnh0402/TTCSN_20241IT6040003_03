@@ -47,6 +47,4 @@ export const useRegisterSubjectStore = create<RegisterSubjectStore>((set) => ({
       set({ loading: false });
     }
   },
-
-  
 }));

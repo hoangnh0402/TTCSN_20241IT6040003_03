@@ -102,7 +102,7 @@ const ClassroomDetail = () => {
             </TableBody>
           </Table>
         </div>
-        <br/>
+        <br />
       </TablePage>
       {isOpen && selectedEnrollment && (
         <UpdateScoreModal
